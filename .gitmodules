@@ -1,0 +1,3 @@
+[submodule "Libraries/libpolygon"]
+	path = Libraries/libpolygon
+	url = git@github.com:Facepunch/sbox-libpolygon.git
