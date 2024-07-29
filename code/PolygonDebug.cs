@@ -18,10 +18,10 @@ public sealed class PolygonDebug : Component
 	{
 		using var polyMeshBuilder = PolygonMeshBuilder.Rent();
 
-		Gizmo.Transform = global::Transform.Zero with { Scale = new Vector3( 1024f, 1024f, 1024f ), Position = new Vector3( -8f * 1024f, -13f * 1024f )};
+		Gizmo.Transform = global::Transform.Zero with { Scale = new Vector3( 1024f, 1024f, 1024f ), Position = new Vector3( -8f * 1024f, -8f * 1024f )};
 
 		Gizmo.Draw.Color = Color.White;
-		polyMeshBuilder.FromDebugDump( Source );
+		polyMeshBuilder.FromDebugDump( Source, Distance );
 
 		//Gizmo.Draw.Color = Color.Blue;
 		//polyMeshBuilder.DrawGizmos( 0f, bevelScale );
