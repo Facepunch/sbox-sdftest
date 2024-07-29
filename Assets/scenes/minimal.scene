@@ -1,13 +1,13 @@
 {
-  "__guid": "9f832399-4887-46b0-8f21-2ee284f538e2",
+  "__guid": "0114e55d-1667-4ff5-a97a-38ae2cc64765",
   "GameObjects": [
     {
       "__guid": "bfc59c12-1ed2-4f91-8956-a95a315eac3c",
+      "Flags": 0,
       "Name": "Sun",
       "Rotation": "-0.0729315,0.4822396,0.1305433,0.8631827",
       "Tags": "light_directional,light",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
           "__type": "Sandbox.DirectionalLight",
@@ -22,15 +22,15 @@
     },
     {
       "__guid": "00344a8c-fa5e-45ae-b12a-10bb781a1dc3",
+      "Flags": 0,
       "Name": "2D Skybox",
       "Tags": "skybox",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
           "__type": "Sandbox.SkyBox2D",
           "__guid": "c020c069-5c10-45c6-8408-3f299f988c93",
-          "SkyMaterial": "materials/error.vmat",
+          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
           "Tint": "1,1,1,1"
         },
         {
@@ -56,10 +56,10 @@
     },
     {
       "__guid": "6ad70641-3c6c-4402-9c85-9a4969af4764",
+      "Flags": 0,
       "Name": "Plane",
       "Scale": "5,5,5",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -82,11 +82,11 @@
     },
     {
       "__guid": "3ee1c9f4-07be-4e0b-8b23-67bee2d8ec8a",
+      "Flags": 0,
       "Name": "Camera",
       "Position": "-73.48485,-505.3764,245.4157",
       "Rotation": "-0.06996955,0.08077792,0.6509781,0.7515363",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
           "__type": "Sandbox.CameraComponent",
@@ -137,9 +137,13 @@
         {
           "__type": "Sandbox.Tonemapping",
           "__guid": "ca52c657-1eae-4bd2-a56c-20a88d30ed52",
+          "__version": 1,
+          "ExposureBias": 2,
           "ExposureCompensation": 0,
+          "ExposureMethod": "RGB",
           "MaximumExposure": 2,
           "MinimumExposure": 1,
+          "Mode": "Legacy",
           "Rate": 1
         },
         {
@@ -151,11 +155,11 @@
     },
     {
       "__guid": "b870acba-814c-44b9-8e62-2bde0066ad2f",
+      "Flags": 0,
       "Name": "FP Logo",
       "Position": "0,0,128",
       "Rotation": "0.7071068,0,0,0.7071068",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
           "__type": "Sandbox.Polygons.PolygonModelRenderer",
@@ -170,6 +174,7 @@
     },
     {
       "__guid": "228fa0e5-80c4-4252-932d-b068d1f6b6ca",
+      "Flags": 0,
       "Name": "SDF World",
       "Position": "0,0,128",
       "Rotation": "0.7071068,0,0,0.7071068",
@@ -180,7 +185,7 @@
           "__type": "Sandbox.Sdf.Sdf2DWorld",
           "__guid": "2704d443-5bd9-43ab-8d21-3e89ee82b33c",
           "OnComponentStart": {
-            "__version": 6,
+            "__version": 7,
             "__guid": "57839a44-303a-47a0-82cd-b299f554a13c",
             "UserData": {
               "Title": "On Component Start"
@@ -190,9 +195,20 @@
               {
                 "Id": 0,
                 "Type": "input"
+              },
+              {
+                "Id": 1,
+                "Type": "output"
               }
             ],
-            "Links": []
+            "Links": [
+              {
+                "SrcId": 0,
+                "SrcName": "_signal",
+                "DstId": 1,
+                "DstName": "_signal"
+              }
+            ]
           }
         },
         {
@@ -209,21 +225,12 @@
             "go": "228fa0e5-80c4-4252-932d-b068d1f6b6ca",
             "component_type": "Sdf2DWorld"
           }
-        },
-        {
-          "__type": "Sandbox.Sdf.SdfNetwork",
-          "__guid": "01baef0b-92b2-4a64-8b06-8a1a6d37417e",
-          "SdfWorld": {
-            "_type": "component",
-            "component_id": "2704d443-5bd9-43ab-8d21-3e89ee82b33c",
-            "go": "228fa0e5-80c4-4252-932d-b068d1f6b6ca",
-            "component_type": "Sdf2DWorld"
-          }
         }
       ]
     },
     {
       "__guid": "41067e7b-8adb-4038-b507-1ce6a4e38469",
+      "Flags": 0,
       "Name": "Cursor",
       "Position": "-44.01308,-165.1581,276.6258",
       "Scale": "0.1,0.1,0.1",
@@ -243,9 +250,9 @@
   ],
   "SceneProperties": {
     "FixedUpdateFrequency": 50,
-    "Lerping": true,
     "MaxFixedUpdates": 5,
     "NetworkFrequency": 60,
+    "NetworkInterpolation": true,
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
@@ -264,8 +271,7 @@
   },
   "Title": "minimal",
   "Description": "",
-  "LastSaved": "2024-04-26T16:22:34.5907729\u002B01:00",
   "ResourceVersion": 1,
-  "__version": 1,
-  "__references": []
+  "__references": [],
+  "__version": 1
 }
