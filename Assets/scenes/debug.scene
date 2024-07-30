@@ -11,8 +11,61 @@
         {
           "__type": "Sandbox.PolygonDebug",
           "__guid": "c6d93aea-ae26-4838-bf2e-fabb5b4db03b",
-          "Distance": 1,
-          "Source": "{\n  \u0022Exception\u0022: \u0022System.Exception: Exception of type \\u0027System.Exception\\u0027 was thrown.\\r\\n   at Sandbox.Polygons.PolygonMeshBuilder.FindAboveSweepEdge(Edge\\u0026 edge) in C:\\\\users\\\\metap\\\\documents\\\\s\\u0026box projects\\\\librarytest\\\\Libraries\\\\libsdf\\\\Code\\\\facepunch.libpolygon\\\\PolygonMeshBuilder.Fill.cs:line 191\\r\\n   at Sandbox.Polygons.PolygonMeshBuilder.Fill_SplitIntoMonotonicPolygons() in C:\\\\users\\\\metap\\\\documents\\\\s\\u0026box projects\\\\librarytest\\\\Libraries\\\\libsdf\\\\Code\\\\facepunch.libpolygon\\\\PolygonMeshBuilder.Fill.cs:line 253\\r\\n   at Sandbox.Polygons.PolygonMeshBuilder.Fill() in C:\\\\users\\\\metap\\\\documents\\\\s\\u0026box projects\\\\librarytest\\\\Libraries\\\\libsdf\\\\Code\\\\facepunch.libpolygon\\\\PolygonMeshBuilder.Fill.cs:line 17\\r\\n   at DMD\\u003CSystem.Void Sandbox.Sdf.Sdf2DMeshWriter:WriteRenderMesh(Sandbox.Sdf.Sdf2DLayer)\\u003E(Sdf2DMeshWriter this, Sdf2DLayer layer)\u0022,\n  \u0022EdgeLoops\u0022: \u00220,5.9941177;-1,6.0416665;-1.5590278,7;-1.6675392,8;-1.6675392,13;-1.570946,14;-1.377451,15;-1.3952382,16;-1.539855,17;-1,17.539856;0,17.447826;1,17.427927;6,17.427927;7,17.406542;9,17.412037;9.927083,17;9,16.470238;7,16.482143;6,16.441177;3,16.452942;1,16.434525;0,16.3481;-0.39855075,16;-0.4797297,15;0,14.538961;1,14.410714;3,14.434524;6,14.429412;7,14.470238;8,14.4759035;9,14.464705;9.705358,14;9.549383,13;9.173077,12;9,11.644737;8.664384,11;8.007246,10;8,9.990741;7.1507936,9;7,8.849206;6.009259,8;6,7.9927535;5,7.3356166;4.355263,7;4,6.826923;3,6.4506173;2,6.1987953;1,6.0416665;\\n\u0022,\n  \u0022EdgeStyle\u0022: \u0022Bevel\u0022,\n  \u0022EdgeWidth\u0022: 0.5,\n  \u0022EdgeFaces\u0022: 3\n}"
+          "Fraction": 0.98200005,
+          "Max": 0.5,
+          "Min": 0,
+          "OnComponentStart": {
+            "__version": 7,
+            "__guid": "4fc88488-9325-4b7c-adfe-d847f5dc77ac",
+            "UserData": {
+              "Title": "On Component Start"
+            },
+            "Variables": [],
+            "Nodes": [
+              {
+                "Id": 0,
+                "Type": "input"
+              },
+              {
+                "Id": 3,
+                "Type": "property",
+                "Properties": {
+                  "_name": "Scene",
+                  "_type": "Sandbox.GameObject"
+                },
+                "UserData": {
+                  "Position": "-32,160"
+                }
+              },
+              {
+                "Id": 4,
+                "Type": "call",
+                "Properties": {
+                  "_isStatic": false,
+                  "_name": "GetAll",
+                  "_type": "Sandbox.IComponentLister"
+                },
+                "UserData": {
+                  "Position": "192,192"
+                }
+              }
+            ],
+            "Links": [
+              {
+                "SrcId": 0,
+                "SrcName": "_target",
+                "DstId": 3,
+                "DstName": "_target"
+              },
+              {
+                "SrcId": 3,
+                "SrcName": "_result",
+                "DstId": 4,
+                "DstName": "_target"
+              }
+            ]
+          },
+          "Source": "{\r\n  \u0022EdgeLoops\u0022: \u00220,5.9941177;-1,6.0416665;-1.5590278,7;-1.6675392,8;-1.6675392,13;-1.570946,14;-1.377451,15;-1.3952382,16;-1.539855,17;-1,17.539856;0,17.447826;1,17.427927;6,17.427927;7,17.406542;9,17.412037;9.927083,17;9,16.470238;7,16.482143;6,16.441177;3,16.452942;1,16.434525;0,16.3481;-0.39855075,16;-0.4797297,15;0,14.538961;1,14.410714;3,14.434524;6,14.429412;7,14.470238;8,14.4759035;9,14.464705;9.705358,14;9.549383,13;9.173077,12;9,11.644737;8.664384,11;8.007246,10;8,9.990741;7.1507936,9;7,8.849206;6.009259,8;6,7.9927535;5,7.3356166;4.355263,7;4,6.826923;3,6.4506173;2,6.1987953;1,6.0416665;\\n\u0022,\r\n  \u0022EdgeStyle\u0022: \u0022Bevel\u0022,\r\n  \u0022EdgeWidth\u0022: 0.5,\r\n  \u0022EdgeFaces\u0022: 3\r\n}"
         }
       ]
     }
