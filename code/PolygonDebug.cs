@@ -31,11 +31,20 @@ public sealed class PolygonDebug : Component
 	[Property, Range( 0f, 1f, 0.002f ), Group( "Parameters" )]
 	public float Fraction { get; set; }
 
+	[Property, Group( "Parameters" )]
+	public bool FromSdf { get; set; }
+
+	[Property, Group( "Parameters" )]
+	public bool CustomFraction { get; set; }
+
+	[Property, Group( "Parameters" )]
+	public int MaxIterations { get; set; }
+
 	protected override void DrawGizmos()
 	{
 		Gizmo.Transform = global::Transform.Zero with { Scale = new Vector3( 1024f, 1024f, 1024f ), Position = new Vector3( -8f * 1024f, -8f * 1024f )};
 
-		PolygonMeshBuilder.RunDebugDump( Source, Min + (Max - Min) * Fraction );
+		PolygonMeshBuilder.RunDebugDump( Source, CustomFraction ? Min + (Max - Min) * Fraction : null, FromSdf, MaxIterations );
 
 		//Gizmo.Draw.Color = Color.Blue;
 		//polyMeshBuilder.DrawGizmos( 0f, bevelScale );

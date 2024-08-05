@@ -1,18 +1,20 @@
 {
-  "__guid": "15bc89a4-c0ea-42c6-b550-7e822557d4ba",
+  "__guid": "058d1a0a-6f7a-4e57-971b-31d495f9e133",
   "GameObjects": [
     {
       "__guid": "f691f2ca-c7a4-40b1-b642-295111da9981",
       "Flags": 0,
       "Name": "Debug",
-      "Position": "-252.8864,-165.3827,283.7242",
       "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.PolygonDebug",
           "__guid": "c6d93aea-ae26-4838-bf2e-fabb5b4db03b",
-          "Fraction": 0.98200005,
+          "CustomFraction": true,
+          "Fraction": 0.45800003,
+          "FromSdf": false,
           "Max": 0.5,
+          "MaxIterations": 1000,
           "Min": 0,
           "OnComponentStart": {
             "__version": 7,
@@ -41,9 +43,9 @@
                 "Id": 4,
                 "Type": "call",
                 "Properties": {
-                  "_isStatic": false,
                   "_name": "GetAll",
-                  "_type": "Sandbox.IComponentLister"
+                  "_type": "Sandbox.IComponentLister",
+                  "_isStatic": false
                 },
                 "UserData": {
                   "Position": "192,192"
@@ -65,7 +67,7 @@
               }
             ]
           },
-          "Source": "{\r\n  \u0022EdgeLoops\u0022: \u00220,5.9941177;-1,6.0416665;-1.5590278,7;-1.6675392,8;-1.6675392,13;-1.570946,14;-1.377451,15;-1.3952382,16;-1.539855,17;-1,17.539856;0,17.447826;1,17.427927;6,17.427927;7,17.406542;9,17.412037;9.927083,17;9,16.470238;7,16.482143;6,16.441177;3,16.452942;1,16.434525;0,16.3481;-0.39855075,16;-0.4797297,15;0,14.538961;1,14.410714;3,14.434524;6,14.429412;7,14.470238;8,14.4759035;9,14.464705;9.705358,14;9.549383,13;9.173077,12;9,11.644737;8.664384,11;8.007246,10;8,9.990741;7.1507936,9;7,8.849206;6.009259,8;6,7.9927535;5,7.3356166;4.355263,7;4,6.826923;3,6.4506173;2,6.1987953;1,6.0416665;\\n\u0022,\r\n  \u0022EdgeStyle\u0022: \u0022Bevel\u0022,\r\n  \u0022EdgeWidth\u0022: 0.5,\r\n  \u0022EdgeFaces\u0022: 3\r\n}"
+          "Source": "{\r\n  \u0022EdgeLoops\u0022: \u002214,-0.28688526;13.027778,0;14,0.28688523;15,0.28688523;15.988636,1;16,-0.5;15,-0.28688526;\\n\u0022,\r\n  \u0022SdfData\u0022: {\r\n    \u0022Samples\u0022: \u0022gICAq6uAgKurgICrgKurq6uA1KuAgICAq4CAgICAq6urgG5uf9Srq4CAgFWAgICrgG5uboCrq3/UgKurgICrq6uAq4Crq6urq6t/1KuAgICAgICrq4CAq6urq6urf9SAgKuAgKurgKurq6urgICrq3/UgICAgICrgKuAq6urq4CAq6uA1KurgICrgKuAgICrq4CrgKurf9SrgKuAq4CAq6uAq6uAgKurgIDUgKurq25uboCAq6urq6uAgIB/1KuAq4CrgKurq4Crq4CAgKurf9SAq6urgKuAq6urgKuAgKurgIDUgICrgICAgICrgKurq6uAq6uA1KuAgICrgKurq6uAq6urq4CAgNSAgKurgG6AgKuAq6urgKurq3/Uq6urq6urq6urq6urq6urq6uA1P/////////////////////VgNT/////////////////////1YDU/////////////////////9WA1A==\u0022,\r\n    \u0022BaseIndex\u0022: 20,\r\n    \u0022Size\u0022: 16,\r\n    \u0022RowStride\u0022: 19\r\n  },\r\n  \u0022EdgeStyle\u0022: \u0022Round\u0022,\r\n  \u0022EdgeWidth\u0022: 0.5,\r\n  \u0022EdgeFaces\u0022: 3\r\n}"
         }
       ]
     }
