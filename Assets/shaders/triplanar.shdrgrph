@@ -1,0 +1,191 @@
+{
+  "Model": null,
+  "Description": "",
+  "BlendMode": "Opaque",
+  "nodes": [
+    {
+      "_class": "Result",
+      "DefaultOpacity": 1,
+      "DefaultRoughness": 1,
+      "DefaultMetalness": 0,
+      "DefaultAmbientOcclusion": 1,
+      "Identifier": "0",
+      "Position": "608,-176",
+      "Albedo": {
+        "Identifier": "5",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "TextureTriplanar",
+      "Image": "dev/helper/testgrid_color.tga",
+      "Sampler": {},
+      "UI": {
+        "Default": "1,1,1,1",
+        "SrgbRead": true
+      },
+      "Identifier": "1",
+      "Position": "80,-384"
+    },
+    {
+      "_class": "WorldNormal",
+      "Identifier": "2",
+      "Position": "-448,240"
+    },
+    {
+      "_class": "SplitVector",
+      "Identifier": "3",
+      "Position": "-208,224",
+      "Input": {
+        "Identifier": "2",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Branch",
+      "Name": "",
+      "IsAttribute": true,
+      "Operator": "LessThan",
+      "Enabled": false,
+      "UI": {},
+      "Identifier": "4",
+      "Position": "80,224",
+      "True": {
+        "Identifier": "6",
+        "Output": "Result"
+      },
+      "False": {
+        "Identifier": "15",
+        "Output": "Result"
+      },
+      "A": {
+        "Identifier": "3",
+        "Output": "Z"
+      },
+      "B": {
+        "Identifier": "9",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "5",
+      "Position": "384,-112",
+      "A": {
+        "Identifier": "1",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "4",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Float4",
+      "Value": "0.15623,0.17898,0.21084,1",
+      "Name": "",
+      "IsAttribute": false,
+      "UI": {
+        "Type": "Color"
+      },
+      "Identifier": "6",
+      "Position": "-448,-288"
+    },
+    {
+      "_class": "WorldPosition",
+      "Identifier": "7",
+      "Position": "-432,384"
+    },
+    {
+      "_class": "SplitVector",
+      "Identifier": "8",
+      "Position": "-256,384",
+      "Input": {
+        "Identifier": "7",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "RemapValue",
+      "In": 0.5,
+      "InMin": 250,
+      "InMax": 1500,
+      "OutMin": 0.75,
+      "OutMax": 1,
+      "Clamp": true,
+      "Identifier": "9",
+      "Position": "-48,432",
+      "A": {
+        "Identifier": "8",
+        "Output": "Z"
+      }
+    },
+    {
+      "_class": "Float4",
+      "Value": "0.56568,0.62952,0.2465,1",
+      "Name": "",
+      "IsAttribute": false,
+      "UI": {
+        "Type": "Color"
+      },
+      "Identifier": "10",
+      "Position": "-576,-64"
+    },
+    {
+      "_class": "ValueNoise",
+      "Identifier": "11",
+      "Position": "-688,-464",
+      "Coords": {
+        "Identifier": "13",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "WorldPosition",
+      "Identifier": "12",
+      "Position": "-1056,-464"
+    },
+    {
+      "_class": "Divide",
+      "DefaultA": 0,
+      "DefaultB": 512,
+      "Identifier": "13",
+      "Position": "-832,-464",
+      "A": {
+        "Identifier": "12",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Float4",
+      "Value": "0.68675,0.65055,0.37647,1",
+      "Name": "",
+      "IsAttribute": false,
+      "UI": {
+        "Type": "Color"
+      },
+      "Identifier": "14",
+      "Position": "-576,96"
+    },
+    {
+      "_class": "Lerp",
+      "Fraction": 0.5,
+      "Identifier": "15",
+      "Position": "-224,112",
+      "A": {
+        "Identifier": "10",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "14",
+        "Output": "Result"
+      },
+      "C": {
+        "Identifier": "11",
+        "Output": "Result"
+      }
+    }
+  ]
+}

@@ -11,63 +11,12 @@
           "__type": "Sandbox.PolygonDebug",
           "__guid": "c6d93aea-ae26-4838-bf2e-fabb5b4db03b",
           "CustomFraction": true,
-          "Fraction": 0.45800003,
+          "Fraction": 0.35600004,
           "FromSdf": false,
           "Max": 0.5,
           "MaxIterations": 1000,
           "Min": 0,
-          "OnComponentStart": {
-            "__version": 7,
-            "__guid": "4fc88488-9325-4b7c-adfe-d847f5dc77ac",
-            "UserData": {
-              "Title": "On Component Start"
-            },
-            "Variables": [],
-            "Nodes": [
-              {
-                "Id": 0,
-                "Type": "input"
-              },
-              {
-                "Id": 3,
-                "Type": "property",
-                "Properties": {
-                  "_name": "Scene",
-                  "_type": "Sandbox.GameObject"
-                },
-                "UserData": {
-                  "Position": "-32,160"
-                }
-              },
-              {
-                "Id": 4,
-                "Type": "call",
-                "Properties": {
-                  "_name": "GetAll",
-                  "_type": "Sandbox.IComponentLister",
-                  "_isStatic": false
-                },
-                "UserData": {
-                  "Position": "192,192"
-                }
-              }
-            ],
-            "Links": [
-              {
-                "SrcId": 0,
-                "SrcName": "_target",
-                "DstId": 3,
-                "DstName": "_target"
-              },
-              {
-                "SrcId": 3,
-                "SrcName": "_result",
-                "DstId": 4,
-                "DstName": "_target"
-              }
-            ]
-          },
-          "Source": "{\r\n  \u0022EdgeLoops\u0022: \u002214,-0.28688526;13.027778,0;14,0.28688523;15,0.28688523;15.988636,1;16,-0.5;15,-0.28688526;\\n\u0022,\r\n  \u0022SdfData\u0022: {\r\n    \u0022Samples\u0022: \u0022gICAq6uAgKurgICrgKurq6uA1KuAgICAq4CAgICAq6urgG5uf9Srq4CAgFWAgICrgG5uboCrq3/UgKurgICrq6uAq4Crq6urq6t/1KuAgICAgICrq4CAq6urq6urf9SAgKuAgKurgKurq6urgICrq3/UgICAgICrgKuAq6urq4CAq6uA1KurgICrgKuAgICrq4CrgKurf9SrgKuAq4CAq6uAq6uAgKurgIDUgKurq25uboCAq6urq6uAgIB/1KuAq4CrgKurq4Crq4CAgKurf9SAq6urgKuAq6urgKuAgKurgIDUgICrgICAgICrgKurq6uAq6uA1KuAgICrgKurq6uAq6urq4CAgNSAgKurgG6AgKuAq6urgKurq3/Uq6urq6urq6urq6urq6urq6uA1P/////////////////////VgNT/////////////////////1YDU/////////////////////9WA1A==\u0022,\r\n    \u0022BaseIndex\u0022: 20,\r\n    \u0022Size\u0022: 16,\r\n    \u0022RowStride\u0022: 19\r\n  },\r\n  \u0022EdgeStyle\u0022: \u0022Round\u0022,\r\n  \u0022EdgeWidth\u0022: 0.5,\r\n  \u0022EdgeFaces\u0022: 3\r\n}"
+          "Source": "{\r\n  \u0022EdgeLoops\u0022: \u0022-1,11.994118;-0.5,16;-0.5,17;0,17.007812;0.005882353,16;0.005882353,12;\\n\u0022,\r\n  \u0022SdfData\u0022: {\r\n    \u0022Samples\u0022: \u0022////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////1NT3/////////////////////39/1P////////////////////9uf9T/////////////////////bn/U/////////////////////0t/1P////////////////////\\u002BAf9T/////////////////////gH/U/////////////////////w==\u0022,\r\n    \u0022BaseIndex\u0022: 20,\r\n    \u0022Size\u0022: 16,\r\n    \u0022RowStride\u0022: 19\r\n  },\r\n  \u0022EdgeStyle\u0022: \u0022Round\u0022,\r\n  \u0022EdgeWidth\u0022: 0.5,\r\n  \u0022EdgeFaces\u0022: 3\r\n}"
         }
       ]
     }

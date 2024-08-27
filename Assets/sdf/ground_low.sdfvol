@@ -1,0 +1,12 @@
+{
+  "Material": "materials/ground.vmat",
+  "IsTextureSourceOnly": false,
+  "CollisionTags": "",
+  "QualityLevel": "Custom",
+  "ChunkResolution": 16,
+  "ChunkSize": 1024,
+  "MaxDistance": 128,
+  "ReferencedTextures": [],
+  "__references": [],
+  "__version": 0
+}
