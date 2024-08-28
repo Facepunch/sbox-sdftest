@@ -30,6 +30,8 @@ public sealed class SdfCellLoader : Component, ICellLoader
 
 		sdfObj.Enabled = true;
 
+		cell.MarkLoading();
+
 		_ = GenerateAsync( cell, sdfWorld );
 	}
 
@@ -51,6 +53,13 @@ public sealed class SdfCellLoader : Component, ICellLoader
 
 		await Task.MainThread();
 		await sdfWorld.AddAsync( new HeightmapSdf3D( heightmap, res, sdfWorld.Size.x ), Parameters.Ground );
+
+		while ( sdfWorld.NeedsMeshUpdate )
+		{
+			await Task.DelayRealtime( 1 );
+		}
+
+		cell.MarkReady();
 	}
 
 	void ICellLoader.UnloadCell( WorldCell cell )
