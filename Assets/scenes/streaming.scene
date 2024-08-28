@@ -188,6 +188,10 @@
             "go": "93661477-65ed-438a-b189-1e4d17350cd3",
             "component_type": "SkinnedModelRenderer"
           }
+        },
+        {
+          "__type": "Sandbox.EditWorld",
+          "__guid": "e3fcbbc7-d95d-42c6-88b9-6dad4f0948f6"
         }
       ],
       "Children": [
