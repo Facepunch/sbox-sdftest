@@ -21,8 +21,8 @@ public sealed class WorldParameters : GameResource
 
 	public void SampleHeightmap( int seed, int res, float size, Transform transform, Span<float> result, int level = 0 )
 	{
-		var terrainField = Noise.SimplexField( new Noise.FractalParameters( seed, Frequency: 1f / 8192f, Octaves: 4 ) );
-		var heightField = Noise.SimplexField( new Noise.FractalParameters( seed, Frequency: 1f / 2048f, Octaves: 8 ) );
+		var terrainField = Noise.SimplexField( new Noise.FractalParameters( seed, Frequency: 1f / 16384f, Octaves: 4 ) );
+		var heightField = Noise.SimplexField( new Noise.FractalParameters( seed, Frequency: 1f / 4096f, Octaves: 8 ) );
 
 		var scale = 1f / (1 << level);
 
