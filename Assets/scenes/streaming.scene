@@ -48,7 +48,7 @@
           "CellHeight": 2048,
           "CellSize": 1024,
           "Is2D": true,
-          "LoadRadius": 2
+          "LoadRadius": 4
         }
       ],
       "Children": []
@@ -127,6 +127,7 @@
       "Flags": 0,
       "Name": "Player",
       "Position": "0,0,1024",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PlayerController",
