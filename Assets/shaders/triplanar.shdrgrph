@@ -217,7 +217,7 @@
       "_class": "Float",
       "Min": 0,
       "Max": 1,
-      "Value": 224,
+      "Value": 200,
       "Name": "",
       "IsAttribute": false,
       "UI": {},

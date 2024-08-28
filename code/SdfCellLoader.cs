@@ -25,7 +25,7 @@ public sealed class SdfCellLoader : Component, ICellLoader
 		var sdfSize = (int)cell.World.CellSize >> level;
 
 		sdfWorld.IsFinite = true;
-		sdfWorld.Size = new Vector3Int( sdfSize, sdfSize, 2048 >> level );
+		sdfWorld.Size = new Vector3Int( sdfSize, sdfSize, (int)cell.World.CellHeight >> level );
 		sdfWorld.HasPhysics = level == 0;
 
 		sdfObj.Enabled = true;
@@ -37,6 +37,9 @@ public sealed class SdfCellLoader : Component, ICellLoader
 	{
 		if ( Parameters is null ) return;
 
+		var cellSize = cell.World.CellSize;
+		var level = cell.World.Level;
+
 		await Task.WorkerThread();
 
 		var voxelRes = (int)(sdfWorld.Size.x * Parameters.Ground.ChunkResolution / Parameters.Ground.ChunkSize);
@@ -44,7 +47,7 @@ public sealed class SdfCellLoader : Component, ICellLoader
 
 		var heightmap = new float[res * res];
 
-		Parameters.SampleHeightmap( Seed.FastHash(), res, cell.World.CellSize, cell.Transform.World, heightmap, cell.World.Level );
+		Parameters.SampleHeightmap( Seed.FastHash(), res, cellSize, cell.Transform.World, heightmap, level );
 
 		await Task.MainThread();
 		await sdfWorld.AddAsync( new HeightmapSdf3D( heightmap, res, sdfWorld.Size.x ), Parameters.Ground );

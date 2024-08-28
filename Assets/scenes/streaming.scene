@@ -45,7 +45,7 @@
         {
           "__type": "Sandbox.Worlds.StreamingWorld",
           "__guid": "e72407ad-dae3-4ea0-91bb-00dd4faa2023",
-          "CellHeight": 2048,
+          "CellHeight": 4096,
           "CellSize": 1024,
           "Is2D": true,
           "LoadRadius": 4
@@ -62,7 +62,7 @@
         {
           "__type": "Sandbox.Worlds.StreamingWorld",
           "__guid": "7b065a6e-5f19-431a-8b4f-7b29e9a771e5",
-          "CellHeight": 2048,
+          "CellHeight": 4096,
           "CellSize": 2048,
           "Is2D": true,
           "LoadRadius": 4,
@@ -85,7 +85,7 @@
         {
           "__type": "Sandbox.Worlds.StreamingWorld",
           "__guid": "4a3aedf0-13ab-49af-83d1-11af15c50a61",
-          "CellHeight": 2048,
+          "CellHeight": 4096,
           "CellSize": 4096,
           "Is2D": true,
           "LoadRadius": 4,
@@ -108,7 +108,7 @@
         {
           "__type": "Sandbox.Worlds.StreamingWorld",
           "__guid": "e0498d36-0813-46ce-a1cf-b3e327071a4a",
-          "CellHeight": 2048,
+          "CellHeight": 4096,
           "CellSize": 8192,
           "Is2D": true,
           "LoadRadius": 4,

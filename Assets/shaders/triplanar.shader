@@ -126,7 +126,7 @@ PS
 		float l_11 = i.vNormalWs.z;
 		float l_12 = 1 - l_11;
 		float l_13 = l_12 * 256;
-		float l_14 = 224 - l_13;
+		float l_14 = 200 - l_13;
 		float4 l_15 = l_10 < l_14 ? l_2 : l_8;
 		float l_16 = saturate( ( l_10 - 250 ) / ( 1500 - 250 ) ) * ( 1 - 0.75 ) + 0.75;
 		float4 l_17 = l_11 < l_16 ? l_1 : l_15;
