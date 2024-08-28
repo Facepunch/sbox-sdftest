@@ -127,7 +127,6 @@
       "Flags": 0,
       "Name": "Player",
       "Position": "0,0,1024",
-      "Enabled": true,
       "Components": [
         {
           "__type": "PlayerController",
