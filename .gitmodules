@@ -1,6 +1,6 @@
 [submodule "Libraries/libsdf"]
 	path = Libraries/libsdf
-	url = git@github.com:Facepunch/sbox-sdf.git
+	url = https://github.com/Facepunch/sbox-sdf.git
 [submodule "Libraries/libworlds"]
 	path = Libraries/libworlds
-	url = git@github.com:Facepunch/sbox-libworlds.git
+	url = https://github.com/Facepunch/sbox-libworlds.git
