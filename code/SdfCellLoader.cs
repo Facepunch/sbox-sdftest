@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Sandbox.Sdf;
+using Sandbox.Utility;
 using Sandbox.Worlds;
 
 namespace Sandbox;
@@ -51,8 +53,14 @@ public sealed class SdfCellLoader : Component, ICellLoader
 
 		Parameters.SampleHeightmap( Seed.FastHash(), res, cellSize, cell.Transform.World, heightmap, level );
 
+		var caveNoise = Noise.SimplexField( new Noise.FractalParameters(
+			Frequency: 1f / 2048f ) );
+		var caveSdf = new NoiseSdf3D( caveNoise, 0.65f, 256f / sdfWorld.Transform.Scale.x )
+			.Transform( new Transform( -cell.Transform.Position / sdfWorld.Transform.Scale.x, Rotation.Identity,
+				1f / sdfWorld.Transform.Scale.x ) );
+
 		await Task.MainThread();
-		await sdfWorld.AddAsync( new HeightmapSdf3D( heightmap, res, sdfWorld.Size.x ), Parameters.Ground );
+		await sdfWorld.AddAsync( new HeightmapSdf3D( heightmap, res, sdfWorld.Size.x ).Intersection( caveSdf ), Parameters.Ground );
 
 		while ( sdfWorld.NeedsMeshUpdate )
 		{
