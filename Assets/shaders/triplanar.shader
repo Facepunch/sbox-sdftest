@@ -114,20 +114,25 @@ PS
 		
 		float4 l_0 = TexTriplanar_Color( g_tTexture_ps_0, g_sSampler0, (i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz) / 39.3701, normalize( i.vNormalWs.xyz ) );
 		float4 l_1 = float4( 0.15623, 0.17898, 0.21084, 1 );
-		float4 l_2 = float4( 0.56568, 0.62952, 0.2465, 1 );
-		float4 l_3 = float4( 0.68674695, 0.650548, 0.3764697, 1 );
-		float3 l_4 = i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz;
-		float3 l_5 = l_4 / float3( 512, 512, 512 );
-		float l_6 = ValueNoise( l_5.xy );
-		float4 l_7 = lerp( l_2, l_3, l_6 );
-		float l_8 = i.vNormalWs.z;
+		float4 l_2 = float4( 0.68372, 0.64556, 0.53108, 1 );
+		float4 l_3 = float4( 0.56568, 0.62952, 0.2465, 1 );
+		float4 l_4 = float4( 0.68675, 0.65055, 0.37647, 1 );
+		float3 l_5 = i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz;
+		float3 l_6 = l_5 / float3( 512, 512, 512 );
+		float l_7 = ValueNoise( l_6.xy );
+		float4 l_8 = lerp( l_3, l_4, l_7 );
 		float3 l_9 = i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz;
 		float l_10 = l_9.z;
-		float l_11 = saturate( ( l_10 - 250 ) / ( 1500 - 250 ) ) * ( 1 - 0.75 ) + 0.75;
-		float4 l_12 = l_8 < l_11 ? l_1 : l_7;
-		float4 l_13 = l_0 * l_12;
+		float l_11 = i.vNormalWs.z;
+		float l_12 = 1 - l_11;
+		float l_13 = l_12 * 256;
+		float l_14 = 224 - l_13;
+		float4 l_15 = l_10 < l_14 ? l_2 : l_8;
+		float l_16 = saturate( ( l_10 - 250 ) / ( 1500 - 250 ) ) * ( 1 - 0.75 ) + 0.75;
+		float4 l_17 = l_11 < l_16 ? l_1 : l_15;
+		float4 l_18 = l_0 * l_17;
 		
-		m.Albedo = l_13.xyz;
+		m.Albedo = l_18.xyz;
 		m.Opacity = 1;
 		m.Roughness = 1;
 		m.Metalness = 0;

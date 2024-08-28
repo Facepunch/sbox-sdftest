@@ -1,5 +1,5 @@
 {
-  "__guid": "7243958a-084e-4a61-bd5c-af0c30f1ecf7",
+  "__guid": "b720bd79-2b55-473e-a926-c38a4f0ea388",
   "GameObjects": [
     {
       "__guid": "d1170de9-47d0-41ac-b524-2e4a1b3737e7",
@@ -274,6 +274,25 @@
           "Sky": "materials/skybox/skybox_day_01.vmat",
           "StartDistance": 10,
           "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "8d28c826-4628-403d-a4f3-d5569ad4e1d7",
+      "Flags": 0,
+      "Name": "Ocean",
+      "Position": "0,0,192",
+      "Scale": "32768,32768,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "6dc413b2-6635-44d6-8f7f-438a264c1d3a",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/water/water_temp.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "RenderType": "On",
+          "Tint": "0.61395,0.85845,1,1"
         }
       ]
     }
