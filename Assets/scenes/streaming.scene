@@ -145,29 +145,6 @@
       "Enabled": true
     },
     {
-      "__guid": "1cc02373-0d0b-4008-8145-ee698c4eac13",
-      "Flags": 0,
-      "Name": "Cubemap Fog",
-      "Position": "13862.19,4164.493,571.8407",
-      "Tags": "skybox",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.CubemapFog",
-          "__guid": "1b6e410c-9457-49b5-b29e-479eedd6baae",
-          "Blur": 0,
-          "EndDistance": 25000,
-          "FalloffExponent": 1.5,
-          "HeightExponent": 2,
-          "HeightStart": 0,
-          "HeightWidth": 0,
-          "Sky": "materials/skybox/skybox_day_01.vmat",
-          "StartDistance": 10,
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
       "__guid": "8d28c826-4628-403d-a4f3-d5569ad4e1d7",
       "Flags": 0,
       "Name": "Ocean",
@@ -217,6 +194,24 @@
           "__type": "Sandbox.SpawnPoint",
           "__guid": "e761c922-daf5-40e0-a50f-ef09d236b085",
           "Color": "0.8902,0.31765,0.05098,1"
+        }
+      ]
+    },
+    {
+      "__guid": "81af0eb4-1186-4914-bb37-1bae41c80acb",
+      "Flags": 0,
+      "Name": "Volumetric Fog",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.VolumetricFogVolume",
+          "__guid": "a2544fd4-0a7e-4a04-9f98-f303fcecb8e1",
+          "Bounds": {
+            "Mins": "-32768,-32768,0",
+            "Maxs": "32768,32768,8192"
+          },
+          "FalloffExponent": 1.5,
+          "Strength": 0.125
         }
       ]
     }
