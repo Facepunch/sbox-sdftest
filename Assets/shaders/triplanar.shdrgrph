@@ -1,7 +1,7 @@
 {
   "Model": null,
   "Description": "",
-  "BlendMode": "Opaque",
+  "BlendMode": "Masked",
   "nodes": [
     {
       "_class": "Result",
@@ -10,10 +10,14 @@
       "DefaultMetalness": 0,
       "DefaultAmbientOcclusion": 1,
       "Identifier": "0",
-      "Position": "1184,-80",
+      "Position": "1408,128",
       "Albedo": {
         "Identifier": "5",
         "Output": "Result"
+      },
+      "Opacity": {
+        "Identifier": "23",
+        "Output": "W"
       }
     },
     {
@@ -217,7 +221,7 @@
       "_class": "Float",
       "Min": 0,
       "Max": 1,
-      "Value": 200,
+      "Value": 672,
       "Name": "",
       "IsAttribute": false,
       "UI": {},
@@ -270,6 +274,20 @@
       "B": {
         "Identifier": "3",
         "Output": "Z"
+      }
+    },
+    {
+      "_class": "Tint",
+      "Identifier": "22",
+      "Position": "768,336"
+    },
+    {
+      "_class": "SplitVector",
+      "Identifier": "23",
+      "Position": "960,336",
+      "Input": {
+        "Identifier": "22",
+        "Output": "RGBA"
       }
     }
   ]

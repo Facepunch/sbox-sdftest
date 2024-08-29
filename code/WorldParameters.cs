@@ -53,7 +53,7 @@ public sealed class WorldParameters : GameResource
 
 			var plainsHeight = PlainsCurve.Evaluate( height );
 			var mountainsHeight = MountainsCurve.Evaluate( height );
-			var oceanHeight = 128f + height * 32f;
+			var oceanHeight = 512f + height * 128f;
 			var landHeight = plainsHeight + terrain * (mountainsHeight - plainsHeight);
 
 			height = oceanHeight + island * (landHeight - oceanHeight);

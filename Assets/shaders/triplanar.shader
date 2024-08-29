@@ -21,7 +21,7 @@ MODES
 COMMON
 {
 	#ifndef S_ALPHA_TEST
-	#define S_ALPHA_TEST 0
+	#define S_ALPHA_TEST 1
 	#endif
 	#ifndef S_TRANSLUCENT
 	#define S_TRANSLUCENT 0
@@ -126,14 +126,16 @@ PS
 		float l_11 = i.vNormalWs.z;
 		float l_12 = 1 - l_11;
 		float l_13 = l_12 * 256;
-		float l_14 = 200 - l_13;
+		float l_14 = 672 - l_13;
 		float4 l_15 = l_10 < l_14 ? l_2 : l_8;
 		float l_16 = saturate( ( l_10 - 250 ) / ( 1500 - 250 ) ) * ( 1 - 0.75 ) + 0.75;
 		float4 l_17 = l_11 < l_16 ? l_1 : l_15;
 		float4 l_18 = l_0 * l_17;
+		float4 l_19 = i.vTintColor;
+		float l_20 = l_19.w;
 		
 		m.Albedo = l_18.xyz;
-		m.Opacity = 1;
+		m.Opacity = l_20;
 		m.Roughness = 1;
 		m.Metalness = 0;
 		m.AmbientOcclusion = 1;
