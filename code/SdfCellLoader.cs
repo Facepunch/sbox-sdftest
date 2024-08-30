@@ -14,8 +14,6 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 	[Property]
 	public string Seed { get; set; }
 
-	private readonly List<WorldCell> _fadingCells = new();
-
 	void ICellLoader.LoadCell( WorldCell cell )
 	{
 		var level = cell.World.Level;
@@ -35,49 +33,18 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 
 		sdfObj.Enabled = true;
 
-		cell.HideStateChanged += Cell_HideStateChanged;
+		cell.OpacityChanged += Cell_OpacityChanged;
 
 		cell.MarkLoading();
 
 		_ = GenerateAsync( cell, sdfWorld );
 	}
 
-	private void Cell_HideStateChanged( WorldCell cell, bool hidden )
+	private void Cell_OpacityChanged( WorldCell cell, float opacity )
 	{
-		if ( !_fadingCells.Contains( cell ) )
+		if ( cell.Components.GetInDescendantsOrSelf<Sdf3DWorld>() is { } sdfWorld )
 		{
-			_fadingCells.Add( cell );
-		}
-	}
-
-	protected override void OnUpdate()
-	{
-		for ( var i = _fadingCells.Count - 1; i >= 0; --i )
-		{
-			var cell = _fadingCells[i];
-
-			if ( !cell.IsValid )
-			{
-				_fadingCells.RemoveAt( i );
-				continue;
-			}
-
-			if ( cell.Components.GetInDescendantsOrSelf<Sdf3DWorld>() is not { } sdfWorld )
-			{
-				_fadingCells.RemoveAt( i );
-				continue;
-			}
-
-			var targetOpacity = cell.IsHidden ? 0f : 1f;
-			var currentOpacity = sdfWorld.Opacity;
-			var nextOpacity = Math.Clamp( currentOpacity + Math.Sign( targetOpacity - currentOpacity ) * Time.Delta, 0f, 1f );
-
-			sdfWorld.Opacity = nextOpacity;
-
-			if ( nextOpacity == targetOpacity )
-			{
-				_fadingCells.RemoveAt( i );
-			}
+			sdfWorld.Opacity = opacity;
 		}
 	}
 
