@@ -114,8 +114,8 @@
     {
       "_class": "RemapValue",
       "In": 0.5,
-      "InMin": 250,
-      "InMax": 1500,
+      "InMin": 512,
+      "InMax": 4096,
       "OutMin": 0.75,
       "OutMax": 1,
       "Clamp": true,

@@ -15,6 +15,7 @@
           "go": "93661477-65ed-438a-b189-1e4d17350cd3",
           "component_type": "CitizenAnimationHelper"
         },
+        "BigJumpVelocity": 5000,
         "CharacterController": {
           "_type": "component",
           "component_id": "b19cb437-b541-434e-a5cc-46b3586eca66",
@@ -22,6 +23,7 @@
           "component_type": "CharacterController"
         },
         "CrouchMoveSpeed": 64,
+        "JumpVelocity": 300,
         "RunMoveSpeed": 190,
         "SprintMoveSpeed": 1000,
         "WalkMoveSpeed": 190

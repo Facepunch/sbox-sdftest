@@ -62,7 +62,9 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 		var voxelRes = (int)(sdfWorld.Size.x * Parameters.Ground.ChunkResolution / Parameters.Ground.ChunkSize);
 
 		var heightmapNoise = Parameters.GetHeightmapField( Seed.FastHash(), cell.Transform.World, level );
-		var caveNoise = new CaveNoiseField( Noise.SimplexField( new Noise.FractalParameters( Octaves: 6, Frequency: 1f / 4096f ) ) );
+		var caveNoise = new CaveNoiseField(
+			Noise.SimplexField( new Noise.FractalParameters( Octaves: 6, Frequency: 1f / 4096f ) ),
+			Noise.SimplexField( new Noise.FractalParameters( Octaves: 2, Frequency: 1f / 16384f ) ) );
 		var caveSdf = new NoiseSdf3D( caveNoise, 0.6f, 256f / sdfWorld.Transform.Scale.x )
 			.Transform( new Transform( -cell.Transform.Position / sdfWorld.Transform.Scale.x, Rotation.Identity,
 				1f / sdfWorld.Transform.Scale.x ) );
@@ -86,7 +88,7 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 	}
 }
 
-file record CaveNoiseField( INoiseField BaseNoise ) : INoiseField
+file record CaveNoiseField( INoiseField BaseNoise, INoiseField ThresholdNoise ) : INoiseField
 {
 	public float Sample( float x )
 	{
@@ -100,6 +102,8 @@ file record CaveNoiseField( INoiseField BaseNoise ) : INoiseField
 
 	public float Sample( float x, float y, float z )
 	{
-		return BaseNoise.Sample( x, y, z * 2f ) * Math.Clamp( (z - 64f) / 256f, 0f, 1f );
+		var threshold = ThresholdNoise.Sample( x, y );
+
+		return BaseNoise.Sample( x, y, z * 2f ) * Math.Clamp( (z - 64f - threshold * 192f) / 256f, 0f, 1f );
 	}
 }

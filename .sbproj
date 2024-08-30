@@ -1,8 +1,8 @@
 {
-  "Title": "LibraryTest",
+  "Title": "SDF World",
   "Type": "game",
   "Org": "ziks",
-  "Ident": "librarytest",
+  "Ident": "sdfworld",
   "Schema": 1,
   "IncludeSourceFiles": false,
   "Resources": null,
@@ -22,6 +22,7 @@
     "PerMapRanking": false,
     "LeaderboardType": "None",
     "CsProjName": "",
-    "StartupScene": "scenes/minimal.scene"
+    "StartupScene": "scenes/streaming.scene",
+    "LaunchMode": "Normal"
   }
 }

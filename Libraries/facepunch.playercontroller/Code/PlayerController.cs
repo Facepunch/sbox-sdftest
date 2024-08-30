@@ -16,6 +16,9 @@ public sealed class PlayerController : Component
 	[Sync] public Angles EyeAngles { get; set; }
 	[Sync] public Vector3 WishVelocity { get; set; }
 
+	[Property] public float JumpVelocity { get; set; } = 300f;
+	[Property] public float BigJumpVelocity { get; set; } = 5000f;
+
 	public bool WishCrouch;
 	public float EyeHeight = 64;
 
@@ -86,7 +89,15 @@ public sealed class PlayerController : Component
 		if ( lastGrounded < 0.2f && lastJump > 0.3f && Input.Pressed( "jump" ) )
 		{
 			lastJump = 0;
-			cc.Punch( Vector3.Up * 300 );
+
+			if ( Input.Down( "run" ) )
+			{
+				cc.Punch( Vector3.Up * BigJumpVelocity + new Angles( 0, EyeAngles.yaw, 0 ).ToRotation() * WishVelocity * BigJumpVelocity * 0.5f );
+			}
+			else
+			{
+				cc.Punch( Vector3.Up * JumpVelocity );
+			}
 		}
 
 		if ( !WishVelocity.IsNearlyZero() )
@@ -137,6 +148,11 @@ public sealed class PlayerController : Component
 		if ( !cc.IsOnGround )
 		{
 			cc.Velocity += halfGravity;
+
+			if ( Transform.Position.z < -1024f )
+			{
+				Transform.Position += Vector3.Up * 8192f;
+			}
 		}
 		else
 		{
