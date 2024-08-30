@@ -55,25 +55,22 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 	{
 		if ( Parameters is null ) return;
 
-		var cellSize = cell.World.CellSize;
 		var level = cell.World.Level;
 
 		await Task.WorkerThread();
 
 		var voxelRes = (int)(sdfWorld.Size.x * Parameters.Ground.ChunkResolution / Parameters.Ground.ChunkSize);
-		var res = voxelRes;
 
-		var heightmap = new float[res * res];
-
-		Parameters.SampleHeightmap( Seed.FastHash(), res, cellSize, cell.Transform.World, heightmap, level );
-
+		var heightmapNoise = Parameters.GetHeightmapField( Seed.FastHash(), cell.Transform.World, level );
 		var caveNoise = new CaveNoiseField( Noise.SimplexField( new Noise.FractalParameters( Octaves: 6, Frequency: 1f / 4096f ) ) );
 		var caveSdf = new NoiseSdf3D( caveNoise, 0.6f, 256f / sdfWorld.Transform.Scale.x )
 			.Transform( new Transform( -cell.Transform.Position / sdfWorld.Transform.Scale.x, Rotation.Identity,
 				1f / sdfWorld.Transform.Scale.x ) );
+		var heightmapSdf = new HeightmapSdf3D( heightmapNoise, voxelRes, sdfWorld.Size.x );
+		var finalSdf = heightmapSdf.Intersection( caveSdf );
 
 		await Task.MainThread();
-		await sdfWorld.AddAsync( new HeightmapSdf3D( heightmap, res, sdfWorld.Size.x ).Intersection( caveSdf ), Parameters.Ground );
+		await sdfWorld.AddAsync( finalSdf, Parameters.Ground );
 
 		while ( sdfWorld.NeedsMeshUpdate )
 		{
@@ -103,6 +100,6 @@ file record CaveNoiseField( INoiseField BaseNoise ) : INoiseField
 
 	public float Sample( float x, float y, float z )
 	{
-		return BaseNoise.Sample( x, y, z * 2f ) * Math.Clamp( (z - 128f) / 512f, 0f, 1f );
+		return BaseNoise.Sample( x, y, z * 2f ) * Math.Clamp( (z - 64f) / 256f, 0f, 1f );
 	}
 }

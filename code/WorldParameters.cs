@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Sandbox.Sdf;
 using Sandbox.Utility;
 
@@ -31,22 +32,43 @@ public sealed class WorldParameters : GameResource
 	[Property]
 	public Curve MountainsCurve { get; set; }
 
-	public void SampleHeightmap( int seed, int res, float size, Transform transform, Span<float> result, int level = 0 )
+	public INoiseField GetHeightmapField( int seed, Transform transform, int level )
 	{
-		var islandField = Noise.SimplexField( new Noise.FractalParameters( seed, Frequency: 1f / IslandNoiseScale, Octaves: 8 ) );
-		var terrainField = Noise.SimplexField( new Noise.FractalParameters( seed, Frequency: 1f / TerrainNoiseScale, Octaves: 4 ) );
-		var heightField = Noise.SimplexField( new Noise.FractalParameters( seed, Frequency: 1f / HeightNoiseScale, Octaves: 8 ) );
+		return new HeightmapField(
+			Noise.SimplexField( new Noise.FractalParameters( seed, Frequency: 1f / IslandNoiseScale, Octaves: 8 ) ),
+			Noise.SimplexField( new Noise.FractalParameters( seed, Frequency: 1f / TerrainNoiseScale, Octaves: 4 ) ),
+			Noise.SimplexField( new Noise.FractalParameters( seed, Frequency: 1f / HeightNoiseScale, Octaves: 8 ) ),
+			IslandBias,
+			TerrainBias,
+			PlainsCurve,
+			MountainsCurve,
+			transform,
+			1f / (1 << level) );
+	}
 
-		var scale = 1f / (1 << level);
-
-		for ( var y = 0; y < res; ++y )
-		for ( var x = 0; x < res; ++x )
+	private record HeightmapField(
+		INoiseField IslandField,
+		INoiseField TerrainField,
+		INoiseField HeightField,
+		Curve IslandBias,
+		Curve TerrainBias,
+		Curve PlainsCurve,
+		Curve MountainsCurve,
+		Transform Transform,
+		float Scale ) : INoiseField
+	{
+		public float Sample( float x )
 		{
-			var worldPos = (Vector2)transform.PointToWorld( new Vector3( x, y, 0f ) * size / (res - 1) );
+			throw new NotImplementedException();
+		}
 
-			var island = islandField.Sample( worldPos );
-			var terrain = terrainField.Sample( worldPos );
-			var height = heightField.Sample( worldPos );
+		public float Sample( float x, float y )
+		{
+			var worldPos = (Vector2)Transform.PointToWorld( new Vector3( x, y, 0f ) / Scale );
+
+			var island = IslandField.Sample( worldPos );
+			var terrain = TerrainField.Sample( worldPos );
+			var height = HeightField.Sample( worldPos );
 
 			island = IslandBias.Evaluate( island );
 			terrain = TerrainBias.Evaluate( terrain );
@@ -58,7 +80,12 @@ public sealed class WorldParameters : GameResource
 
 			height = oceanHeight + island * (landHeight - oceanHeight);
 
-			result[x + y * res] = height * scale - 2f;
+			return height * Scale - 2f;
+		}
+
+		public float Sample( float x, float y, float z )
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

@@ -25,7 +25,6 @@
       "__guid": "7d5cdbc6-882b-4da4-8ae4-fe2a318d3b1d",
       "Flags": 0,
       "Name": "Cell Loader",
-      "Position": "2023.099,2175.76,1557.547",
       "Enabled": true,
       "Components": [
         {
@@ -232,7 +231,7 @@
           "__type": "Sandbox.CubemapFog",
           "__guid": "d5aaa32f-e073-4226-a696-ade4b5265fc3",
           "Blur": 0,
-          "EndDistance": 25000,
+          "EndDistance": 50000,
           "FalloffExponent": 1.5,
           "HeightExponent": 2,
           "HeightStart": 2000,
