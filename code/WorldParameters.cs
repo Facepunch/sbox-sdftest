@@ -58,7 +58,7 @@ public sealed class WorldParameters : GameResource
 
 			height = oceanHeight + island * (landHeight - oceanHeight);
 
-			result[x + y * res] = height * scale - 4f;
+			result[x + y * res] = height * scale - 2f;
 		}
 	}
 }

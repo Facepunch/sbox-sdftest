@@ -14,6 +14,9 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 	[Property]
 	public string Seed { get; set; }
 
+	[Property]
+	public float MaxHeight { get; set; } = 8192f;
+
 	void ICellLoader.LoadCell( WorldCell cell )
 	{
 		var level = cell.World.Level;
@@ -27,7 +30,7 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 		var sdfSize = (int)cell.World.CellSize >> level;
 
 		sdfWorld.IsFinite = true;
-		sdfWorld.Size = new Vector3Int( sdfSize, sdfSize, (int)cell.World.CellHeight >> level );
+		sdfWorld.Size = new Vector3( sdfSize, sdfSize, (int)MaxHeight >> level );
 		sdfWorld.HasPhysics = level == 0;
 		sdfWorld.Opacity = 0f;
 
@@ -64,8 +67,8 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 
 		Parameters.SampleHeightmap( Seed.FastHash(), res, cellSize, cell.Transform.World, heightmap, level );
 
-		var caveNoise = new CaveNoiseField( Noise.SimplexField( new Noise.FractalParameters( Octaves: 8, Frequency: 1f / 4096f ) ) );
-		var caveSdf = new NoiseSdf3D( caveNoise, 0.65f, 256f / sdfWorld.Transform.Scale.x )
+		var caveNoise = new CaveNoiseField( Noise.SimplexField( new Noise.FractalParameters( Octaves: 6, Frequency: 1f / 4096f ) ) );
+		var caveSdf = new NoiseSdf3D( caveNoise, 0.6f, 256f / sdfWorld.Transform.Scale.x )
 			.Transform( new Transform( -cell.Transform.Position / sdfWorld.Transform.Scale.x, Rotation.Identity,
 				1f / sdfWorld.Transform.Scale.x ) );
 
