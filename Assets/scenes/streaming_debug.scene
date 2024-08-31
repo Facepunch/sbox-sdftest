@@ -1,0 +1,206 @@
+{
+  "__guid": "e812c22b-d04b-4e0e-a8b5-09b20634a1c9",
+  "GameObjects": [
+    {
+      "__guid": "f90a5bd1-9308-4044-b573-28c8ffd3d469",
+      "Flags": 0,
+      "Name": "World 0",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Worlds.StreamingWorld",
+          "__guid": "11fe444a-13fb-42e5-9d8f-7a0e3bb85a49",
+          "CellHeight": 1024,
+          "CellSize": 128,
+          "Is2D": true,
+          "LoadRadius": 4
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "df85d9ac-a8ea-43a3-8e46-f1e5d290f9ee",
+      "Flags": 0,
+      "Name": "World 1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Worlds.StreamingWorld",
+          "__guid": "6537ecac-63c0-4b70-b779-968f08f4b19b",
+          "CellHeight": 1024,
+          "CellSize": 256,
+          "Is2D": true,
+          "LoadRadius": 4,
+          "Parent": {
+            "_type": "component",
+            "component_id": "11fe444a-13fb-42e5-9d8f-7a0e3bb85a49",
+            "go": "f90a5bd1-9308-4044-b573-28c8ffd3d469",
+            "component_type": "StreamingWorld"
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "92f0428e-4b44-4b69-92f6-74ad1eaa3478",
+      "Flags": 0,
+      "Name": "World 2",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Worlds.StreamingWorld",
+          "__guid": "aa4d41f0-93dc-4971-a356-5a9863928ef8",
+          "CellHeight": 1024,
+          "CellSize": 512,
+          "Is2D": true,
+          "LoadRadius": 4,
+          "Parent": {
+            "_type": "component",
+            "component_id": "6537ecac-63c0-4b70-b779-968f08f4b19b",
+            "go": "df85d9ac-a8ea-43a3-8e46-f1e5d290f9ee",
+            "component_type": "StreamingWorld"
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "5c9b9f49-3cfd-48c3-98c9-f37bfb80a133",
+      "Flags": 0,
+      "Name": "World 3",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Worlds.StreamingWorld",
+          "__guid": "e4e0a902-f1c0-4321-b645-69f2b8a6ea6d",
+          "CellHeight": 1024,
+          "CellSize": 1024,
+          "Is2D": true,
+          "LoadRadius": 4,
+          "Parent": {
+            "_type": "component",
+            "component_id": "aa4d41f0-93dc-4971-a356-5a9863928ef8",
+            "go": "92f0428e-4b44-4b69-92f6-74ad1eaa3478",
+            "component_type": "StreamingWorld"
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "47fb1889-65d7-41dc-bbf8-612b09ca38b5",
+      "Flags": 0,
+      "Name": "World 4",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Worlds.StreamingWorld",
+          "__guid": "2cb38dbb-f492-4a71-8218-30957dd52058",
+          "CellHeight": 1024,
+          "CellSize": 2048,
+          "Is2D": true,
+          "LoadRadius": 4,
+          "Parent": {
+            "_type": "component",
+            "component_id": "e4e0a902-f1c0-4321-b645-69f2b8a6ea6d",
+            "go": "5c9b9f49-3cfd-48c3-98c9-f37bfb80a133",
+            "component_type": "StreamingWorld"
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "464ce1de-0b96-49d4-8b89-0226422da31d",
+      "Flags": 0,
+      "Name": "World 5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Worlds.StreamingWorld",
+          "__guid": "fd7bbd18-9ecf-4d10-9723-ceeab5b3f445",
+          "CellHeight": 1024,
+          "CellSize": 4096,
+          "Is2D": true,
+          "LoadRadius": 4,
+          "Parent": {
+            "_type": "component",
+            "component_id": "2cb38dbb-f492-4a71-8218-30957dd52058",
+            "go": "47fb1889-65d7-41dc-bbf8-612b09ca38b5",
+            "component_type": "StreamingWorld"
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "3bb2114e-7f47-4751-8439-86e83afd850b",
+      "Flags": 0,
+      "Name": "World 6",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Worlds.StreamingWorld",
+          "__guid": "460a3352-73b4-441f-bd27-4cabb5600d15",
+          "CellHeight": 1024,
+          "CellSize": 8192,
+          "Is2D": true,
+          "LoadRadius": 4,
+          "Parent": {
+            "_type": "component",
+            "component_id": "fd7bbd18-9ecf-4d10-9723-ceeab5b3f445",
+            "go": "464ce1de-0b96-49d4-8b89-0226422da31d",
+            "component_type": "StreamingWorld"
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "d7e38f81-71bf-4c21-a6d0-3b0554f31a96",
+      "Flags": 0,
+      "Name": "Sun",
+      "Position": "0,0,2048",
+      "Rotation": "-0.1575591,0.5880184,0.2053349,0.7663205",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "176319bc-4134-422c-bf2b-af05afd617d4",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0,0,0,0"
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "Title": "streaming_debug",
+  "Description": "",
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}
