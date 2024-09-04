@@ -1,0 +1,27 @@
+{
+  "RootObject": {
+    "__guid": "c1804308-aae1-4312-8d7a-a19c0a416a52",
+    "Flags": 0,
+    "Name": "cursor",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "b778af9c-04da-48f9-b5ec-e1916319a347",
+        "BodyGroups": 18446744073709551615,
+        "MaterialOverride": "materials/cursor.vmat",
+        "Model": "models/dev/sphere.vmdl",
+        "RenderType": "Off",
+        "Tint": "1,1,1,0.25"
+      }
+    ],
+    "Children": [],
+    "__variables": []
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}

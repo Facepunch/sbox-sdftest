@@ -76,6 +76,9 @@ PS
 	SamplerState g_sSampler0 < Filter( ANISO ); AddressU( WRAP ); AddressV( WRAP ); >;
 	CreateInputTexture2D( Texture_ps_0, Srgb, 8, "None", "_color", ",0/,0/0", Default4( 1.00, 1.00, 1.00, 1.00 ) );
 	Texture2D g_tTexture_ps_0 < Channel( RGBA, Box( Texture_ps_0 ), Srgb ); OutputFormat( DXT5 ); SrgbRead( True ); >;
+	float3 g_v_SdfCursorPosition < Attribute( "_SdfCursorPosition" ); Default3( 0,0,0 ); >;
+	float g_fl_SdfCursorRadius < Attribute( "_SdfCursorRadius" ); Default1( 128 ); >;
+	float4 g_v_SdfCursorColor < Attribute( "_SdfCursorColor" ); Default4( 1.00, 1.00, 1.00, 1.00 ); >;
 		
 	float4 TexTriplanar_Color( in Texture2D tTex, in SamplerState sSampler, float3 vPosition, float3 vNormal )
 	{
@@ -131,11 +134,25 @@ PS
 		float l_16 = saturate( ( l_10 - 512 ) / ( 4096 - 512 ) ) * ( 1 - 0.75 ) + 0.75;
 		float4 l_17 = l_11 < l_16 ? l_1 : l_15;
 		float4 l_18 = l_0 * l_17;
-		float4 l_19 = i.vTintColor;
-		float l_20 = l_19.w;
+		float3 l_19 = g_v_SdfCursorPosition;
+		float3 l_20 = l_9 - l_19;
+		float l_21 = length( l_20 );
+		float l_22 = g_fl_SdfCursorRadius;
+		float l_23 = l_21 - l_22;
+		float l_24 = abs( l_23 );
+		float l_25 = l_24 / 16;
+		float l_26 = pow( l_25, 0.5 );
+		float l_27 = l_23 < 0 ? 0.75 : 1;
+		float l_28 = min( l_26, l_27 );
+		float4 l_29 = g_v_SdfCursorColor;
+		float4 l_30 = l_29 * float4( l_29.a, l_29.a, l_29.a, l_29.a );
+		float4 l_31 = saturate( ( float4( l_28, l_28, l_28, l_28 ) - float4( 0, 0, 0, 0 ) ) / ( float4( 1, 1, 1, 1 ) - float4( 0, 0, 0, 0 ) ) ) * ( float4( 0, 0, 0, 0 ) - l_30 ) + l_30;
+		float4 l_32 = i.vTintColor;
+		float l_33 = l_32.w;
 		
 		m.Albedo = l_18.xyz;
-		m.Opacity = l_20;
+		m.Emission = l_31.xyz;
+		m.Opacity = l_33;
 		m.Roughness = 1;
 		m.Metalness = 0;
 		m.AmbientOcclusion = 1;

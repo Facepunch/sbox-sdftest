@@ -71,7 +71,15 @@
       {
         "__type": "Sandbox.EditWorld",
         "__guid": "e3fcbbc7-d95d-42c6-88b9-6dad4f0948f6",
-        "Material": "sdf/ground.sdfvol"
+        "Color": "0.46667,0.73333,1,1",
+        "CooldownTime": 0.5,
+        "CursorPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/cursor.prefab"
+        },
+        "Material": "sdf/ground.sdfvol",
+        "MaxRange": 4096,
+        "Radius": 64
       },
       {
         "__type": "Player",

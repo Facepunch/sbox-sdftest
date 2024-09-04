@@ -10,9 +10,13 @@
       "DefaultMetalness": 0,
       "DefaultAmbientOcclusion": 1,
       "Identifier": "0",
-      "Position": "1408,128",
+      "Position": "1744,272",
       "Albedo": {
         "Identifier": "5",
+        "Output": "Result"
+      },
+      "Emission": {
+        "Identifier": "27",
         "Output": "Result"
       },
       "Opacity": {
@@ -100,7 +104,7 @@
     {
       "_class": "WorldPosition",
       "Identifier": "7",
-      "Position": "-432,384"
+      "Position": "-512,384"
     },
     {
       "_class": "SplitVector",
@@ -288,6 +292,221 @@
       "Input": {
         "Identifier": "22",
         "Output": "RGBA"
+      }
+    },
+    {
+      "_class": "Float3",
+      "Min": "0,0,0",
+      "Max": "1,1,1",
+      "Value": "0,0,0",
+      "Name": "_SdfCursorPosition",
+      "IsAttribute": true,
+      "UI": {
+        "PrimaryGroup": {
+          "Name": ""
+        }
+      },
+      "Identifier": "24",
+      "Position": "-464,656"
+    },
+    {
+      "_class": "Subtract",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "25",
+      "Position": "-240,624",
+      "A": {
+        "Identifier": "7",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "24",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Length",
+      "Identifier": "26",
+      "Position": "-144,624",
+      "Input": {
+        "Identifier": "25",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "RemapValue",
+      "In": 0.5,
+      "InMin": 0,
+      "InMax": 1,
+      "OutMin": 0,
+      "OutMax": 0,
+      "Clamp": true,
+      "Identifier": "27",
+      "Position": "1088,784",
+      "A": {
+        "Identifier": "38",
+        "Output": "Result"
+      },
+      "D": {
+        "Identifier": "31",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Subtract",
+      "DefaultA": 0,
+      "DefaultB": 128,
+      "Identifier": "28",
+      "Position": "64,800",
+      "A": {
+        "Identifier": "26",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "30",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Abs",
+      "Identifier": "29",
+      "Position": "176,800",
+      "Input": {
+        "Identifier": "28",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Float",
+      "Min": 0,
+      "Max": 1,
+      "Value": 128,
+      "Name": "_SdfCursorRadius",
+      "IsAttribute": true,
+      "UI": {},
+      "Identifier": "30",
+      "Position": "-208,864"
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "31",
+      "Position": "832,1056",
+      "A": {
+        "Identifier": "32",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "32",
+        "Output": "A"
+      }
+    },
+    {
+      "_class": "Float4",
+      "Value": "1,1,1,1",
+      "Name": "_SdfCursorColor",
+      "IsAttribute": true,
+      "UI": {
+        "Type": "Color"
+      },
+      "Identifier": "32",
+      "Position": "592,1008"
+    },
+    {
+      "_class": "Branch",
+      "Name": "",
+      "IsAttribute": true,
+      "Operator": "LessThan",
+      "Enabled": false,
+      "UI": {},
+      "Identifier": "33",
+      "Position": "288,1008",
+      "True": {
+        "Identifier": "36",
+        "Output": "Result"
+      },
+      "False": {
+        "Identifier": "37",
+        "Output": "Result"
+      },
+      "A": {
+        "Identifier": "28",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "34",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Float",
+      "Min": 0,
+      "Max": 1,
+      "Value": 0,
+      "Name": "",
+      "IsAttribute": false,
+      "UI": {},
+      "Identifier": "34",
+      "Position": "-32,1120"
+    },
+    {
+      "_class": "Divide",
+      "DefaultA": 0,
+      "DefaultB": 16,
+      "Identifier": "35",
+      "Position": "336,800",
+      "A": {
+        "Identifier": "29",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Float",
+      "Min": 0,
+      "Max": 1,
+      "Value": 0.75,
+      "Name": "",
+      "IsAttribute": false,
+      "UI": {},
+      "Identifier": "36",
+      "Position": "-32,976"
+    },
+    {
+      "_class": "Float",
+      "Min": 0,
+      "Max": 1,
+      "Value": 1,
+      "Name": "",
+      "IsAttribute": false,
+      "UI": {},
+      "Identifier": "37",
+      "Position": "-32,1040"
+    },
+    {
+      "_class": "Min",
+      "DefaultA": 0,
+      "DefaultB": 0,
+      "Identifier": "38",
+      "Position": "592,832",
+      "InputA": {
+        "Identifier": "39",
+        "Output": "Result"
+      },
+      "InputB": {
+        "Identifier": "33",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Power",
+      "DefaultA": 1,
+      "DefaultB": 0.5,
+      "Identifier": "39",
+      "Position": "448,800",
+      "A": {
+        "Identifier": "35",
+        "Output": "Result"
       }
     }
   ]

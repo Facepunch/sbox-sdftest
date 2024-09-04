@@ -8,4 +8,8 @@ Layer0
 
 	//---- Fog ----
 	g_bFogEnabled "1"
+
+	//---- Translucent ----
+	g_flAlphaTestReference "0.500"
+	g_flAntiAliasedEdgeStrength "1.000"
 }
