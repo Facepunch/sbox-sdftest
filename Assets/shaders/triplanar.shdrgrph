@@ -12,7 +12,7 @@
       "Identifier": "0",
       "Position": "1744,272",
       "Albedo": {
-        "Identifier": "5",
+        "Identifier": "40",
         "Output": "Result"
       },
       "Emission": {
@@ -30,6 +30,7 @@
       "Sampler": {},
       "UI": {
         "Default": "1,1,1,1",
+        "ShowExtension": true,
         "SrgbRead": true
       },
       "Identifier": "1",
@@ -283,12 +284,12 @@
     {
       "_class": "Tint",
       "Identifier": "22",
-      "Position": "768,336"
+      "Position": "768,288"
     },
     {
       "_class": "SplitVector",
       "Identifier": "23",
-      "Position": "960,336",
+      "Position": "1056,384",
       "Input": {
         "Identifier": "22",
         "Output": "RGBA"
@@ -506,6 +507,21 @@
       "Position": "448,800",
       "A": {
         "Identifier": "35",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "40",
+      "Position": "1408,240",
+      "A": {
+        "Identifier": "22",
+        "Output": "RGBA"
+      },
+      "B": {
+        "Identifier": "5",
         "Output": "Result"
       }
     }

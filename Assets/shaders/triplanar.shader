@@ -115,44 +115,45 @@ PS
 		m.Emission = float3( 0, 0, 0 );
 		m.Transmission = 0;
 		
-		float4 l_0 = TexTriplanar_Color( g_tTexture_ps_0, g_sSampler0, (i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz) / 39.3701, normalize( i.vNormalWs.xyz ) );
-		float4 l_1 = float4( 0.15623, 0.17898, 0.21084, 1 );
-		float4 l_2 = float4( 0.68372, 0.64556, 0.53108, 1 );
-		float4 l_3 = float4( 0.56568, 0.62952, 0.2465, 1 );
-		float4 l_4 = float4( 0.68675, 0.65055, 0.37647, 1 );
-		float3 l_5 = i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz;
-		float3 l_6 = l_5 / float3( 512, 512, 512 );
-		float l_7 = ValueNoise( l_6.xy );
-		float4 l_8 = lerp( l_3, l_4, l_7 );
-		float3 l_9 = i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz;
-		float l_10 = l_9.z;
-		float l_11 = i.vNormalWs.z;
-		float l_12 = 1 - l_11;
-		float l_13 = l_12 * 256;
-		float l_14 = 672 - l_13;
-		float4 l_15 = l_10 < l_14 ? l_2 : l_8;
-		float l_16 = saturate( ( l_10 - 512 ) / ( 4096 - 512 ) ) * ( 1 - 0.75 ) + 0.75;
-		float4 l_17 = l_11 < l_16 ? l_1 : l_15;
-		float4 l_18 = l_0 * l_17;
-		float3 l_19 = g_v_SdfCursorPosition;
-		float3 l_20 = l_9 - l_19;
-		float l_21 = length( l_20 );
-		float l_22 = g_fl_SdfCursorRadius;
-		float l_23 = l_21 - l_22;
-		float l_24 = abs( l_23 );
-		float l_25 = l_24 / 16;
-		float l_26 = pow( l_25, 0.5 );
-		float l_27 = l_23 < 0 ? 0.75 : 1;
-		float l_28 = min( l_26, l_27 );
-		float4 l_29 = g_v_SdfCursorColor;
-		float4 l_30 = l_29 * float4( l_29.a, l_29.a, l_29.a, l_29.a );
-		float4 l_31 = saturate( ( float4( l_28, l_28, l_28, l_28 ) - float4( 0, 0, 0, 0 ) ) / ( float4( 1, 1, 1, 1 ) - float4( 0, 0, 0, 0 ) ) ) * ( float4( 0, 0, 0, 0 ) - l_30 ) + l_30;
-		float4 l_32 = i.vTintColor;
-		float l_33 = l_32.w;
+		float4 l_0 = i.vTintColor;
+		float4 l_1 = TexTriplanar_Color( g_tTexture_ps_0, g_sSampler0, (i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz) / 39.3701, normalize( i.vNormalWs.xyz ) );
+		float4 l_2 = float4( 0.15623, 0.17898, 0.21084, 1 );
+		float4 l_3 = float4( 0.68372, 0.64556, 0.53108, 1 );
+		float4 l_4 = float4( 0.56568, 0.62952, 0.2465, 1 );
+		float4 l_5 = float4( 0.68675, 0.65055, 0.37647, 1 );
+		float3 l_6 = i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz;
+		float3 l_7 = l_6 / float3( 512, 512, 512 );
+		float l_8 = ValueNoise( l_7.xy );
+		float4 l_9 = lerp( l_4, l_5, l_8 );
+		float3 l_10 = i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz;
+		float l_11 = l_10.z;
+		float l_12 = i.vNormalWs.z;
+		float l_13 = 1 - l_12;
+		float l_14 = l_13 * 256;
+		float l_15 = 672 - l_14;
+		float4 l_16 = l_11 < l_15 ? l_3 : l_9;
+		float l_17 = saturate( ( l_11 - 512 ) / ( 4096 - 512 ) ) * ( 1 - 0.75 ) + 0.75;
+		float4 l_18 = l_12 < l_17 ? l_2 : l_16;
+		float4 l_19 = l_1 * l_18;
+		float4 l_20 = l_0 * l_19;
+		float3 l_21 = g_v_SdfCursorPosition;
+		float3 l_22 = l_10 - l_21;
+		float l_23 = length( l_22 );
+		float l_24 = g_fl_SdfCursorRadius;
+		float l_25 = l_23 - l_24;
+		float l_26 = abs( l_25 );
+		float l_27 = l_26 / 16;
+		float l_28 = pow( l_27, 0.5 );
+		float l_29 = l_25 < 0 ? 0.75 : 1;
+		float l_30 = min( l_28, l_29 );
+		float4 l_31 = g_v_SdfCursorColor;
+		float4 l_32 = l_31 * float4( l_31.a, l_31.a, l_31.a, l_31.a );
+		float4 l_33 = saturate( ( float4( l_30, l_30, l_30, l_30 ) - float4( 0, 0, 0, 0 ) ) / ( float4( 1, 1, 1, 1 ) - float4( 0, 0, 0, 0 ) ) ) * ( float4( 0, 0, 0, 0 ) - l_32 ) + l_32;
+		float l_34 = l_0.w;
 		
-		m.Albedo = l_18.xyz;
-		m.Emission = l_31.xyz;
-		m.Opacity = l_33;
+		m.Albedo = l_20.xyz;
+		m.Emission = l_33.xyz;
+		m.Opacity = l_34;
 		m.Roughness = 1;
 		m.Metalness = 0;
 		m.AmbientOcclusion = 1;
@@ -170,6 +171,10 @@ PS
 		m.WorldTangentV = i.vTangentVWs;
         m.TextureCoords = i.vTextureCoords.xy;
 		
-		return ShadingModelStandard::Shade( i, m );
+		float4 result = ShadingModelStandard::Shade( i, m );
+
+		result.a = m.Opacity;
+
+		return result;
 	}
 }
