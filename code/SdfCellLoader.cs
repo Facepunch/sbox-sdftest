@@ -17,6 +17,26 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 	[Property]
 	public float MaxHeight { get; set; } = 8192f;
 
+	[Button( "Run" )]
+	public void Randomize()
+	{
+		var bytes = new byte[8];
+
+		Random.Shared.NextBytes( bytes );
+
+		Seed = string.Join( "", bytes.Select( x => x.ToString( "x2" ) ) );
+		Regenerate();
+	}
+
+	[Button( "Run" )]
+	public void Regenerate()
+	{
+		var rootWorld = Scene.GetAllComponents<StreamingWorld>()
+			.FirstOrDefault( x => x.Level == 0 );
+
+		rootWorld?.Clear();
+	}
+
 	void ICellLoader.LoadCell( WorldCell cell )
 	{
 		var level = cell.World.Level;
