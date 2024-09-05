@@ -33,6 +33,11 @@
           "MaxHeight": 16384,
           "Parameters": "default.world",
           "Seed": "Test"
+        },
+        {
+          "__type": "Sandbox.EditManager",
+          "__guid": "5b057992-1be5-40a8-b440-d8b32a290736",
+          "Material": "sdf/ground.sdfvol"
         }
       ]
     },

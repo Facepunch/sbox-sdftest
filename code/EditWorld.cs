@@ -7,7 +7,6 @@ namespace Sandbox;
 
 public sealed class EditWorld : Component
 {
-	[Property] public Sdf3DVolume Material { get; set; } = null!;
 	[Property] public GameObject CursorPrefab { get; set; } = null!;
 
 	[Property] public float Radius { get; set; } = 64f;
@@ -55,7 +54,7 @@ public sealed class EditWorld : Component
 
 		if ( _lastEdit < CooldownTime || !Input.Pressed( "attack1" ) && !Input.Pressed( "attack2" ) ) return;
 
-		BroadcastModify( _editPos, Radius, Input.Down( "attack1" ) ? Material : null );
+		Scene.GetAllComponents<EditManager>().First().Submit( _editPos, Radius * (Input.Down( "attack1" ) ? 1f : -1f) );
 
 		_lastEdit = 0f;
 	}
