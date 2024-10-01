@@ -1,37 +1,16 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Sandbox.Diagnostics;
 
 namespace Sandbox;
 
-public sealed class FileSystemEditFeed : Component, IEditFeed
+public sealed class FileSystemEditFeed : Component, ICellEditFeedFactory
 {
 	[Property] public string Directory { get; set; } = "World1";
 
-	private Dictionary<Vector2Int, FileSystemCellEditFeed> Cells { get; } = new();
-
-	public ICellEditFeed Subscribe( Vector2Int cellIndex )
+	public ICellEditFeed CreateCellEditFeed( Vector2Int cellIndex )
 	{
-		if ( Cells.TryGetValue( cellIndex, out var cell ) )
-		{
-			return cell;
-		}
-
-		return Cells[cellIndex] = new FileSystemCellEditFeed( this, cellIndex );
-	}
-
-	internal void Unsubscribe( Vector2Int cellIndex )
-	{
-		Cells.Remove( cellIndex );
-	}
-
-	protected override void OnDestroy()
-	{
-		foreach ( var cell in Cells.Values.ToArray() )
-		{
-			cell.Dispose();
-		}
+		return new FileSystemCellEditFeed( Directory, cellIndex );
 	}
 }
 
@@ -40,7 +19,6 @@ internal class FileSystemCellEditFeed : ICellEditFeed
 	private const uint Magic = 0x6c6c6543U;
 	private const uint Version = 1U;
 
-	private readonly FileSystemEditFeed _manager;
 	private readonly List<EditData> _edits = new();
 
 	private readonly string _filePath;
@@ -49,7 +27,10 @@ internal class FileSystemCellEditFeed : ICellEditFeed
 	private bool _anyUnsaved;
 
 	public Vector2Int CellIndex { get; }
-	public event EditedDelegate Edited;
+
+	public IReadOnlyList<EditData> Edits => _edits;
+
+	public event CellEditedDelegate Edited;
 
 	public void Submit( EditData data )
 	{
@@ -58,16 +39,15 @@ internal class FileSystemCellEditFeed : ICellEditFeed
 
 		if ( _isLoaded )
 		{
-			Edited?.Invoke( data );
+			Edited?.Invoke( this, data );
 		}
 	}
 
-	public FileSystemCellEditFeed( FileSystemEditFeed manager, Vector2Int cellIndex )
+	public FileSystemCellEditFeed( string directory, Vector2Int cellIndex )
 	{
-		_manager = manager;
-		_filePath = Path.Combine( _manager.Directory, $"{CellIndex.x}_{CellIndex.y}.cell" );
-
 		CellIndex = cellIndex;
+
+		_filePath = Path.Combine( directory, $"{cellIndex.x}_{cellIndex.y}.cell" );
 
 		_ = LoadAsync();
 	}
@@ -106,7 +86,7 @@ internal class FileSystemCellEditFeed : ICellEditFeed
 
 		for ( var i = 0; i < editCount; i++ )
 		{
-			Edited?.Invoke( _edits[i] );
+			Edited?.Invoke( this, _edits[i] );
 		}
 	}
 
@@ -141,8 +121,6 @@ internal class FileSystemCellEditFeed : ICellEditFeed
 
 	public void Dispose()
 	{
-		_manager.Unsubscribe( CellIndex );
-
 		Flush();
 	}
 }

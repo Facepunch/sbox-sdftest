@@ -4,6 +4,9 @@ Layer0
 {
 	shader "shaders/triplanar.shader"
 
+	//---- Translucent ----
+	F_ALPHA_TEST 1
+
 	Texture_ps_0 "materials/dev/simple/simple_tile_color.png"
 
 	//---- Fog ----

@@ -37,7 +37,13 @@
         {
           "__type": "Sandbox.EditManager",
           "__guid": "5b057992-1be5-40a8-b440-d8b32a290736",
+          "CellSize": 8192,
           "Material": "sdf/ground.sdfvol"
+        },
+        {
+          "__type": "Sandbox.FileSystemEditFeed",
+          "__guid": "7795619a-2e7a-4073-9164-cf25c3e80c31",
+          "Directory": "World1"
         }
       ]
     },
