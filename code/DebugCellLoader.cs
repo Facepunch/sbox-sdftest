@@ -11,14 +11,14 @@ public sealed class DebugCellLoader : Component, ICellLoader
 
 	public void LoadCell( WorldCell cell )
 	{
-		var size = cell.World.CellSize;
+		var size = cell.Size;
 
 		var obj = new GameObject( true )
 		{
 			Parent = cell.GameObject,
 			Transform =
 			{
-				LocalPosition = new Vector3( size, size, 0f ) * 0.5f - Vector3.Up * (16 << cell.World.Level),
+				LocalPosition = size * 0.5f - Vector3.Up * size.x / 256f,
 				LocalScale = size / 100f
 			}
 		};
@@ -29,7 +29,7 @@ public sealed class DebugCellLoader : Component, ICellLoader
 
 		renderer.Model = PlaneModel;
 		renderer.MaterialOverride = Material;
-		renderer.Tint = new ColorHsv( cell.World.Level * 30f, 1f, 1f, 0f );
+		renderer.Tint = new ColorHsv( cell.Index.Level * 30f, 1f, 1f, 0f );
 		renderer.RenderType = ModelRenderer.ShadowRenderType.Off;
 	}
 

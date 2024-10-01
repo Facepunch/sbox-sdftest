@@ -1,5 +1,5 @@
 {
-  "__guid": "b720bd79-2b55-473e-a926-c38a4f0ea388",
+  "__guid": "8edcfe33-f496-488f-95db-cfb0ad3aa884",
   "GameObjects": [
     {
       "__guid": "d1170de9-47d0-41ac-b524-2e4a1b3737e7",
@@ -44,108 +44,16 @@
     {
       "__guid": "5cc1974b-a9be-4616-b085-8b4b3bd9fd81",
       "Flags": 0,
-      "Name": "World 0",
+      "Name": "World",
       "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.Worlds.StreamingWorld",
           "__guid": "e72407ad-dae3-4ea0-91bb-00dd4faa2023",
-          "CellHeight": 8192,
-          "CellSize": 1024,
+          "BaseCellSize": 1024,
+          "DetailLevels": 5,
           "Is2D": true,
           "LoadRadius": 4
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "bcaec94d-806e-48d5-abc4-993aae6dc203",
-      "Flags": 0,
-      "Name": "World 1",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.Worlds.StreamingWorld",
-          "__guid": "7b065a6e-5f19-431a-8b4f-7b29e9a771e5",
-          "CellHeight": 8192,
-          "CellSize": 2048,
-          "Is2D": true,
-          "LoadRadius": 4,
-          "Parent": {
-            "_type": "component",
-            "component_id": "e72407ad-dae3-4ea0-91bb-00dd4faa2023",
-            "go": "5cc1974b-a9be-4616-b085-8b4b3bd9fd81",
-            "component_type": "StreamingWorld"
-          }
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "9c13db2e-2c96-454b-bd25-212c72fb04d1",
-      "Flags": 0,
-      "Name": "World 2",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.Worlds.StreamingWorld",
-          "__guid": "4a3aedf0-13ab-49af-83d1-11af15c50a61",
-          "CellHeight": 8192,
-          "CellSize": 4096,
-          "Is2D": true,
-          "LoadRadius": 4,
-          "Parent": {
-            "_type": "component",
-            "component_id": "7b065a6e-5f19-431a-8b4f-7b29e9a771e5",
-            "go": "bcaec94d-806e-48d5-abc4-993aae6dc203",
-            "component_type": "StreamingWorld"
-          }
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "a28f7bd6-598f-4084-acc1-b7e81ec6e3b9",
-      "Flags": 0,
-      "Name": "World 3",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.Worlds.StreamingWorld",
-          "__guid": "e0498d36-0813-46ce-a1cf-b3e327071a4a",
-          "CellHeight": 8192,
-          "CellSize": 8192,
-          "Is2D": true,
-          "LoadRadius": 4,
-          "Parent": {
-            "_type": "component",
-            "component_id": "4a3aedf0-13ab-49af-83d1-11af15c50a61",
-            "go": "9c13db2e-2c96-454b-bd25-212c72fb04d1",
-            "component_type": "StreamingWorld"
-          }
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "6716b915-90f2-4e7f-a5d0-e6844546cabc",
-      "Flags": 0,
-      "Name": "World 4",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.Worlds.StreamingWorld",
-          "__guid": "d902967a-ab3b-4ac6-b48b-0621fc706532",
-          "CellHeight": 8192,
-          "CellSize": 16384,
-          "Is2D": true,
-          "LoadRadius": 4,
-          "Parent": {
-            "_type": "component",
-            "component_id": "e0498d36-0813-46ce-a1cf-b3e327071a4a",
-            "go": "a28f7bd6-598f-4084-acc1-b7e81ec6e3b9",
-            "component_type": "StreamingWorld"
-          }
         }
       ],
       "Children": []
@@ -186,6 +94,12 @@
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/water/water_temp.vmat",
           "Model": "models/dev/plane.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
           "Tint": "0.61395,0.85845,1,1"
         }
@@ -253,6 +167,7 @@
     "MaxFixedUpdates": 5,
     "NetworkFrequency": 30,
     "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
@@ -273,5 +188,6 @@
   "Description": "",
   "ResourceVersion": 1,
   "__references": [],
+  "IsValid": true,
   "__version": 1
 }

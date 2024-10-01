@@ -17,7 +17,7 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 	[Property]
 	public float MaxHeight { get; set; } = 8192f;
 
-	[Button( "Run" )]
+	[Button]
 	public void Randomize()
 	{
 		var bytes = new byte[8];
@@ -28,18 +28,17 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 		Regenerate();
 	}
 
-	[Button( "Run" )]
+	[Button]
 	public void Regenerate()
 	{
-		var rootWorld = Scene.GetAllComponents<StreamingWorld>()
-			.FirstOrDefault( x => x.Level == 0 );
-
-		rootWorld?.Clear();
+		Scene.GetAllComponents<StreamingWorld>()
+			.FirstOrDefault()
+			?.Clear();
 	}
 
 	void ICellLoader.LoadCell( WorldCell cell )
 	{
-		var level = cell.World.Level;
+		var level = cell.Index.Level;
 		var sdfObj = new GameObject( false )
 		{
 			Parent = cell.GameObject,
@@ -47,7 +46,7 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 		};
 
 		var sdfWorld = sdfObj.Components.Create<Sdf3DWorld>();
-		var sdfSize = (int)cell.World.CellSize >> level;
+		var sdfSize = (int)cell.Size.x >> level;
 
 		sdfWorld.IsFinite = true;
 		sdfWorld.Size = new Vector3( sdfSize, sdfSize, (int)MaxHeight >> level );
@@ -75,7 +74,7 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 	{
 		if ( Parameters is null ) return;
 
-		var level = cell.World.Level;
+		var level = cell.Index.Level;
 
 		await Task.WorkerThread();
 
