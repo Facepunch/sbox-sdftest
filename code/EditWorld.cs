@@ -24,6 +24,8 @@ public sealed class EditWorld : Component
 	{
 		if ( IsProxy ) return;
 
+		Log.Info( "Hello" );
+
 		var ray = new Ray( Scene.Camera.Transform.Position, Scene.Camera.Transform.Rotation.Forward );
 
 		var result = Scene.Trace
@@ -57,29 +59,5 @@ public sealed class EditWorld : Component
 		Scene.GetAllComponents<EditManager>().First().Submit( _editPos, Radius * (Input.Down( "attack1" ) ? 1f : -1f) );
 
 		_lastEdit = 0f;
-	}
-
-	[Broadcast]
-	private void BroadcastModify( Vector3 pos, float radius, Sdf3DVolume? material = null )
-	{
-		foreach ( var sdfWorld in Scene.Components.GetAll<Sdf3DWorld>( FindMode.EverythingInSelfAndDescendants ) )
-		{
-			var origin = sdfWorld.Transform.World.PointToLocal( pos );
-			var localRadius = radius / sdfWorld.Transform.Scale.x;
-
-			if ( origin.x < -localRadius * 2f ) continue;
-			if ( origin.y < -localRadius * 2f ) continue;
-			if ( origin.x > sdfWorld.Size.x + localRadius * 2f ) continue;
-			if ( origin.y > sdfWorld.Size.y + localRadius * 2f ) continue;
-
-			if ( material is null )
-			{
-				_ = sdfWorld.SubtractAsync( new SphereSdf3D( origin, localRadius ) );
-			}
-			else
-			{
-				_ = sdfWorld.AddAsync( new SphereSdf3D( origin, localRadius ), material );
-			}
-		}
 	}
 }

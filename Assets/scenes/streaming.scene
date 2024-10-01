@@ -1,5 +1,5 @@
 {
-  "__guid": "b720bd79-2b55-473e-a926-c38a4f0ea388",
+  "__guid": "8edcfe33-f496-488f-95db-cfb0ad3aa884",
   "GameObjects": [
     {
       "__guid": "d1170de9-47d0-41ac-b524-2e4a1b3737e7",
@@ -37,7 +37,13 @@
         {
           "__type": "Sandbox.EditManager",
           "__guid": "5b057992-1be5-40a8-b440-d8b32a290736",
+          "CellSize": 8192,
           "Material": "sdf/ground.sdfvol"
+        },
+        {
+          "__type": "Sandbox.FileSystemEditFeed",
+          "__guid": "7795619a-2e7a-4073-9164-cf25c3e80c31",
+          "Directory": "World1"
         }
       ]
     },
@@ -186,6 +192,12 @@
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/water/water_temp.vmat",
           "Model": "models/dev/plane.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
           "Tint": "0.61395,0.85845,1,1"
         }

@@ -56,6 +56,8 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 
 		sdfObj.Enabled = true;
 
+		sdfObj.Components.Create<EditRelay>();
+
 		cell.OpacityChanged += Cell_OpacityChanged;
 
 		cell.MarkLoading();
@@ -105,6 +107,49 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 	void ICellLoader.UnloadCell( WorldCell cell )
 	{
 
+	}
+}
+
+public sealed class EditRelay : Component
+{
+	private EditManager _manager;
+	private EditFeedSubscription _subscription;
+
+	[RequireComponent]
+	public Sdf3DWorld SdfWorld { get; private set; }
+
+	protected override void OnStart()
+	{
+		var min = Transform.Position;
+		var max = min + SdfWorld.Size * Transform.Scale.x;
+
+		_manager = Scene.GetAllComponents<EditManager>().FirstOrDefault();
+
+		if ( _manager is null ) return;
+
+		_subscription = _manager.Subscribe( min, max );
+		_subscription.Edited += OnEdited;
+	}
+
+	private void OnEdited( EditData data )
+	{
+		var origin = SdfWorld.Transform.World.PointToLocal( data.Origin );
+		var localRadius = Math.Abs( data.Radius ) / SdfWorld.Transform.Scale.x;
+
+		if ( data.Radius > 0f )
+		{
+			_ = SdfWorld.AddAsync( new SphereSdf3D( origin, localRadius ), _manager.Material );
+		}
+		else
+		{
+			_ = SdfWorld.SubtractAsync( new SphereSdf3D( origin, localRadius ) );
+		}
+	}
+
+	protected override void OnDestroy()
+	{
+		_subscription?.Dispose();
+		_subscription = null;
 	}
 }
 
