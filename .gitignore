@@ -25,3 +25,4 @@ code/Editor/.vscode/*
 *.los
 *.vpk
 obj/
+.sbox/
