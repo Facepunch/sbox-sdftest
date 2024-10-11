@@ -64,8 +64,10 @@ public sealed class EditManager : Component
 
 	public void Submit( Vector3 origin, float radius )
 	{
-		var min = origin.x - radius - Material.MaxDistance;
-		var max = origin.x + radius + Material.MaxDistance;
+		var absRadius = Math.Abs( radius );
+
+		var min = origin - absRadius - Material.MaxDistance;
+		var max = origin + absRadius + Material.MaxDistance;
 
 		var (cellMin, cellMax) = GetCellRange( min, max );
 
@@ -226,7 +228,7 @@ public sealed class EditFeedSubscription : IDisposable
 		var cellOrigin = _manager.CellToWorld( feed.CellIndex );
 		var worldOrigin = data.Origin + cellOrigin;
 
-		var margin = data.Radius + _manager.Material.MaxDistance;
+		var margin = Math.Abs( data.Radius ) + _manager.Material.MaxDistance;
 
 		var boundsMin = worldOrigin - margin;
 		var boundsMax = worldOrigin + margin;
