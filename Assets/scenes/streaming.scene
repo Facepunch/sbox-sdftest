@@ -75,6 +75,7 @@
         {
           "__type": "Sandbox.SkyBox2D",
           "__guid": "02fd1a58-31e1-441f-983c-9386d697e7e2",
+          "SkyIndirectLighting": true,
           "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
           "Tint": "1,1,1,1"
         }
@@ -135,7 +136,8 @@
       "__guid": "9a05cee6-4e05-4756-bebd-34565d489151",
       "Flags": 0,
       "Name": "Spawn Point",
-      "Position": "0,0,8192",
+      "Position": "0,0,768",
+      "Rotation": "0,0,0.9659258,-0.258819",
       "Enabled": true,
       "Components": [
         {
@@ -194,6 +196,5 @@
   "Description": "",
   "ResourceVersion": 1,
   "__references": [],
-  "IsValid": true,
   "__version": 1
 }

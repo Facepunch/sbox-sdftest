@@ -12,6 +12,7 @@ public sealed class PlayerController : Component
 
 	[Property] public CitizenAnimationHelper AnimationHelper { get; set; }
 
+	[Sync] public bool Frozen { get; set; }
 	[Sync] public bool Crouching { get; set; }
 	[Sync] public Angles EyeAngles { get; set; }
 	[Sync] public Vector3 WishVelocity { get; set; }
@@ -81,6 +82,12 @@ public sealed class PlayerController : Component
 			return;
 
 		var cc = CharacterController;
+
+		if ( Frozen )
+		{
+			cc.Velocity = 0f;
+			return;
+		}
 
 		Vector3 halfGravity = Scene.PhysicsWorld.Gravity * Time.Delta * 0.5f;
 
