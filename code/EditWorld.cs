@@ -24,7 +24,7 @@ public sealed class EditWorld : Component
 	{
 		if ( IsProxy ) return;
 
-		var ray = new Ray( Scene.Camera.Transform.Position, Scene.Camera.Transform.Rotation.Forward );
+		var ray = new Ray( Scene.Camera.WorldPosition, Scene.Camera.WorldRotation.Forward );
 
 		var result = Scene.Trace
 			.Ray( ray, MaxRange )
@@ -44,8 +44,8 @@ public sealed class EditWorld : Component
 		var opacity = MathF.Pow( Math.Clamp( _lastEdit / CooldownTime, 0f, 1f ), 8f );
 		var color = Color.WithAlpha( Color.a * opacity );
 
-		_cursor.Transform.Position = _editPos;
-		_cursor.Transform.LocalScale = Radius / 32f;
+		_cursor.WorldPosition = _editPos;
+		_cursor.WorldScale = Radius / 32f;
 		_cursor.Components.Get<ModelRenderer>().Tint = color.WithAlpha( color.a * 0.125f );
 
 		Scene.RenderAttributes.Set( "_SdfCursorPosition", _editPos );
@@ -65,7 +65,7 @@ public sealed class EditWorld : Component
 		foreach ( var sdfWorld in Scene.Components.GetAll<Sdf3DWorld>( FindMode.EverythingInSelfAndDescendants ) )
 		{
 			var origin = sdfWorld.Transform.World.PointToLocal( pos );
-			var localRadius = radius / sdfWorld.Transform.Scale.x;
+			var localRadius = radius / sdfWorld.WorldScale.x;
 
 			if ( origin.x < -localRadius * 2f ) continue;
 			if ( origin.y < -localRadius * 2f ) continue;
