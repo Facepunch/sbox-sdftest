@@ -84,9 +84,8 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 		var caveNoise = new CaveNoiseField(
 			Noise.SimplexField( new Noise.FractalParameters( Octaves: 6, Frequency: 1f / 4096f ) ),
 			Noise.SimplexField( new Noise.FractalParameters( Octaves: 2, Frequency: 1f / 16384f ) ) );
-		var caveSdf = new NoiseSdf3D( caveNoise, 0.6f, 256f / sdfWorld.Transform.Scale.x )
-			.Transform( new Transform( -cell.Transform.Position / sdfWorld.Transform.Scale.x, Rotation.Identity,
-				1f / sdfWorld.Transform.Scale.x ) );
+		var caveSdf = new NoiseSdf3D( caveNoise, 0.6f, 256f / sdfWorld.WorldScale.x )
+			.Transform( new Transform( -cell.WorldPosition / sdfWorld.WorldScale.x, Rotation.Identity, 1f / sdfWorld.WorldScale.x ) );
 		var heightmapSdf = new HeightmapSdf3D( heightmapNoise, voxelRes, sdfWorld.Size.x );
 		var finalSdf = heightmapSdf.Intersection( caveSdf );
 
