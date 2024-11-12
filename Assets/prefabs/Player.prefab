@@ -44,8 +44,23 @@
         "__type": "Sandbox.SkinnedModelRenderer",
         "__guid": "a6f3b2f7-d6b4-480d-b34e-c9528f9f1066",
         "BodyGroups": 341,
+        "CreateAttachments": false,
         "CreateBoneObjects": false,
         "Model": "models/citizen/citizen.vmdl",
+        "Morphs": {},
+        "Parameters": {
+          "bools": {},
+          "ints": {},
+          "floats": {},
+          "vectors": {},
+          "rotations": {}
+        },
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
         "RenderType": "On",
         "Tint": "1,1,1,1",
         "UseAnimGraph": true
@@ -77,7 +92,6 @@
           "_type": "gameobject",
           "prefab": "prefabs/cursor.prefab"
         },
-        "Material": "sdf/ground.sdfvol",
         "MaxRange": 4096,
         "Radius": 64
       },
@@ -104,7 +118,6 @@
             "__guid": "f86e1f7d-9012-4076-b7af-2b2337eb4b2a",
             "Flags": 0,
             "Name": "Camera",
-            "Position": "0,0,0",
             "Tags": "maincamera",
             "Enabled": true,
             "Components": [
@@ -124,25 +137,41 @@
                 "Viewport": "0,0,1,1",
                 "ZFar": 50000,
                 "ZNear": 10
-              },
-              {
-                "__type": "Sandbox.DepthOfField",
-                "__guid": "0b760dae-0dfa-4395-b0e2-32ba8ae91430",
-                "BackBlur": true,
-                "BlurSize": 100,
-                "FocalDistance": 2048,
-                "FrontBlur": false
               }
             ]
           }
         ]
       }
     ],
-    "__variables": []
+    "__variables": [],
+    "__properties": {
+      "FixedUpdateFrequency": 50,
+      "MaxFixedUpdates": 5,
+      "NetworkFrequency": 30,
+      "NetworkInterpolation": true,
+      "PhysicsSubSteps": 1,
+      "ThreadedAnimation": true,
+      "TimeScale": 1,
+      "UseFixedUpdate": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    }
   },
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
+  "DontBreakAsTemplate": false,
   "ResourceVersion": 1,
   "__references": [],
   "__version": 1

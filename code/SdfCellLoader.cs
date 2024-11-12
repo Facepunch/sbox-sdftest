@@ -132,11 +132,14 @@ public sealed class EditRelay : Component
 	private void OnEdited( EditData data )
 	{
 		var origin = SdfWorld.Transform.World.PointToLocal( data.Origin );
-		var localRadius = Math.Abs( data.Radius ) / SdfWorld.WorldScale.x;
+		var localRadius = data.Size / SdfWorld.WorldScale.x;
 
-		_ = data.Radius > 0f
-			? SdfWorld.AddAsync( new SphereSdf3D( origin, localRadius ), _manager.Material )
-			: SdfWorld.SubtractAsync( new SphereSdf3D( origin, localRadius ) );
+		_ = data.Kind switch
+		{
+			EditKind.Add => SdfWorld.AddAsync( new SphereSdf3D( origin, localRadius ), _manager.Material ),
+			EditKind.Subtract => SdfWorld.SubtractAsync( new SphereSdf3D( origin, localRadius ) ),
+			_ => Task.CompletedTask
+		};
 	}
 
 	protected override void OnDestroy()

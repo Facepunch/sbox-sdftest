@@ -19,7 +19,7 @@ internal class FileSystemCellEditFeed : ICellEditFeed
 	private const uint Magic = 0x6c6c6543U;
 	private const uint Version = 1U;
 
-	private readonly List<EditData> _edits = new();
+	private readonly List<CompressedEditData> _edits = new();
 
 	private readonly string _filePath;
 
@@ -28,11 +28,11 @@ internal class FileSystemCellEditFeed : ICellEditFeed
 
 	public Vector2Int CellIndex { get; }
 
-	public IReadOnlyList<EditData> Edits => _edits;
+	public IReadOnlyList<CompressedEditData> Edits => _edits;
 
 	public event CellEditedDelegate Edited;
 
-	public void Submit( EditData data )
+	public void Submit( CompressedEditData data )
 	{
 		_edits.Add( data );
 		_anyUnsaved = true;
@@ -70,11 +70,11 @@ internal class FileSystemCellEditFeed : ICellEditFeed
 
 		Assert.AreEqual( Magic, magic );
 
-		var read = new List<EditData>();
+		var read = new List<CompressedEditData>();
 
 		while ( reader.BaseStream.Position < reader.BaseStream.Length )
 		{
-			read.Add( EditData.Read( reader ) );
+			read.Add( CompressedEditData.Read( reader ) );
 		}
 
 		await GameTask.MainThread();

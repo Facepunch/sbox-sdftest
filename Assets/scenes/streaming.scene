@@ -2,6 +2,21 @@
   "__guid": "8edcfe33-f496-488f-95db-cfb0ad3aa884",
   "GameObjects": [
     {
+      "__guid": "a1bcf4ff-7264-40f1-832c-021daee29328",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "f8f419f2-f14a-4a54-8c74-2123784c8ab5",
+          "Description": "",
+          "SceneTags": "",
+          "Title": "streaming"
+        }
+      ]
+    },
+    {
       "__guid": "d1170de9-47d0-41ac-b524-2e4a1b3737e7",
       "Flags": 0,
       "Name": "Sun",
@@ -43,7 +58,14 @@
         {
           "__type": "Sandbox.FileSystemEditFeed",
           "__guid": "7795619a-2e7a-4073-9164-cf25c3e80c31",
-          "Directory": "World1"
+          "Directory": "World2"
+        },
+        {
+          "__type": "Sandbox.WebSocketEditFeed",
+          "__guid": "9bb899ee-9698-468c-8629-16434f1c9fc6",
+          "__enabled": false,
+          "ServiceName": "SdfWorldServer",
+          "Uri": "wss://localhost:7031/ws"
         }
       ]
     },
@@ -82,12 +104,6 @@
       ]
     },
     {
-      "__guid": "05e690c0-1238-4b90-9e3f-672c7d32687d",
-      "Flags": 0,
-      "Name": "GameObject",
-      "Enabled": true
-    },
-    {
       "__guid": "8d28c826-4628-403d-a4f3-d5569ad4e1d7",
       "Flags": 0,
       "Name": "Ocean",
@@ -99,6 +115,7 @@
           "__type": "Sandbox.ModelRenderer",
           "__guid": "6dc413b2-6635-44d6-8f7f-438a264c1d3a",
           "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
           "MaterialOverride": "materials/water/water_temp.vmat",
           "Model": "models/dev/plane.vmdl",
           "RenderOptions": {
@@ -179,6 +196,9 @@
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "streaming"
+    },
     "NavMesh": {
       "Enabled": false,
       "IncludeStaticBodies": true,
@@ -192,9 +212,9 @@
       "IncludedBodies": ""
     }
   },
+  "ResourceVersion": 2,
   "Title": "streaming",
-  "Description": "",
-  "ResourceVersion": 1,
+  "Description": null,
   "__references": [],
-  "__version": 1
+  "__version": 2
 }
