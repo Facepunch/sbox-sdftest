@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sandbox.Worlds;
+using System;
 using System.Threading.Tasks;
 
 namespace Sandbox;
@@ -50,7 +51,7 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 
 	private void OnEditReceived( Span<byte> data )
 	{
-		if ( data.Length < 32 ) return;
+		if ( data.Length < 16 ) return;
 
 		var cellX = BitConverter.ToInt32( data[..4] );
 		var cellY = BitConverter.ToInt32( data[4..8] );
@@ -103,7 +104,11 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 
 	public ICellEditFeed CreateCellEditFeed( Vector2Int cellIndex )
 	{
-		return _cellFeeds[cellIndex] = new WebSocketCellEditFeed( this, cellIndex );
+		var feed = _cellFeeds[cellIndex] = new WebSocketCellEditFeed( this, cellIndex );
+
+		Submit( MessageKind.Subscribe, cellIndex, ReadOnlySpan<byte>.Empty );
+
+		return feed;
 	}
 
 	private class WebSocketCellEditFeed : ICellEditFeed
@@ -137,8 +142,6 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 			_parent = parent;
 
 			CellIndex = cellIndex;
-
-			_parent.Submit( MessageKind.Subscribe, CellIndex, ReadOnlySpan<byte>.Empty );
 		}
 
 		public void OnEditReceived( Span<byte> data )

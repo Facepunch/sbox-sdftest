@@ -58,12 +58,12 @@
         {
           "__type": "Sandbox.FileSystemEditFeed",
           "__guid": "7795619a-2e7a-4073-9164-cf25c3e80c31",
+          "__enabled": false,
           "Directory": "World2"
         },
         {
           "__type": "Sandbox.WebSocketEditFeed",
           "__guid": "9bb899ee-9698-468c-8629-16434f1c9fc6",
-          "__enabled": false,
           "ServiceName": "SdfWorldServer",
           "Uri": "wss://localhost:7031/ws"
         }
