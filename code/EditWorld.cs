@@ -34,7 +34,7 @@ public sealed class EditWorld : Component
 		_editPos = ray.Project( result.Hit ? Math.Max( result.Distance, Radius + 32f ) : MaxRange );
 		_editPos.z = Math.Clamp( _editPos.z, 192f, 8000f );
 
-		Radius = Math.Clamp( Radius * MathF.Pow( 2f, Input.MouseWheel.y / 4f ), 64f, 128f );
+		Radius = Math.Clamp( Radius * MathF.Pow( 2f, Input.MouseWheel.y / 4f ), 64f, 512f );
 
 		if ( !_cursor.IsValid() )
 		{

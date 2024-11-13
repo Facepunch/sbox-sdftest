@@ -73,7 +73,6 @@
       "__guid": "5cc1974b-a9be-4616-b085-8b4b3bd9fd81",
       "Flags": 0,
       "Name": "World",
-      "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.Worlds.StreamingWorld",

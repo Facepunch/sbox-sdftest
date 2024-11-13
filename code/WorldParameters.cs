@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using Sandbox.Sdf;
 using Sandbox.Utility;
 

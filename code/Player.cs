@@ -30,10 +30,11 @@ public sealed class Player : Component, Component.INetworkSpawn
 			Cookie.Set( "player.rot", WorldRotation );
 		}
 
-		var world = Scene.GetAllComponents<StreamingWorld>().FirstOrDefault();
+		var world = Scene.GetComponentInChildren<StreamingWorld>( true );
 
 		if ( world is null )
 		{
+			PlayerController.Frozen = true;
 			return;
 		}
 

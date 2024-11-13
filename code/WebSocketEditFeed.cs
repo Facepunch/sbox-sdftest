@@ -1,6 +1,9 @@
-﻿using Sandbox.Worlds;
-using System;
+﻿using System;
+using System.Diagnostics;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using Sandbox.Worlds;
 
 namespace Sandbox;
 
@@ -9,6 +12,7 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 	[Property] public string Uri { get; set; }
 	[Property] public string ServiceName { get; set; } = "SdfWorldServer";
 
+	private bool _receivedWorldParams;
 	private WebSocket _socket;
 	private readonly Dictionary<Vector2Int, WebSocketCellEditFeed> _cellFeeds = new();
 
@@ -21,6 +25,7 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 		}
 
 		_socket = new WebSocket();
+		_socket.OnMessageReceived += OnMessageReceived;
 		_socket.OnDataReceived += OnDataReceived;
 
 		_ = ConnectAsync();
@@ -31,6 +36,43 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 		Subscribe,
 		Unsubscribe,
 		Edit
+	}
+
+	private record WorldParameterMessage( string Seed, string Parameters );
+
+	private void OnMessageReceived( string message )
+	{
+		if ( _receivedWorldParams ) return;
+
+		try
+		{
+			var contents = JsonSerializer.Deserialize<WorldParameterMessage>( message );
+			var cellLoader = Scene.GetComponentInChildren<SdfCellLoader>();
+
+			if ( contents.Seed is { } seed )
+			{
+				cellLoader.Seed = seed;
+			}
+
+			if ( contents.Parameters is { } parameters )
+			{
+				var resource = new WorldParameters();
+
+				resource.LoadFromJson( parameters );
+
+				cellLoader.Parameters = resource;
+			}
+
+			_receivedWorldParams = true;
+
+			var world = Scene.GetComponentInChildren<StreamingWorld>( true );
+
+			world.GameObject.Enabled = true;
+		}
+		catch ( Exception ex )
+		{
+			Log.Warning( ex );
+		}
 	}
 
 	private void OnDataReceived( Span<byte> data )
