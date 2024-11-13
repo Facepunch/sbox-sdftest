@@ -55,7 +55,10 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 
 		sdfObj.Enabled = true;
 
-		sdfObj.Components.Create<EditRelay>();
+		if ( level < 3 )
+		{
+			sdfObj.Components.Create<EditRelay>();
+		}
 
 		cell.OpacityChanged += Cell_OpacityChanged;
 
