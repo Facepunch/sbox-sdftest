@@ -65,7 +65,7 @@
           "__type": "Sandbox.WebSocketEditFeed",
           "__guid": "9bb899ee-9698-468c-8629-16434f1c9fc6",
           "ServiceName": "SdfWorldServer",
-          "Uri": "wss://localhost:7031/ws"
+          "Uri": "ws://sdfworld.ziks.net:27111/"
         }
       ]
     },
@@ -82,8 +82,7 @@
           "Is2D": true,
           "LoadRadius": 4
         }
-      ],
-      "Children": []
+      ]
     },
     {
       "__guid": "f5431024-c2b3-49a6-973e-2a8d4f52bb8e",
