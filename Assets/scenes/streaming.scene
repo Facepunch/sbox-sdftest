@@ -64,6 +64,10 @@
         {
           "__type": "Sandbox.WebSocketEditFeed",
           "__guid": "9bb899ee-9698-468c-8629-16434f1c9fc6",
+          "RemotePlayerPrefab": {
+            "_type": "gameobject",
+            "prefab": "prefabs/remoteplayer.prefab"
+          },
           "ServiceName": "SdfWorldServer",
           "Uri": "ws://localhost:8080/"
         },
@@ -71,6 +75,10 @@
           "__type": "Sandbox.WebSocketEditFeed",
           "__guid": "7134b118-07c7-4992-8ff3-be9a0d0ecd03",
           "__enabled": false,
+          "RemotePlayerPrefab": {
+            "_type": "gameobject",
+            "prefab": "prefabs/remoteplayer.prefab"
+          },
           "ServiceName": "SdfWorldServer",
           "Uri": "ws://sdfworld.ziks.net:27111/"
         }

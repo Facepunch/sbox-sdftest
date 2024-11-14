@@ -10,6 +10,8 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 	[Property] public string Uri { get; set; }
 	[Property] public string ServiceName { get; set; } = "SdfWorldServer";
 
+	[Property] public GameObject RemotePlayerPrefab { get; set; }
+
 	private bool _receivedWorldParams;
 	private WebSocket _socket;
 	private readonly Dictionary<Vector2Int, WebSocketCellEditFeed> _cellFeeds = new();
@@ -38,7 +40,7 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 		Subscribe,
 		Unsubscribe,
 		Edit,
-		PlayerMove
+		PlayerState
 	}
 
 	private record WorldParameterMessage( string Seed, string Parameters );
@@ -82,32 +84,16 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 
 	private void OnDataReceived( Span<byte> data )
 	{
-		if ( data.Length < 4 ) return;
+		if ( data.Length < 12 ) return;
 
 		var kind = (MessageKind)BitConverter.ToUInt16( data[..2] );
-
-		data = data[4..];
-
-		switch ( kind )
-		{
-			case MessageKind.Edit:
-				OnEditReceived( data );
-				return;
-		}
-	}
-
-	private void OnEditReceived( Span<byte> data )
-	{
-		if ( data.Length < 16 ) return;
-
-		var cellX = BitConverter.ToInt32( data[..4] );
-		var cellY = BitConverter.ToInt32( data[4..8] );
-
+		var cellX = BitConverter.ToInt32( data[4..8] );
+		var cellY = BitConverter.ToInt32( data[8..12] );
 		var cellIndex = new Vector2Int( cellX, cellY );
 
 		if ( !_cellFeeds.TryGetValue( cellIndex, out var feed ) ) return;
 
-		feed.OnEditReceived( data[8..] );
+		feed.OnDataReceived( kind, data[12..] );
 	}
 
 	private void Submit( MessageKind messageKind, Vector2Int cellIndex, ReadOnlySpan<byte> payload )
@@ -158,61 +144,6 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 	[field: ThreadStatic]
 	private static byte[] MoveUpdateBuffer { get; set; }
 
-	[Flags]
-	public enum PlayerStateFlags : byte
-	{
-		IsOnGround,
-		IsDucking,
-		IsSwimming
-	}
-
-	public record struct PlayerState( Vector3 Pos, float Yaw, PlayerStateFlags Flags )
-	{
-		public CompressedPlayerState Compress( float cellSize )
-		{
-			var relPos = Pos / cellSize;
-			var relYaw = Yaw / 360f;
-
-			relYaw -= MathF.Floor( relYaw );
-
-			return new CompressedPlayerState(
-				(ushort)Math.Clamp( MathF.Round( relPos.x * 65536f ), 0, ushort.MaxValue ),
-				(ushort)Math.Clamp( MathF.Round( relPos.y * 65536f ), 0, ushort.MaxValue ),
-				(ushort)Math.Clamp( MathF.Round( relPos.z * 65536f ), 0, ushort.MaxValue ),
-				(byte)Math.Clamp( MathF.Round( relYaw * 256f ), 0, byte.MaxValue ),
-				Flags );
-		}
-	}
-
-	public record struct CompressedPlayerState(
-		ushort PosX,
-		ushort PosY,
-		ushort PosZ,
-		byte Yaw,
-		PlayerStateFlags Flags )
-	{
-		public const int SizeBytes = 8;
-
-		public void Write( Span<byte> span )
-		{
-			BitConverter.TryWriteBytes( span[..2], PosX );
-			BitConverter.TryWriteBytes( span[2..4], PosY );
-			BitConverter.TryWriteBytes( span[4..6], PosZ );
-
-			span[6] = Yaw;
-			span[7] = (byte)Flags;
-		}
-
-		public static CompressedPlayerState Read( ReadOnlySpan<byte> span )
-		{
-			return new CompressedPlayerState(
-				BitConverter.ToUInt16( span[..2] ),
-				BitConverter.ToUInt16( span[2..4] ),
-				BitConverter.ToUInt16( span[4..6] ),
-				span[6], (PlayerStateFlags)span[7] );
-		}
-	}
-
 	protected override void OnFixedUpdate()
 	{
 		if ( _lastMoveMessage < MoveMessagePeriod ) return;
@@ -242,12 +173,27 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 			.Compress( editManager.CellSize )
 			.Write( buffer );
 
-		Submit( MessageKind.PlayerMove, cellIndex, buffer );
+		Submit( MessageKind.PlayerState, cellIndex, buffer );
 	}
 
-	public ICellEditFeed CreateCellEditFeed( Vector2Int cellIndex )
+	private Dictionary<long, RemotePlayer> RemotePlayers { get; } = new();
+
+	private void UpdatePlayerState( long steamId, PlayerState state, float updatePeriod )
 	{
-		var feed = _cellFeeds[cellIndex] = new WebSocketCellEditFeed( this, cellIndex );
+		if ( !RemotePlayers.TryGetValue( steamId, out var player ) )
+		{
+			player = RemotePlayers[steamId] = RemotePlayerPrefab
+				.Clone( state.Pos )
+				.GetComponent<RemotePlayer>();
+		}
+
+		player.MoveTo( state.Pos, Rotation.FromYaw( state.Yaw ), updatePeriod );
+		player.SetFlags( state.Flags );
+	}
+
+	public ICellEditFeed CreateCellEditFeed( EditManager editManager, Vector2Int cellIndex )
+	{
+		var feed = _cellFeeds[cellIndex] = new WebSocketCellEditFeed( editManager, this, cellIndex );
 
 		Submit( MessageKind.Subscribe, cellIndex, ReadOnlySpan<byte>.Empty );
 
@@ -256,11 +202,11 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 
 	private class WebSocketCellEditFeed : ICellEditFeed
 	{
-		private readonly WebSocketEditFeed _parent;
 		private readonly List<CompressedEditData> _edits = new();
 
 		private bool _isLoaded;
-
+		public EditManager EditManager { get; }
+		private WebSocketEditFeed Parent { get; }
 		public Vector2Int CellIndex { get; }
 
 		public IReadOnlyList<CompressedEditData> Edits => _edits;
@@ -278,32 +224,68 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 
 			data.Write( buffer );
 
-			_parent.Submit( MessageKind.Edit, CellIndex, buffer );
+			Parent.Submit( MessageKind.Edit, CellIndex, buffer );
 
 			Edited?.Invoke( this, data );
 		}
 
-		public WebSocketCellEditFeed( WebSocketEditFeed parent, Vector2Int cellIndex )
+		public WebSocketCellEditFeed( EditManager editManager, WebSocketEditFeed parent, Vector2Int cellIndex )
 		{
-			_parent = parent;
+			EditManager = editManager;
+			Parent = parent;
 
 			CellIndex = cellIndex;
 		}
 
-		public void OnEditReceived( Span<byte> data )
+		public void OnDataReceived( MessageKind kind, Span<byte> data )
 		{
-			if ( data.Length < CompressedEditData.SizeBytes ) return;
+			switch ( kind )
+			{
+				case MessageKind.Edit:
+				{
+					if ( data.Length < CompressedEditData.SizeBytes ) return;
 
-			var edit = CompressedEditData.Read( data );
+					var edit = CompressedEditData.Read( data );
 
-			_edits.Add( edit );
+					_edits.Add( edit );
 
-			Edited?.Invoke( this, edit );
+					Edited?.Invoke( this, edit );
+					break;
+				}
+
+				case MessageKind.PlayerState:
+				{
+					if ( data.Length < 8 ) return;
+
+					var count = BitConverter.ToInt32( data[..4] );
+					var updatePeriod = BitConverter.ToSingle( data[4..8] );
+
+					var cellPos = EditManager.CellToWorld( CellIndex );
+
+					const int stride = 8 + CompressedPlayerState.SizeBytes;
+
+					data = data[8..];
+
+					if ( data.Length < count * stride ) return;
+
+					for ( int i = 0, offset = 0; i < count; ++i, offset += stride )
+					{
+						var steamId = BitConverter.ToInt64( data[offset..] );
+						var state = CompressedPlayerState
+							.Read( data[(offset + 8)..] )
+							.Decompress( EditManager.CellSize );
+
+						Parent.UpdatePlayerState( steamId, state with { Pos = state.Pos + cellPos }, updatePeriod );
+					}
+
+					break;
+				}
+			}
 		}
 
 		public void Dispose()
 		{
-			_parent.Submit( MessageKind.Unsubscribe, CellIndex, ReadOnlySpan<byte>.Empty );
+			Parent.Submit( MessageKind.Unsubscribe, CellIndex, ReadOnlySpan<byte>.Empty );
 		}
 	}
 }

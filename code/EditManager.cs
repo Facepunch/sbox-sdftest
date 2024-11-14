@@ -92,7 +92,7 @@ public delegate void CellEditedDelegate( ICellEditFeed feed, CompressedEditData 
 
 public interface ICellEditFeedFactory
 {
-	ICellEditFeed CreateCellEditFeed( Vector2Int cellIndex );
+	ICellEditFeed CreateCellEditFeed( EditManager editManager, Vector2Int cellIndex );
 }
 
 public interface ICellEditFeed : IDisposable
@@ -187,7 +187,7 @@ public sealed class EditManager : Component
 			{
 				var factory = Scene.GetAllComponents<ICellEditFeedFactory>().First();
 
-				Cells[cellIndex] = cell = new Cell( factory.CreateCellEditFeed( cellIndex ), new HashSet<EditFeedSubscription>() );
+				Cells[cellIndex] = cell = new Cell( factory.CreateCellEditFeed( this, cellIndex ), new HashSet<EditFeedSubscription>() );
 			}
 
 			cells.Add( cell );

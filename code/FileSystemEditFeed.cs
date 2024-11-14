@@ -8,7 +8,7 @@ public sealed class FileSystemEditFeed : Component, ICellEditFeedFactory
 {
 	[Property] public string Directory { get; set; } = "World1";
 
-	public ICellEditFeed CreateCellEditFeed( Vector2Int cellIndex )
+	public ICellEditFeed CreateCellEditFeed( EditManager editManager, Vector2Int cellIndex )
 	{
 		return new FileSystemCellEditFeed( Directory, cellIndex );
 	}
