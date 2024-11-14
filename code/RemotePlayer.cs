@@ -36,4 +36,12 @@ public sealed class RemotePlayer : Component
 		WorldPosition = Vector3.Lerp( _startTransform.Position, _endTransform.Position, t );
 		Renderer.LocalRotation = Rotation.Slerp( _startTransform.Rotation, _endTransform.Rotation, t );
 	}
+
+	public void SetInfo( string name, string clothing )
+	{
+		GameObject.Name = name;
+
+		ClothingContainer.CreateFromJson( clothing )
+			.Apply( Renderer );
+	}
 }

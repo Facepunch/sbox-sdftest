@@ -63,6 +63,31 @@
             "UseAnimGraph": true
           }
         ]
+      },
+      {
+        "__guid": "673acc4c-8a8a-4bfb-8f29-32b9c36278b6",
+        "Flags": 0,
+        "Name": "Name Plate",
+        "Position": "0,0,96",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.WorldPanel",
+            "__guid": "c56033d2-34c9-4177-b677-56eb5f97d47f",
+            "HorizontalAlign": "Center",
+            "InteractionRange": 1000,
+            "LookAtCamera": true,
+            "PanelSize": "1024,256",
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderScale": 1,
+            "VerticalAlign": "Center"
+          }
+        ]
       }
     ],
     "__variables": [],

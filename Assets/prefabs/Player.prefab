@@ -24,8 +24,8 @@
         "EnablePressing": true,
         "EyeDistanceFromTop": 8,
         "FootstepMixer": {
-          "Name": "master",
-          "Id": "8dc0f9c9-3d7d-4316-9692-9442086dcc27"
+          "Name": "game",
+          "Id": "4714fad9-dfe8-4b3b-9393-cf80a1e70973"
         },
         "FootstepVolume": 1,
         "HideBodyInFirstPerson": true,

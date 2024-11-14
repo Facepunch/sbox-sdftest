@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Sandbox.Worlds;
 
@@ -43,38 +44,62 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 		PlayerState
 	}
 
-	private record WorldParameterMessage( string Seed, string Parameters );
-
-	private record PlayerInfoMessage( string Name, string Clothing );
+	[JsonDerivedType( typeof(WorldParameterMessage), "WorldParameter" )]
+	[JsonDerivedType( typeof( PlayerInfoMessage ), "PlayerInfo" )]
+	private record ServerMessage;
+	private record WorldParameterMessage( string Seed, string Parameters ) : ServerMessage;
+	private record PlayerInfoMessage( long SteamId, string Name, string Clothing ) : ServerMessage;
 
 	private void OnMessageReceived( string message )
 	{
-		if ( _receivedWorldParams ) return;
-
 		try
 		{
-			var contents = JsonSerializer.Deserialize<WorldParameterMessage>( message );
-			var cellLoader = Scene.GetComponentInChildren<SdfCellLoader>();
+			var contents = JsonSerializer.Deserialize<ServerMessage>( message );
 
-			if ( contents.Seed is { } seed )
+			switch ( contents )
 			{
-				cellLoader.Seed = seed;
+				case WorldParameterMessage worldParameterMessage:
+				{
+					if ( _receivedWorldParams ) return;
+
+					var cellLoader = Scene.GetComponentInChildren<SdfCellLoader>();
+
+					if ( worldParameterMessage.Seed is { } seed )
+					{
+						cellLoader.Seed = seed;
+					}
+
+					if ( worldParameterMessage.Parameters is { } parameters )
+					{
+						var resource = new WorldParameters();
+
+						resource.LoadFromJson( parameters );
+
+						cellLoader.Parameters = resource;
+					}
+
+					_receivedWorldParams = true;
+
+					var world = Scene.GetComponentInChildren<StreamingWorld>( true );
+
+					world.GameObject.Enabled = true;
+					break;
+				}
+
+				case PlayerInfoMessage playerInfoMessage:
+				{
+					Log.Info( playerInfoMessage );
+
+					if ( !RemotePlayers.TryGetValue( playerInfoMessage.SteamId, out var player ) )
+					{
+						Log.Warning( $"Unknown player: {playerInfoMessage.SteamId}" );
+						break;
+					}
+
+					player.SetInfo( playerInfoMessage.Name, playerInfoMessage.Clothing );
+					break;
+				}
 			}
-
-			if ( contents.Parameters is { } parameters )
-			{
-				var resource = new WorldParameters();
-
-				resource.LoadFromJson( parameters );
-
-				cellLoader.Parameters = resource;
-			}
-
-			_receivedWorldParams = true;
-
-			var world = Scene.GetComponentInChildren<StreamingWorld>( true );
-
-			world.GameObject.Enabled = true;
 		}
 		catch ( Exception ex )
 		{
@@ -128,9 +153,7 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 
 		await _socket.Connect( Uri, headers );
 
-		var playerInfo = new PlayerInfoMessage(
-			Utility.Steam.PersonaName,
-			ClothingContainer.CreateFromLocalUser().Serialize() );
+		var playerInfo = new PlayerInfoMessage( Game.SteamId, Utility.Steam.PersonaName, ClothingContainer.CreateFromLocalUser().Serialize() );
 
 		await _socket.Send( JsonSerializer.Serialize( playerInfo ) );
 	}

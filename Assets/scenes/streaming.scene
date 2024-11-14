@@ -64,6 +64,7 @@
         {
           "__type": "Sandbox.WebSocketEditFeed",
           "__guid": "9bb899ee-9698-468c-8629-16434f1c9fc6",
+          "__enabled": false,
           "RemotePlayerPrefab": {
             "_type": "gameobject",
             "prefab": "prefabs/remoteplayer.prefab"
@@ -74,7 +75,6 @@
         {
           "__type": "Sandbox.WebSocketEditFeed",
           "__guid": "7134b118-07c7-4992-8ff3-be9a0d0ecd03",
-          "__enabled": false,
           "RemotePlayerPrefab": {
             "_type": "gameobject",
             "prefab": "prefabs/remoteplayer.prefab"
