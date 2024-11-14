@@ -2,6 +2,21 @@
   "__guid": "e812c22b-d04b-4e0e-a8b5-09b20634a1c9",
   "GameObjects": [
     {
+      "__guid": "6110aad8-b15c-4831-9647-830f476e256e",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "c2101a1d-6237-45a2-b84a-06f1bf6b6a83",
+          "Description": "",
+          "SceneTags": "",
+          "Title": "streaming_debug"
+        }
+      ]
+    },
+    {
       "__guid": "f90a5bd1-9308-4044-b573-28c8ffd3d469",
       "Flags": 0,
       "Name": "World 0",
@@ -48,6 +63,9 @@
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "streaming_debug"
+    },
     "NavMesh": {
       "Enabled": false,
       "IncludeStaticBodies": true,
@@ -61,10 +79,9 @@
       "IncludedBodies": ""
     }
   },
+  "ResourceVersion": 2,
   "Title": "streaming_debug",
-  "Description": "",
-  "ResourceVersion": 1,
+  "Description": null,
   "__references": [],
-  "IsValid": true,
-  "__version": 1
+  "__version": 2
 }

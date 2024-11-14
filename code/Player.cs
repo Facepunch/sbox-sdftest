@@ -1,45 +1,64 @@
-using Sandbox;
 using Sandbox.Worlds;
 
-public sealed class Player : Component, Component.INetworkSpawn
+public sealed class Player : Component
 {
-	[Property]
-	public CameraComponent Camera { get; set; }
-
 	[RequireComponent]
 	public PlayerController PlayerController { get; private set; }
 
-	public void OnNetworkSpawn( Connection owner )
-	{
-		Camera.GameObject.Enabled = owner == Connection.Local;
+	[RequireComponent]
+	public EditWorld EditWorld { get; private set; }
 
-		if ( owner == Connection.Local )
+	private bool _justSpawned;
+
+	protected override void OnStart()
+	{
+		WorldPosition = Cookie.Get( "player.pos", WorldPosition );
+		PlayerController.EyeAngles = Cookie.Get( "player.rot", PlayerController.EyeAngles );
+
+		if ( Scene.Camera is { } camera )
 		{
-			WorldPosition = Cookie.Get( "player.pos", WorldPosition );
-			WorldRotation = Cookie.Get( "player.rot", WorldRotation );
+			camera.WorldPosition = WorldPosition + Vector3.Up * 64 - PlayerController.EyeAngles.ToRotation().Forward * 128f;
+			camera.WorldRotation = WorldRotation;
+		}
+
+		EditWorld.Enabled = false;
+		PlayerController.Enabled = false;
+		PlayerController.Body.Gravity = false;
+
+		_justSpawned = true;
+	}
+
+	private bool IsWorldReady
+	{
+		get
+		{
+			var world = Scene.GetAllComponents<StreamingWorld>()?.FirstOrDefault();
+			if ( world is null ) return false;
+
+			var cellIndex = world.GetCellIndex( WorldPosition, 0 );
+			if ( !world.TryGetCell( cellIndex, out var cell ) ) return false;
+
+			return cell.State == CellState.Ready && cell.Opacity >= 1f;
 		}
 	}
 
 	protected override void OnUpdate()
 	{
-		if ( IsProxy ) return;
+		if ( !IsWorldReady ) return;
 
-		if ( PlayerController.CharacterController.IsOnGround )
+		if ( _justSpawned )
+		{
+			_justSpawned = false;
+
+			EditWorld.Enabled = true;
+			PlayerController.Enabled = true;
+			PlayerController.Body.Gravity = true;
+		}
+
+		if ( PlayerController.IsOnGround )
 		{
 			Cookie.Set( "player.pos", WorldPosition );
-			Cookie.Set( "player.rot", WorldRotation );
+			Cookie.Set( "player.rot", PlayerController.EyeAngles );
 		}
-
-		var world = Scene.GetComponentInChildren<StreamingWorld>( true );
-
-		if ( world is null )
-		{
-			PlayerController.Frozen = true;
-			return;
-		}
-
-		var cellIndex = world.GetCellIndex( WorldPosition, 0 );
-
-		PlayerController.Frozen = !world.TryGetCell( cellIndex, out var cell ) || cell.State != CellState.Ready || cell.Opacity < 1f;
 	}
 }

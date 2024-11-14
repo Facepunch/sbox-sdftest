@@ -54,7 +54,8 @@ public sealed class EditWorld : Component
 
 		if ( _lastEdit < CooldownTime || !Input.Pressed( "attack1" ) && !Input.Pressed( "attack2" ) ) return;
 
-		Scene.GetAllComponents<EditManager>().First().Submit( Input.Down( "attack1" ) ? EditKind.Add : EditKind.Subtract, Radius, _editPos );
+		Scene.GetAllComponents<EditManager>().FirstOrDefault()?
+			.Submit( Input.Down( "attack1" ) ? EditKind.Add : EditKind.Subtract, Radius, _editPos );
 
 		_lastEdit = 0f;
 	}

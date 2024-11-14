@@ -2,6 +2,21 @@
   "__guid": "253b5bf7-6876-4d5a-9ffc-aa92d4da234c",
   "GameObjects": [
     {
+      "__guid": "43cec27c-d0a9-449e-a28e-9bf0050fe515",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "ffaa9d82-0294-455c-9b03-72064af362c4",
+          "Description": "",
+          "SceneTags": "",
+          "Title": "minimal"
+        }
+      ]
+    },
+    {
       "__guid": "bfc59c12-1ed2-4f91-8956-a95a315eac3c",
       "Flags": 0,
       "Name": "Sun",
@@ -30,6 +45,7 @@
         {
           "__type": "Sandbox.SkyBox2D",
           "__guid": "c020c069-5c10-45c6-8408-3f299f988c93",
+          "SkyIndirectLighting": true,
           "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
           "Tint": "1,1,1,1"
         },
@@ -45,6 +61,7 @@
           "Feathering": 0.02,
           "FrameInterval": 5,
           "MaxDistance": 512,
+          "MultiBounce": false,
           "Projection": "Sphere",
           "RenderDynamically": false,
           "TintColor": "1,1,1,1",
@@ -65,8 +82,15 @@
           "__type": "Sandbox.ModelRenderer",
           "__guid": "4a3cc2b7-2cc6-4ad1-985f-68778ef92979",
           "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
           "Tint": "0.39546,0.51163,0.27128,1"
         },
@@ -76,7 +100,8 @@
           "Center": "0,0,-5",
           "IsTrigger": false,
           "Scale": "100,100,10",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -138,6 +163,7 @@
           "__type": "Sandbox.Tonemapping",
           "__guid": "ca52c657-1eae-4bd2-a56c-20a88d30ed52",
           "__version": 1,
+          "AutoExposureEnabled": true,
           "ExposureBias": 2,
           "ExposureCompensation": 0,
           "ExposureMethod": "RGB",
@@ -165,7 +191,14 @@
           "__type": "Sandbox.Polygons.PolygonModelRenderer",
           "__guid": "347e0d6f-7a15-4521-bfd0-0201aa016b5d",
           "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
           "Model": "sbox_procedural_model.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
           "Svg": "\u003Csvg width=\u0022960\u0022 height=\u0022216\u0022 viewBox=\u00220 0 960 216\u0022 fill=\u0022none\u0022 xmlns=\u0022http://www.w3.org/2000/svg\u0022\u003E\n\u003Cpath d=\u0022M108 0C48.4929 0 0 48.4929 0 108C0 167.507 48.4929 216 108 216C167.507 216 216 167.507 216 108C216 48.4929 167.66 0 108 0ZM108 191.83C61.8017 191.83 24.3229 154.351 24.3229 108.153C24.3229 61.9547 61.8017 24.4759 108 24.4759C154.198 24.4759 191.677 61.9547 191.677 108.153C191.677 154.351 154.198 191.83 108 191.83ZM102.952 95.302L85.6657 78.1688L72.9688 90.8657L60.7309 78.4748L43.4447 95.6079L55.8357 107.999L42.8328 121.002L60.1189 138.288L72.9688 125.285L86.2776 138.594L103.564 121.308L90.2549 107.999L102.952 95.302ZM172.708 94.8452L155.422 77.5591L142.725 90.256L130.334 77.865L113.201 95.1512L125.592 107.542L112.589 120.392L129.722 137.678L142.725 124.675L156.034 137.984L173.32 120.851L160.011 107.542L172.708 94.8452Z\u0022 fill=\u0022#EC1C24\u0022/\u003E\n\u003C/svg\u003E",
           "Tint": "0.92549,0.1098,0.14118,1"
@@ -184,9 +217,11 @@
         {
           "__type": "Sandbox.Sdf.Sdf2DWorld",
           "__guid": "2704d443-5bd9-43ab-8d21-3e89ee82b33c",
+          "HasPhysics": true,
           "OnComponentStart": {
-            "__version": 7,
+            "__version": 8,
             "__guid": "57839a44-303a-47a0-82cd-b299f554a13c",
+            "__changeId": 0,
             "UserData": {
               "Title": "On Component Start"
             },
@@ -241,11 +276,28 @@
           "__type": "Sandbox.ModelRenderer",
           "__guid": "fb5afb81-8408-49d1-98dc-8cb848b3fbab",
           "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
           "Model": "models/dev/sphere.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
           "Tint": "0,0,0,1"
         }
       ]
+    },
+    {
+      "__guid": "59341ba8-6f9d-4fb2-b288-f7b89ddb2e13",
+      "Flags": 0,
+      "Name": "player",
+      "Position": "-136.3605,-174.1613,4",
+      "Enabled": true,
+      "NetworkMode": 1,
+      "__Prefab": "prefabs/player.prefab",
+      "__PrefabVariables": {}
     }
   ],
   "SceneProperties": {
@@ -253,9 +305,13 @@
     "MaxFixedUpdates": 5,
     "NetworkFrequency": 60,
     "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "minimal"
+    },
     "NavMesh": {
       "Enabled": false,
       "IncludeStaticBodies": true,
@@ -269,9 +325,9 @@
       "IncludedBodies": ""
     }
   },
+  "ResourceVersion": 2,
   "Title": "minimal",
-  "Description": "",
-  "ResourceVersion": 1,
+  "Description": null,
   "__references": [],
-  "__version": 1
+  "__version": 2
 }
