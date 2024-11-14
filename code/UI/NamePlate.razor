@@ -1,0 +1,37 @@
+@using System
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+@namespace Sandbox
+
+<root style="opacity: @Opacity;">
+    <img class="image" src="avatar:@SteamId" />
+	<div class="title">@PersonaName</div>
+</root>
+
+@code
+{
+    private float Opacity { get; set; }
+
+    public long SteamId { get; set; }
+    public string PersonaName { get; set; }
+
+	[Property]
+	public float FadeDist { get; set; } = 256f;
+
+    [Property]
+	public float MaxDist { get; set; } = 1024f;
+
+	/// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine( SteamId, PersonaName, Opacity );
+
+	protected override void OnFixedUpdate()
+	{
+		var camera = Scene.Camera;
+		var dist = (WorldPosition - camera.WorldPosition).Length;
+
+		Opacity = dist.Remap( MaxDist, MaxDist - FadeDist );
+	}
+}

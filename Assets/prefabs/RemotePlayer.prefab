@@ -8,6 +8,12 @@
       {
         "__type": "RemotePlayer",
         "__guid": "274aaaa8-6f53-43ca-9105-f31e970e85dc",
+        "NamePlate": {
+          "_type": "component",
+          "component_id": "225321ed-a3a1-4e85-9a88-fb6ee3064c47",
+          "go": "673acc4c-8a8a-4bfb-8f29-32b9c36278b6",
+          "component_type": "NamePlate"
+        },
         "Renderer": {
           "_type": "component",
           "component_id": "184a2f64-7721-4bf5-9b99-2eb4209cc136",
@@ -68,7 +74,7 @@
         "__guid": "673acc4c-8a8a-4bfb-8f29-32b9c36278b6",
         "Flags": 0,
         "Name": "Name Plate",
-        "Position": "0,0,96",
+        "Position": "0,0,80",
         "Enabled": true,
         "Components": [
           {
@@ -77,15 +83,21 @@
             "HorizontalAlign": "Center",
             "InteractionRange": 1000,
             "LookAtCamera": true,
-            "PanelSize": "1024,256",
+            "PanelSize": "1536,256",
             "RenderOptions": {
-              "GameLayer": true,
-              "OverlayLayer": false,
+              "GameLayer": false,
+              "OverlayLayer": true,
               "BloomLayer": false,
               "AfterUILayer": false
             },
             "RenderScale": 1,
             "VerticalAlign": "Center"
+          },
+          {
+            "__type": "Sandbox.NamePlate",
+            "__guid": "225321ed-a3a1-4e85-9a88-fb6ee3064c47",
+            "FadeDist": 128,
+            "MaxDist": 512
           }
         ]
       }

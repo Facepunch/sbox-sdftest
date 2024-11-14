@@ -96,7 +96,7 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 						break;
 					}
 
-					player.SetInfo( playerInfoMessage.Name, playerInfoMessage.Clothing );
+					player.SetInfo( playerInfoMessage.SteamId, playerInfoMessage.Name, playerInfoMessage.Clothing );
 					break;
 				}
 			}

@@ -3,6 +3,7 @@
 public sealed class RemotePlayer : Component
 {
 	[Property] public SkinnedModelRenderer Renderer { get; set; }
+	[Property] public NamePlate NamePlate { get; set; }
 	[RequireComponent] public CitizenAnimationHelper AnimationHelper { get; private set; }
 
 	private Transform _startTransform;
@@ -37,11 +38,17 @@ public sealed class RemotePlayer : Component
 		Renderer.LocalRotation = Rotation.Slerp( _startTransform.Rotation, _endTransform.Rotation, t );
 	}
 
-	public void SetInfo( string name, string clothing )
+	public void SetInfo( long steamId, string name, string clothing )
 	{
-		GameObject.Name = name;
+		NamePlate.SteamId = steamId;
+		NamePlate.PersonaName = name;
 
-		ClothingContainer.CreateFromJson( clothing )
-			.Apply( Renderer );
+		GameObject.Name = $"{steamId} - {name}";
+
+		var clothingContainer = ClothingContainer.CreateFromJson( clothing );
+
+		clothingContainer.Apply( Renderer );
+
+		NamePlate.LocalPosition = Vector3.Up * (clothingContainer.Height * 64f + 16f);
 	}
 }
