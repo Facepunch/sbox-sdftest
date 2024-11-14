@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Threading.Tasks;
-using Sandbox.Internal;
 using Sandbox.Worlds;
 
 namespace Sandbox;
@@ -16,6 +13,10 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 	private bool _receivedWorldParams;
 	private WebSocket _socket;
 	private readonly Dictionary<Vector2Int, WebSocketCellEditFeed> _cellFeeds = new();
+
+	private RealTimeSince _lastMoveMessage;
+
+	public const float MoveMessagePeriod = 0.5f;
 
 	protected override void OnStart()
 	{
@@ -36,7 +37,8 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 	{
 		Subscribe,
 		Unsubscribe,
-		Edit
+		Edit,
+		PlayerMove
 	}
 
 	private record WorldParameterMessage( string Seed, string Parameters );
@@ -153,6 +155,96 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 		_socket = null;
 	}
 
+	[field: ThreadStatic]
+	private static byte[] MoveUpdateBuffer { get; set; }
+
+	[Flags]
+	public enum PlayerStateFlags : byte
+	{
+		IsOnGround,
+		IsDucking,
+		IsSwimming
+	}
+
+	public record struct PlayerState( Vector3 Pos, float Yaw, PlayerStateFlags Flags )
+	{
+		public CompressedPlayerState Compress( float cellSize )
+		{
+			var relPos = Pos / cellSize;
+			var relYaw = Yaw / 360f;
+
+			relYaw -= MathF.Floor( relYaw );
+
+			return new CompressedPlayerState(
+				(ushort)Math.Clamp( MathF.Round( relPos.x * 65536f ), 0, ushort.MaxValue ),
+				(ushort)Math.Clamp( MathF.Round( relPos.y * 65536f ), 0, ushort.MaxValue ),
+				(ushort)Math.Clamp( MathF.Round( relPos.z * 65536f ), 0, ushort.MaxValue ),
+				(byte)Math.Clamp( MathF.Round( relYaw * 256f ), 0, byte.MaxValue ),
+				Flags );
+		}
+	}
+
+	public record struct CompressedPlayerState(
+		ushort PosX,
+		ushort PosY,
+		ushort PosZ,
+		byte Yaw,
+		PlayerStateFlags Flags )
+	{
+		public const int SizeBytes = 8;
+
+		public void Write( Span<byte> span )
+		{
+			BitConverter.TryWriteBytes( span[..2], PosX );
+			BitConverter.TryWriteBytes( span[2..4], PosY );
+			BitConverter.TryWriteBytes( span[4..6], PosZ );
+
+			span[6] = Yaw;
+			span[7] = (byte)Flags;
+		}
+
+		public static CompressedPlayerState Read( ReadOnlySpan<byte> span )
+		{
+			return new CompressedPlayerState(
+				BitConverter.ToUInt16( span[..2] ),
+				BitConverter.ToUInt16( span[2..4] ),
+				BitConverter.ToUInt16( span[4..6] ),
+				span[6], (PlayerStateFlags)span[7] );
+		}
+	}
+
+	protected override void OnFixedUpdate()
+	{
+		if ( _lastMoveMessage < MoveMessagePeriod ) return;
+
+		var editManager = Scene.GetAllComponents<EditManager>().FirstOrDefault();
+		var player = Scene.GetAllComponents<LocalPlayer>().FirstOrDefault();
+
+		if ( editManager is null || _socket?.IsConnected is not true || player is null )
+		{
+			return;
+		}
+
+		var controller = player.PlayerController;
+		var cellIndex = editManager.WorldToCell( player.WorldPosition );
+		var localPos = player.WorldPosition - editManager.CellToWorld( cellIndex );
+
+		_lastMoveMessage = 0f;
+
+		Span<byte> buffer = MoveUpdateBuffer ??= new byte[8];
+
+		var state = new PlayerState( localPos, controller.EyeAngles.yaw,
+			(controller.IsOnGround ? PlayerStateFlags.IsOnGround : 0) |
+			(controller.IsDucking ? PlayerStateFlags.IsDucking : 0) |
+			(controller.IsSwimming ? PlayerStateFlags.IsSwimming : 0) );
+
+		state
+			.Compress( editManager.CellSize )
+			.Write( buffer );
+
+		Submit( MessageKind.PlayerMove, cellIndex, buffer );
+	}
+
 	public ICellEditFeed CreateCellEditFeed( Vector2Int cellIndex )
 	{
 		var feed = _cellFeeds[cellIndex] = new WebSocketCellEditFeed( this, cellIndex );
@@ -175,15 +267,18 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 
 		public event CellEditedDelegate Edited;
 
+		[field: ThreadStatic]
+		private static byte[] SubmitBuffer { get; set; }
+
 		public void Submit( CompressedEditData data )
 		{
 			_edits.Add( data );
 
-			Span<byte> payload = new byte[8];
+			Span<byte> buffer = SubmitBuffer ??= new byte[8];
 
-			data.Write( payload );
+			data.Write( buffer );
 
-			_parent.Submit( MessageKind.Edit, CellIndex, payload );
+			_parent.Submit( MessageKind.Edit, CellIndex, buffer );
 
 			Edited?.Invoke( this, data );
 		}
@@ -197,7 +292,7 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 
 		public void OnEditReceived( Span<byte> data )
 		{
-			if ( data.Length < 8 ) return;
+			if ( data.Length < CompressedEditData.SizeBytes ) return;
 
 			var edit = CompressedEditData.Read( data );
 

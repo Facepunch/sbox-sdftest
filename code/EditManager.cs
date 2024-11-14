@@ -37,6 +37,8 @@ public record struct EditData( EditKind Kind, float Size, Vector3 Origin )
 
 public record struct CompressedEditData( EditKind Kind, byte Size, ushort OriginX, ushort OriginY, ushort OriginZ )
 {
+	public const int SizeBytes = 8;
+
 	public static CompressedEditData Read( BinaryReader reader )
 	{
 		return new CompressedEditData(
@@ -118,6 +120,13 @@ public sealed class EditManager : Component
 	public Vector3 CellToWorld( Vector2Int cellIndex )
 	{
 		return cellIndex * CellSize;
+	}
+
+	public Vector2Int WorldToCell( Vector3 pos )
+	{
+		return new Vector2Int(
+			(int)MathF.Floor( pos.x / CellSize ),
+			(int)MathF.Floor( pos.y / CellSize ) );
 	}
 
 	public void Submit( EditKind kind, float size, Vector3 origin )
