@@ -1,6 +1,6 @@
 using Sandbox.Worlds;
 
-public sealed class Player : Component
+public sealed class LocalPlayer : Component
 {
 	[RequireComponent]
 	public PlayerController PlayerController { get; private set; }
@@ -12,13 +12,20 @@ public sealed class Player : Component
 
 	protected override void OnStart()
 	{
+		var clothing = ClothingContainer.CreateFromLocalUser();
+
+		clothing.Apply( PlayerController.Renderer );
+
 		WorldPosition = Cookie.Get( "player.pos", WorldPosition );
 		PlayerController.EyeAngles = Cookie.Get( "player.rot", PlayerController.EyeAngles );
+		PlayerController.Renderer.LocalRotation = PlayerController.EyeAngles.WithPitch( 0f );
+
+		// TODO: rotation snaps back to 0 after enabling player controller
 
 		if ( Scene.Camera is { } camera )
 		{
 			camera.WorldPosition = WorldPosition + Vector3.Up * 64 - PlayerController.EyeAngles.ToRotation().Forward * 128f;
-			camera.WorldRotation = WorldRotation;
+			camera.WorldRotation = PlayerController.EyeAngles;
 		}
 
 		EditWorld.Enabled = false;

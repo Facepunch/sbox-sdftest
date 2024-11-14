@@ -111,10 +111,6 @@
         "Priority": 5
       },
       {
-        "__type": "Player",
-        "__guid": "4c7d10a5-3121-4986-adb0-9077f6aac471"
-      },
-      {
         "__type": "Sandbox.EditWorld",
         "__guid": "7050cdf0-087d-465c-8850-01f12d59739e",
         "Color": "1,1,1,1",
@@ -129,6 +125,10 @@
       {
         "__type": "Sandbox.Worlds.LoadOrigin",
         "__guid": "a673cdd8-5638-4ef0-a2d1-152396d7208d"
+      },
+      {
+        "__type": "LocalPlayer",
+        "__guid": "b4428cb3-f9b6-4582-a62f-dca9a2e62e29"
       }
     ],
     "Children": [

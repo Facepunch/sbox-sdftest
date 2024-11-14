@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using Sandbox.Internal;
 using Sandbox.Worlds;
 
 namespace Sandbox;
@@ -39,6 +40,8 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 	}
 
 	private record WorldParameterMessage( string Seed, string Parameters );
+
+	private record PlayerInfoMessage( string Name, string Clothing );
 
 	private void OnMessageReceived( string message )
 	{
@@ -136,6 +139,12 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 		};
 
 		await _socket.Connect( Uri, headers );
+
+		var playerInfo = new PlayerInfoMessage(
+			Utility.Steam.PersonaName,
+			ClothingContainer.CreateFromLocalUser().Serialize() );
+
+		await _socket.Send( JsonSerializer.Serialize( playerInfo ) );
 	}
 
 	protected override void OnDestroy()
