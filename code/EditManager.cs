@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Sandbox.Sdf;
+using Sandbox.Worlds;
 
 namespace Sandbox;
 
@@ -117,14 +118,19 @@ public sealed class EditManager : Component
 	[Property]
 	public float CellSize { get; set; } = 8192f;
 
+	private StreamingWorld _world;
+	public StreamingWorld World => _world ??= Scene.GetComponentInChildren<StreamingWorld>( true );
+
+	public Vector2Int BaseCellIndex => (Vector2Int)(-World.WorldPosition / CellSize);
+
 	public Vector3 CellToWorld( Vector2Int cellIndex )
 	{
-		return cellIndex * CellSize;
+		return (cellIndex - BaseCellIndex) * CellSize;
 	}
 
 	public Vector2Int WorldToCell( Vector3 pos )
 	{
-		return new Vector2Int(
+		return BaseCellIndex + new Vector2Int(
 			(int)MathF.Floor( pos.x / CellSize ),
 			(int)MathF.Floor( pos.y / CellSize ) );
 	}
@@ -170,7 +176,7 @@ public sealed class EditManager : Component
 		cellMax.x = Math.Max( cellMin.x, cellMax.x );
 		cellMax.y = Math.Max( cellMin.y, cellMax.y );
 
-		return (cellMin, cellMax);
+		return (cellMin + BaseCellIndex, cellMax + BaseCellIndex);
 	}
 
 	public EditFeedSubscription Subscribe( Vector3 min, Vector3 max )

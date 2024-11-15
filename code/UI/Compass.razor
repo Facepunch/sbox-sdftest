@@ -38,7 +38,7 @@
 			t *= 360f / FieldOfView;
 			t += 0.5f;
 
-			var isMajor = tickAngle % 30 == 0;
+			var isMajor = tickAngle % 45 == 0;
 			var tickHeight = isMajor ? 0.667f : 0.333f;
 			var tickRect = new Rect( rect.Left + t * rect.Width - 0.5f, rect.Top + rect.Height * (1f - tickHeight) * 0.5f, 1f, rect.Height * tickHeight );
 			var alpha = t < 0.125f ? Math.Clamp( t / 0.125f, 0f, 1f )

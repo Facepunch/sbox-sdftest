@@ -11,9 +11,16 @@
 {
     public LocalPlayer Player => Scene.GetAllComponents<LocalPlayer>().FirstOrDefault();
 
-    public Vector2Int Position => new( (int) MathF.Round( Player.WorldPosition.x / 819.2f ), (int) MathF.Round( Player.WorldPosition.y / 819.2f ) );
+    public Vector2Int Position
+    {
+        get
+        {
+            var globalPos = Player.GlobalPosition;
+            return new Vector2Int( (int) MathF.Round( globalPos.x / 819.2f ), (int) MathF.Round( globalPos.y / 819.2f ) );
+	    }
+    }
 
-	/// <summary>
+    /// <summary>
 	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
 	/// </summary>
 	protected override int BuildHash() => System.HashCode.Combine( Position );

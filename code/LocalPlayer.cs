@@ -11,6 +11,8 @@ public sealed class LocalPlayer : Component
 	[RequireComponent]
 	public EditWorld EditWorld { get; private set; }
 
+	public Vector3 GlobalPosition => WorldPosition - (Scene.GetAllComponents<StreamingWorld>().FirstOrDefault()?.WorldPosition ?? Vector3.Zero);
+
 	private bool _justSpawned;
 	private string _cookieKey;
 
@@ -34,8 +36,16 @@ public sealed class LocalPlayer : Component
 		var playerHash = HashCode.Combine( hash, Game.SteamId );
 		var random = new Random( playerHash );
 		var defaultPos = new Vector3( random.VectorInCircle( SpawnAreaRadius ), 8192f );
+		var spawnPos = Cookie.Get( $"{_cookieKey}.pos", defaultPos );
 
-		WorldPosition = Cookie.Get( $"{_cookieKey}.pos", defaultPos );
+		var editManager = Scene.GetComponentInChildren<EditManager>();
+		var world = Scene.GetComponentInChildren<StreamingWorld>( true );
+
+		var cellIndex = editManager.WorldToCell( spawnPos );
+		var worldOffset = editManager.CellToWorld( cellIndex );
+
+		world.WorldPosition = -worldOffset;
+		WorldPosition = spawnPos - worldOffset;
 		PlayerController.EyeAngles = Cookie.Get( $"{_cookieKey}.rot", Rotation.FromYaw( random.NextSingle() * 360f ) );
 		PlayerController.Renderer.LocalRotation = PlayerController.EyeAngles.WithPitch( 0f );
 
@@ -50,23 +60,21 @@ public sealed class LocalPlayer : Component
 		_justSpawned = true;
 	}
 
-	private bool IsWorldReady
+	private bool IsWorldReady( StreamingWorld world )
 	{
-		get
-		{
-			var world = Scene.GetAllComponents<StreamingWorld>()?.FirstOrDefault();
-			if ( world is null ) return false;
+		if ( world is null ) return false;
 
-			var cellIndex = world.GetCellIndex( WorldPosition, 0 );
-			if ( !world.TryGetCell( cellIndex, out var cell ) ) return false;
+		var cellIndex = world.GetCellIndex( WorldPosition, 0 );
+		if ( !world.TryGetCell( cellIndex, out var cell ) ) return false;
 
-			return cell.State == CellState.Ready && cell.Opacity >= 1f;
-		}
+		return cell.State == CellState.Ready && cell.Opacity >= 1f;
 	}
 
 	protected override void OnUpdate()
 	{
-		if ( !IsWorldReady ) return;
+		var world = Scene.GetAllComponents<StreamingWorld>().FirstOrDefault();
+
+		if ( !IsWorldReady( world ) ) return;
 
 		if ( _justSpawned )
 		{
@@ -79,7 +87,7 @@ public sealed class LocalPlayer : Component
 
 		if ( _cookieKey is not null && PlayerController.IsOnGround )
 		{
-			Cookie.Set( $"{_cookieKey}.pos", WorldPosition );
+			Cookie.Set( $"{_cookieKey}.pos", WorldPosition - world!.WorldPosition );
 			Cookie.Set( $"{_cookieKey}.rot", PlayerController.EyeAngles );
 		}
 	}
