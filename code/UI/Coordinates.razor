@@ -4,7 +4,8 @@
 @inherits Panel
 
 <root>
-    @MathF.Abs( Position.x * 0.1f ).ToString( "N1" )@(Position.x >= 0f ? "N" : "S") @MathF.Abs( Position.y * 0.1f ).ToString( "N1" )@(Position.y >= 0f ? "W" : "E")
+	<div class="players"><i>person</i><div>@PlayerCount</div></div>
+    <div class="coords">@MathF.Abs( Position.x * 0.1f ).ToString( "N1" )@(Position.x >= 0f ? "N" : "S") @MathF.Abs( Position.y * 0.1f ).ToString( "N1" )@(Position.y >= 0f ? "W" : "E")</div>
 </root>
 
 @code
@@ -20,8 +21,10 @@
 	    }
     }
 
+    public int PlayerCount => 1 + Scene.GetAllComponents<RemotePlayer>().Count();
+
     /// <summary>
-	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
-	/// </summary>
-	protected override int BuildHash() => System.HashCode.Combine( Position );
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine( Position, PlayerCount );
 }

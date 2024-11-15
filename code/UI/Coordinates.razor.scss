@@ -1,13 +1,23 @@
 Coordinates
 {
 	position: absolute;
-	top: 64px;
+	bottom: 32px;
 	left: 0;
 	right: 0;
-	height: 32px;
+	height: 48px;
 
-	justify-content: center;
+	flex-direction: column;
+	gap: 20px;
+	justify-content: flex-end;
 	align-items: center;
 	color: white;
 	font-weight: bold;
+
+	.coords {
+
+	}
+
+	.players {
+		color: rgba(255,255,255, 0.75);
+	}
 }
