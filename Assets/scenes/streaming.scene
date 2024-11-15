@@ -2,89 +2,6 @@
   "__guid": "8edcfe33-f496-488f-95db-cfb0ad3aa884",
   "GameObjects": [
     {
-      "__guid": "a1bcf4ff-7264-40f1-832c-021daee29328",
-      "Flags": 0,
-      "Name": "Scene Information",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.SceneInformation",
-          "__guid": "f8f419f2-f14a-4a54-8c74-2123784c8ab5",
-          "Description": "",
-          "SceneTags": "",
-          "Title": "streaming"
-        }
-      ]
-    },
-    {
-      "__guid": "d1170de9-47d0-41ac-b524-2e4a1b3737e7",
-      "Flags": 0,
-      "Name": "Sun",
-      "Position": "-641.5327,-124.602,370.7278",
-      "Rotation": "0.1830579,0.2385661,-0.580586,0.7566345",
-      "Tags": "light_directional,light",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.DirectionalLight",
-          "__guid": "08173eed-36bd-4204-ac77-5d5e61b28a6b",
-          "FogMode": "Enabled",
-          "FogStrength": 1,
-          "LightColor": "0.91373,0.98039,1,1",
-          "Shadows": true,
-          "SkyColor": "0,0,0,0"
-        }
-      ]
-    },
-    {
-      "__guid": "7d5cdbc6-882b-4da4-8ae4-fe2a318d3b1d",
-      "Flags": 0,
-      "Name": "Cell Loader",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.SdfCellLoader",
-          "__guid": "10f93aa5-ccc1-428b-b32f-e84929c6e8e4",
-          "MaxHeight": 16384,
-          "Parameters": "default.world",
-          "Seed": "Test"
-        },
-        {
-          "__type": "Sandbox.EditManager",
-          "__guid": "5b057992-1be5-40a8-b440-d8b32a290736",
-          "CellSize": 8192,
-          "Material": "sdf/ground.sdfvol"
-        },
-        {
-          "__type": "Sandbox.FileSystemEditFeed",
-          "__guid": "7795619a-2e7a-4073-9164-cf25c3e80c31",
-          "__enabled": false,
-          "Directory": "World2"
-        },
-        {
-          "__type": "Sandbox.WebSocketEditFeed",
-          "__guid": "9bb899ee-9698-468c-8629-16434f1c9fc6",
-          "__enabled": false,
-          "RemotePlayerPrefab": {
-            "_type": "gameobject",
-            "prefab": "prefabs/remoteplayer.prefab"
-          },
-          "ServiceName": "SdfWorldServer",
-          "Uri": "ws://localhost:8080/"
-        },
-        {
-          "__type": "Sandbox.WebSocketEditFeed",
-          "__guid": "7134b118-07c7-4992-8ff3-be9a0d0ecd03",
-          "RemotePlayerPrefab": {
-            "_type": "gameobject",
-            "prefab": "prefabs/remoteplayer.prefab"
-          },
-          "ServiceName": "SdfWorldServer",
-          "Uri": "ws://sdfworld.ziks.net:27111/"
-        }
-      ]
-    },
-    {
       "__guid": "5cc1974b-a9be-4616-b085-8b4b3bd9fd81",
       "Flags": 0,
       "Name": "World",
@@ -96,81 +13,6 @@
           "DetailLevels": 5,
           "Is2D": true,
           "LoadRadius": 4
-        }
-      ]
-    },
-    {
-      "__guid": "f5431024-c2b3-49a6-973e-2a8d4f52bb8e",
-      "Flags": 0,
-      "Name": "2D Skybox",
-      "Position": "1057.255,2051.7,908.2878",
-      "Tags": "skybox",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.SkyBox2D",
-          "__guid": "02fd1a58-31e1-441f-983c-9386d697e7e2",
-          "SkyIndirectLighting": true,
-          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "__guid": "8d28c826-4628-403d-a4f3-d5569ad4e1d7",
-      "Flags": 0,
-      "Name": "Ocean",
-      "Position": "0,0,640",
-      "Scale": "32768,32768,1",
-      "Tags": "water",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "6dc413b2-6635-44d6-8f7f-438a264c1d3a",
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialOverride": "materials/water/water_temp.vmat",
-          "Model": "models/dev/plane.vmdl",
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "0.61395,0.85845,1,1"
-        },
-        {
-          "__type": "Sandbox.BoxCollider",
-          "__guid": "3a73e262-db31-4f44-a79e-6c4b0d5d3f70",
-          "Center": "0,0,-4096",
-          "IsTrigger": true,
-          "Scale": "65536,65536,8192",
-          "Static": false,
-          "SurfaceVelocity": "0,0,0"
-        }
-      ]
-    },
-    {
-      "__guid": "eddfb7cf-b6c4-48a8-bfa7-4aa08e3645be",
-      "Flags": 0,
-      "Name": "Cubemap Fog",
-      "Position": "4640.799,6997.016,4519.691",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.CubemapFog",
-          "__guid": "d5aaa32f-e073-4226-a696-ade4b5265fc3",
-          "Blur": 0,
-          "EndDistance": 50000,
-          "FalloffExponent": 1.5,
-          "HeightExponent": 2,
-          "HeightStart": 2000,
-          "HeightWidth": 0,
-          "Sky": "materials/skybox/skybox_day_01.vmat",
-          "StartDistance": 0,
-          "Tint": "1,1,1,1"
         }
       ]
     },
@@ -210,24 +52,194 @@
       "__PrefabVariables": {}
     },
     {
-      "__guid": "54e55b5a-653f-4064-be94-a4327a462fd7",
+      "__guid": "a998229a-ca1f-4418-a292-7f3e936aa535",
       "Flags": 0,
-      "Name": "HUD",
-      "Position": "89.00179,-95.28075,8211.483",
+      "Name": "Absolute",
+      "Position": "-207.1187,-191.7345,8822.913",
+      "Tags": "absolute",
       "Enabled": true,
-      "Components": [
+      "Children": [
         {
-          "__type": "Sandbox.ScreenPanel",
-          "__guid": "3b55cdc0-6585-4780-9b9b-aa25ae44196c",
-          "AutoScreenScale": true,
-          "Opacity": 1,
-          "Scale": 1,
-          "ScaleStrategy": "ConsistentHeight",
-          "ZIndex": 100
+          "__guid": "a1bcf4ff-7264-40f1-832c-021daee29328",
+          "Flags": 0,
+          "Name": "Scene Information",
+          "Position": "207.1187,191.7345,-8822.913",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SceneInformation",
+              "__guid": "f8f419f2-f14a-4a54-8c74-2123784c8ab5",
+              "Description": "",
+              "SceneTags": "",
+              "Title": "streaming"
+            }
+          ]
         },
         {
-          "__type": "SdfWorld.UI.HudRoot",
-          "__guid": "b9afe41b-a9bc-4e97-b6ba-01fd3fadd85d"
+          "__guid": "d1170de9-47d0-41ac-b524-2e4a1b3737e7",
+          "Flags": 0,
+          "Name": "Sun",
+          "Position": "-434.414,67.13247,-8452.186",
+          "Rotation": "0.1830579,0.2385661,-0.580586,0.7566345",
+          "Tags": "light_directional,light",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.DirectionalLight",
+              "__guid": "08173eed-36bd-4204-ac77-5d5e61b28a6b",
+              "FogMode": "Enabled",
+              "FogStrength": 1,
+              "LightColor": "0.91373,0.98039,1,1",
+              "Shadows": true,
+              "SkyColor": "0,0,0,0"
+            }
+          ]
+        },
+        {
+          "__guid": "7d5cdbc6-882b-4da4-8ae4-fe2a318d3b1d",
+          "Flags": 0,
+          "Name": "Cell Loader",
+          "Position": "207.1187,191.7345,-8822.913",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SdfCellLoader",
+              "__guid": "10f93aa5-ccc1-428b-b32f-e84929c6e8e4",
+              "MaxHeight": 16384,
+              "Parameters": "default.world",
+              "Seed": "Test"
+            },
+            {
+              "__type": "Sandbox.EditManager",
+              "__guid": "5b057992-1be5-40a8-b440-d8b32a290736",
+              "CellSize": 8192,
+              "Material": "sdf/ground.sdfvol"
+            },
+            {
+              "__type": "Sandbox.FileSystemEditFeed",
+              "__guid": "7795619a-2e7a-4073-9164-cf25c3e80c31",
+              "__enabled": false,
+              "Directory": "World2"
+            },
+            {
+              "__type": "Sandbox.WebSocketEditFeed",
+              "__guid": "9bb899ee-9698-468c-8629-16434f1c9fc6",
+              "__enabled": false,
+              "RemotePlayerPrefab": {
+                "_type": "gameobject",
+                "prefab": "prefabs/remoteplayer.prefab"
+              },
+              "ServiceName": "SdfWorldServer",
+              "Uri": "ws://localhost:8080/"
+            },
+            {
+              "__type": "Sandbox.WebSocketEditFeed",
+              "__guid": "7134b118-07c7-4992-8ff3-be9a0d0ecd03",
+              "RemotePlayerPrefab": {
+                "_type": "gameobject",
+                "prefab": "prefabs/remoteplayer.prefab"
+              },
+              "ServiceName": "SdfWorldServer",
+              "Uri": "ws://sdfworld.ziks.net:27111/"
+            }
+          ]
+        },
+        {
+          "__guid": "f5431024-c2b3-49a6-973e-2a8d4f52bb8e",
+          "Flags": 0,
+          "Name": "2D Skybox",
+          "Position": "207.1187,191.7345,-8822.913",
+          "Tags": "skybox",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkyBox2D",
+              "__guid": "02fd1a58-31e1-441f-983c-9386d697e7e2",
+              "SkyIndirectLighting": true,
+              "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "8d28c826-4628-403d-a4f3-d5569ad4e1d7",
+          "Flags": 0,
+          "Name": "Ocean",
+          "Position": "207.1187,191.7345,-8182.913",
+          "Scale": "32768,32768,1",
+          "Tags": "water",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "6dc413b2-6635-44d6-8f7f-438a264c1d3a",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialOverride": "materials/water/water_temp.vmat",
+              "Model": "models/dev/plane.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.61395,0.85845,1,1"
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "3a73e262-db31-4f44-a79e-6c4b0d5d3f70",
+              "Center": "0,0,-4096",
+              "IsTrigger": true,
+              "Scale": "65536,65536,8192",
+              "Static": false,
+              "SurfaceVelocity": "0,0,0"
+            }
+          ]
+        },
+        {
+          "__guid": "eddfb7cf-b6c4-48a8-bfa7-4aa08e3645be",
+          "Flags": 0,
+          "Name": "Cubemap Fog",
+          "Position": "207.1187,191.7345,-8822.913",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.CubemapFog",
+              "__guid": "d5aaa32f-e073-4226-a696-ade4b5265fc3",
+              "Blur": 0,
+              "EndDistance": 50000,
+              "FalloffExponent": 1.5,
+              "HeightExponent": 2,
+              "HeightStart": 2000,
+              "HeightWidth": 0,
+              "Sky": "materials/skybox/skybox_day_01.vmat",
+              "StartDistance": 0,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "54e55b5a-653f-4064-be94-a4327a462fd7",
+          "Flags": 0,
+          "Name": "HUD",
+          "Position": "207.1187,191.7345,-8822.913",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ScreenPanel",
+              "__guid": "3b55cdc0-6585-4780-9b9b-aa25ae44196c",
+              "AutoScreenScale": true,
+              "Opacity": 1,
+              "Scale": 1,
+              "ScaleStrategy": "ConsistentHeight",
+              "ZIndex": 100
+            },
+            {
+              "__type": "SdfWorld.UI.HudRoot",
+              "__guid": "b9afe41b-a9bc-4e97-b6ba-01fd3fadd85d"
+            }
+          ]
         }
       ]
     }

@@ -1,4 +1,5 @@
 using System;
+using Sandbox.Sdf;
 using Sandbox.Worlds;
 
 public sealed class LocalPlayer : Component
@@ -38,14 +39,9 @@ public sealed class LocalPlayer : Component
 		var defaultPos = new Vector3( random.VectorInCircle( SpawnAreaRadius ), 8192f );
 		var spawnPos = Cookie.Get( $"{_cookieKey}.pos", defaultPos );
 
-		var editManager = Scene.GetComponentInChildren<EditManager>();
-		var world = Scene.GetComponentInChildren<StreamingWorld>( true );
-
-		var cellIndex = editManager.WorldToCell( spawnPos );
-		var worldOffset = editManager.CellToWorld( cellIndex );
-
-		world.WorldPosition = -worldOffset;
-		WorldPosition = spawnPos - worldOffset;
+		WorldPosition = spawnPos;
+		RecenterWorld();
+		
 		PlayerController.EyeAngles = Cookie.Get( $"{_cookieKey}.rot", Rotation.FromYaw( random.NextSingle() * 360f ) );
 		PlayerController.Renderer.LocalRotation = PlayerController.EyeAngles.WithPitch( 0f );
 
@@ -76,6 +72,8 @@ public sealed class LocalPlayer : Component
 
 		if ( !IsWorldReady( world ) ) return;
 
+		RecenterWorld();
+
 		if ( _justSpawned )
 		{
 			_justSpawned = false;
@@ -89,6 +87,35 @@ public sealed class LocalPlayer : Component
 		{
 			Cookie.Set( $"{_cookieKey}.pos", WorldPosition - world!.WorldPosition );
 			Cookie.Set( $"{_cookieKey}.rot", PlayerController.EyeAngles );
+		}
+	}
+
+	public void RecenterWorld()
+	{
+		var editManager = Scene.GetComponentInChildren<EditManager>();
+
+		var cellSize = editManager.CellSize;
+
+		if ( WorldPosition.x >= -cellSize && WorldPosition.x <= cellSize && WorldPosition.y >= -cellSize && WorldPosition.y <= cellSize )
+		{
+			return;
+		}
+
+		var cellIndex = editManager.WorldToCell( WorldPosition );
+		var worldOffset = editManager.CellToWorld( cellIndex );
+
+		Log.Info( $"Recentering! {worldOffset}" );
+
+		foreach ( var child in Scene.Children )
+		{
+			if ( child.Tags.Has( "absolute" ) ) continue;
+
+			child.WorldPosition -= worldOffset;
+
+			foreach ( var sdfWorld in child.GetComponentsInChildren<Sdf3DWorld>() )
+			{
+				sdfWorld.UpdateTransform();
+			}
 		}
 	}
 }

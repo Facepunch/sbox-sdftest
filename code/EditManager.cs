@@ -199,7 +199,9 @@ public sealed class EditManager : Component
 			cells.Add( cell );
 		}
 
-		var subscription = new EditFeedSubscription( this, cells.Select( x => x.Feed ), min, max );
+		var localOrigin = CellToWorld( cellMin );
+		var subscription = new EditFeedSubscription( this, cells.Select( x => x.Feed ),
+			cellMin, cellMax, min - localOrigin, max - localOrigin );
 
 		foreach ( var cell in cells )
 		{
@@ -242,8 +244,12 @@ public sealed class EditFeedSubscription : IDisposable
 	private readonly EditManager _manager;
 
 	public IReadOnlyList<ICellEditFeed> Feeds { get; }
-	public Vector3 Min { get; }
-	public Vector3 Max { get; }
+
+	public Vector2Int MinCellIndex { get; }
+	public Vector2Int MaxCellIndex { get; }
+
+	public Vector3 LocalMin { get; }
+	public Vector3 LocalMax { get; }
 
 	private WorldEditedDelegate _edited;
 
@@ -258,14 +264,19 @@ public sealed class EditFeedSubscription : IDisposable
 		remove => _edited -= value;
 	}
 
-	internal EditFeedSubscription( EditManager manager, IEnumerable<ICellEditFeed> feeds, Vector3 min, Vector3 max )
+	internal EditFeedSubscription( EditManager manager, IEnumerable<ICellEditFeed> feeds,
+		Vector2Int minCellIndex, Vector2Int maxCellIndex,
+		Vector3 localMin, Vector3 localMax )
 	{
 		_manager = manager;
 
 		Feeds = feeds.ToArray();
 
-		Min = min;
-		Max = max;
+		MinCellIndex = minCellIndex;
+		MaxCellIndex = maxCellIndex;
+
+		LocalMin = localMin;
+		LocalMax = localMax;
 
 		foreach ( var feed in Feeds )
 		{
@@ -302,21 +313,22 @@ public sealed class EditFeedSubscription : IDisposable
 	{
 		var data = edit.Decompress( _manager.CellSize );
 
+		Vector3 cellOffset = (feed.CellIndex - MinCellIndex) * _manager.CellSize;
 		var cellOrigin = _manager.CellToWorld( feed.CellIndex );
 		var worldOrigin = data.Origin + cellOrigin;
 
 		var margin = data.Size + _manager.Material.MaxDistance;
 
-		var boundsMin = worldOrigin - margin;
-		var boundsMax = worldOrigin + margin;
+		var boundsMin = data.Origin - margin + cellOffset;
+		var boundsMax = data.Origin + margin + cellOffset;
 
-		if ( boundsMax.x < Min.x ) return;
-		if ( boundsMax.y < Min.y ) return;
-		if ( boundsMax.y < Min.y ) return;
+		if ( boundsMax.x < LocalMin.x ) return;
+		if ( boundsMax.y < LocalMin.y ) return;
+		if ( boundsMax.z < LocalMin.z ) return;
 
-		if ( boundsMin.x > Max.x ) return;
-		if ( boundsMin.y > Max.y ) return;
-		if ( boundsMin.y > Max.y ) return;
+		if ( boundsMin.x > LocalMax.x ) return;
+		if ( boundsMin.y > LocalMax.y ) return;
+		if ( boundsMin.z > LocalMax.z ) return;
 
 		_edited?.Invoke( data with { Origin = worldOrigin } );
 	}
