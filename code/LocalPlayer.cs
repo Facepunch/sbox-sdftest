@@ -4,6 +4,20 @@ using Sandbox.Worlds;
 
 public sealed class LocalPlayer : Component
 {
+	[ConCmd( "teleport", Help = "Teleport to the given coordinates." )]
+	public static void TeleportCommand( float x, float y )
+	{
+		var player = Game.ActiveScene?.GetComponentInChildren<LocalPlayer>();
+		if ( player is null ) return;
+
+		var editManager = Game.ActiveScene.GetComponentInChildren<EditManager>();
+		if ( editManager is null ) return;
+
+		player.PreSpawn();
+		player.GlobalPosition = new Vector3( x * editManager.CellSize, y * editManager.CellSize, 8192f );
+		player.PostSpawn();
+	}
+
 	[Property] public float SpawnAreaRadius { get; set; } = 8192f * 8f;
 
 	[RequireComponent]
@@ -12,7 +26,15 @@ public sealed class LocalPlayer : Component
 	[RequireComponent]
 	public EditWorld EditWorld { get; private set; }
 
-	public Vector3 GlobalPosition => WorldPosition - (Scene.GetAllComponents<StreamingWorld>().FirstOrDefault()?.WorldPosition ?? Vector3.Zero);
+	public Vector3 GlobalPosition
+	{
+		get => WorldPosition - (Scene.GetAllComponents<StreamingWorld>().FirstOrDefault()?.WorldPosition ?? Vector3.Zero);
+		set
+		{
+			WorldPosition = value + (Scene.GetAllComponents<StreamingWorld>().FirstOrDefault()?.WorldPosition ?? Vector3.Zero);
+			RecenterWorld();
+		}
+	}
 
 	private bool _justSpawned;
 	private string _cookieKey;
@@ -23,9 +45,19 @@ public sealed class LocalPlayer : Component
 
 		clothing.Apply( PlayerController.Renderer );
 
+		PreSpawn();
+	}
+
+	private void PreSpawn()
+	{
 		EditWorld.Enabled = false;
 		PlayerController.Enabled = false;
 		PlayerController.Body.Gravity = false;
+	}
+
+	private void PostSpawn()
+	{
+		_justSpawned = true;
 	}
 
 	public void Spawn( string uri, string seed )
@@ -53,7 +85,7 @@ public sealed class LocalPlayer : Component
 			camera.WorldRotation = PlayerController.EyeAngles;
 		}
 
-		_justSpawned = true;
+		PostSpawn();
 	}
 
 	private bool IsWorldReady( StreamingWorld world )
