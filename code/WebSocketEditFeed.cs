@@ -173,7 +173,7 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 
 	protected override void OnFixedUpdate()
 	{
-		if ( _lastMoveMessage < MoveMessagePeriod ) return;
+		if ( !_receivedWorldParams || _lastMoveMessage < MoveMessagePeriod ) return;
 
 		var editManager = Scene.GetAllComponents<EditManager>().FirstOrDefault();
 		var player = Scene.GetAllComponents<LocalPlayer>().FirstOrDefault();
