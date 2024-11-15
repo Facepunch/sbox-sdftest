@@ -1,7 +1,10 @@
+using System;
 using Sandbox.Worlds;
 
 public sealed class LocalPlayer : Component
 {
+	[Property] public float SpawnAreaRadius { get; set; } = 8192f * 256f;
+
 	[RequireComponent]
 	public PlayerController PlayerController { get; private set; }
 
@@ -9,6 +12,7 @@ public sealed class LocalPlayer : Component
 	public EditWorld EditWorld { get; private set; }
 
 	private bool _justSpawned;
+	private string _cookieKey;
 
 	protected override void OnStart()
 	{
@@ -16,8 +20,23 @@ public sealed class LocalPlayer : Component
 
 		clothing.Apply( PlayerController.Renderer );
 
-		WorldPosition = Cookie.Get( "player.pos", WorldPosition );
-		PlayerController.EyeAngles = Cookie.Get( "player.rot", PlayerController.EyeAngles );
+		EditWorld.Enabled = false;
+		PlayerController.Enabled = false;
+		PlayerController.Body.Gravity = false;
+	}
+
+	public void Spawn( string uri, string seed )
+	{
+		var hash = seed.FastHash();
+
+		_cookieKey = $"world.{hash}.player";
+
+		var playerHash = HashCode.Combine( hash, Game.SteamId );
+		var random = new Random( playerHash );
+		var defaultPos = new Vector3( random.VectorInCircle( SpawnAreaRadius ), 8192f );
+
+		WorldPosition = Cookie.Get( $"{_cookieKey}.pos", defaultPos );
+		PlayerController.EyeAngles = Cookie.Get( $"{_cookieKey}.rot", Rotation.FromYaw( random.NextSingle() * 360f ) );
 		PlayerController.Renderer.LocalRotation = PlayerController.EyeAngles.WithPitch( 0f );
 
 		// TODO: rotation snaps back to 0 after enabling player controller
@@ -27,10 +46,6 @@ public sealed class LocalPlayer : Component
 			camera.WorldPosition = WorldPosition + Vector3.Up * 64 - PlayerController.EyeAngles.ToRotation().Forward * 128f;
 			camera.WorldRotation = PlayerController.EyeAngles;
 		}
-
-		EditWorld.Enabled = false;
-		PlayerController.Enabled = false;
-		PlayerController.Body.Gravity = false;
 
 		_justSpawned = true;
 	}
@@ -62,10 +77,10 @@ public sealed class LocalPlayer : Component
 			PlayerController.Body.Gravity = true;
 		}
 
-		if ( PlayerController.IsOnGround )
+		if ( _cookieKey is not null && PlayerController.IsOnGround )
 		{
-			Cookie.Set( "player.pos", WorldPosition );
-			Cookie.Set( "player.rot", PlayerController.EyeAngles );
+			Cookie.Set( $"{_cookieKey}.pos", WorldPosition );
+			Cookie.Set( $"{_cookieKey}.rot", PlayerController.EyeAngles );
 		}
 	}
 }

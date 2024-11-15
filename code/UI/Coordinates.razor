@@ -4,14 +4,14 @@
 @inherits Panel
 
 <root>
-    @MathF.Abs( Position.x )@(Position.x >= 0f ? "N" : "S") @MathF.Abs( Position.y )@(Position.y >= 0f ? "W" : "E")
+    @MathF.Abs( Position.x * 0.1f ).ToString( "N1" )@(Position.x >= 0f ? "N" : "S") @MathF.Abs( Position.y * 0.1f ).ToString( "N1" )@(Position.y >= 0f ? "W" : "E")
 </root>
 
 @code
 {
     public LocalPlayer Player => Scene.GetAllComponents<LocalPlayer>().FirstOrDefault();
 
-    public Vector2Int Position => new ( (int)MathF.Round( Player.WorldPosition.x / 39.37f ), (int)MathF.Round( Player.WorldPosition.y / 39.37f ) );
+    public Vector2Int Position => new( (int) MathF.Round( Player.WorldPosition.x / 819.2f ), (int) MathF.Round( Player.WorldPosition.y / 819.2f ) );
 
 	/// <summary>
 	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt

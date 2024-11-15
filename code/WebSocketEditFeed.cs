@@ -78,6 +78,10 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 						cellLoader.Parameters = resource;
 					}
 
+					var player = Scene.GetComponentInChildren<LocalPlayer>();
+
+					player.Spawn( Uri, worldParameterMessage.Seed ?? "" );
+
 					_receivedWorldParams = true;
 
 					var world = Scene.GetComponentInChildren<StreamingWorld>( true );
