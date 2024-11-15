@@ -1,0 +1,13 @@
+Compass {
+	position: absolute;
+	top: 16px;
+	left: 25%;
+	right: 25%;
+	height: 32px;
+	background: linear-gradient(
+		to right,
+		rgba(0, 0, 0, 0.0) 0%,
+		rgba(0, 0, 0, 0.5) 12.5%,
+		rgba(0, 0, 0, 0.5) 87.5%,
+		rgba(0, 0, 0, 0.0) 100%);
+}

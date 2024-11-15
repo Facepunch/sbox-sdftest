@@ -1,0 +1,66 @@
+@using System
+@using Sandbox
+@using Sandbox.UI
+@namespace SdfWorld.UI
+@inherits Panel
+
+<root>
+
+</root>
+
+@code
+{
+	public LocalPlayer Player => Scene.GetAllComponents<LocalPlayer>().FirstOrDefault();
+
+	public const float FieldOfView = 270f;
+
+	public override bool HasContent => true;
+
+	public override void DrawContent( ref RenderState state )
+	{
+		base.DrawContent( ref state );
+
+		// TODO: draw markers
+	}
+
+	public override void DrawBackground( ref RenderState state )
+	{
+        var rect = Box.Rect;
+		var angle = Player?.PlayerController.EyeAngles.yaw ?? 0f;
+
+		base.DrawBackground( ref state );
+
+		for ( var tickAngle = 0; tickAngle < 360; tickAngle += 5 )
+		{
+			var t = (angle - tickAngle) / 360f;
+			t -= MathF.Floor( t + 0.5f );
+
+			t *= 360f / FieldOfView;
+			t += 0.5f;
+
+			var isMajor = tickAngle % 30 == 0;
+			var tickHeight = isMajor ? 0.667f : 0.333f;
+			var tickRect = new Rect( rect.Left + t * rect.Width - 0.5f, rect.Top + rect.Height * (1f - tickHeight) * 0.5f, 1f, rect.Height * tickHeight );
+			var alpha = t < 0.125f ? Math.Clamp( t / 0.125f, 0f, 1f )
+				: t > 0.875f ? Math.Clamp( (1f - t) / 0.125f, 0f, 1f )
+				: 1f;
+
+			if ( tickAngle % 90 == 0 )
+			{
+				var label = tickAngle switch
+				{
+					0 => "N",
+					90 => "W",
+					180 => "S",
+					270 => "E",
+					_ => "?"
+				};
+
+                Graphics.DrawText( tickRect.Grow( 16f, 0f ), label, Color.White.WithAlpha( alpha ), fontSize: rect.Height * 0.75f );
+				continue;
+			}
+
+            Graphics.DrawRoundedRectangle( tickRect, Color.White.WithAlpha( isMajor ? alpha * 0.5f : alpha * 0.25f ) );
+		}
+	}
+}

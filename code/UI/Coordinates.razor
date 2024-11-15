@@ -1,0 +1,20 @@
+@using System
+@using Sandbox.UI;
+@namespace SdfWorld.UI
+@inherits Panel
+
+<root>
+    @MathF.Abs( Position.x )@(Position.x >= 0f ? "N" : "S") @MathF.Abs( Position.y )@(Position.y >= 0f ? "W" : "E")
+</root>
+
+@code
+{
+    public LocalPlayer Player => Scene.GetAllComponents<LocalPlayer>().FirstOrDefault();
+
+    public Vector2Int Position => new ( (int)MathF.Round( Player.WorldPosition.x / 39.37f ), (int)MathF.Round( Player.WorldPosition.y / 39.37f ) );
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( Position );
+}

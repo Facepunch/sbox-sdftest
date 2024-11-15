@@ -25,7 +25,7 @@
     "StartupScene": "scenes/streaming.scene",
     "LaunchMode": "Normal",
     "Compiler": {
-      "RootNamespace": "Sandbox",
+      "RootNamespace": "SdfWorld",
       "DefineConstants": "SANDBOX;ADDON;DEBUG",
       "NoWarn": "1701;1702;1591;",
       "WarningsAsErrors": "",

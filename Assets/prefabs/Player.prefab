@@ -25,7 +25,7 @@
         "EyeDistanceFromTop": 8,
         "FootstepMixer": {
           "Name": "game",
-          "Id": "4714fad9-dfe8-4b3b-9393-cf80a1e70973"
+          "Id": "493aed78-90e8-4564-8041-1d693d5cec42"
         },
         "FootstepVolume": 1,
         "HideBodyInFirstPerson": true,

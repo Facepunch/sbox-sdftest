@@ -208,6 +208,28 @@
       "Enabled": true,
       "__Prefab": "prefabs/player.prefab",
       "__PrefabVariables": {}
+    },
+    {
+      "__guid": "54e55b5a-653f-4064-be94-a4327a462fd7",
+      "Flags": 0,
+      "Name": "HUD",
+      "Position": "89.00179,-95.28075,8211.483",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "3b55cdc0-6585-4780-9b9b-aa25ae44196c",
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ScaleStrategy": "ConsistentHeight",
+          "ZIndex": 100
+        },
+        {
+          "__type": "SdfWorld.UI.HudRoot",
+          "__guid": "b9afe41b-a9bc-4e97-b6ba-01fd3fadd85d"
+        }
+      ]
     }
   ],
   "SceneProperties": {
