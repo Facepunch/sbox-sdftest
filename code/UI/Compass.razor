@@ -33,10 +33,10 @@
 			var playerRect = new Rect( x - rect.Height * 0.5f, rect.Top, rect.Height, rect.Height );
 			var dist = Math.Max( diff.Length, 1f );
 			var distFade = dist < 128f
-				? Math.Clamp( (dist - 64f) / 64f, 0f, 1f )
-				: 1f / Math.Clamp( dist / 8192f, 1f, 8f );
+				? dist.Remap( 128f, 256f )
+				: dist.Remap( 65536f, 1024f, 0.25f );
 
-			Graphics.DrawIcon( playerRect.Contain( new Vector2( rect.Height * 0.75f * distFade ) ), "person", Color.White.WithAlpha( alpha * distFade ), 16f );
+			Graphics.DrawIcon( playerRect.Contain( new Vector2( rect.Height * 0.75f * distFade ) ), "person", Color.White.WithAlpha( alpha * distFade ), 24f * distFade );
 		}
 	}
 
