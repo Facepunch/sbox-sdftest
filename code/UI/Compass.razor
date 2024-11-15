@@ -18,32 +18,56 @@
 
 	public override void DrawContent( ref RenderState state )
 	{
+		var rect = Box.Rect;
+		var localPlayerPos = Player.WorldPosition;
+
 		base.DrawContent( ref state );
 
-		// TODO: draw markers
+		foreach ( var player in Scene.GetAllComponents<RemotePlayer>() )
+		{
+			var diff = (Vector2)(player.WorldPosition - localPlayerPos);
+			var angle = MathF.Atan2( diff.y, diff.x ) * 180f / MathF.PI;
+
+			var (x, alpha) = GetMarkerDrawInfo( rect, angle );
+
+			var playerRect = new Rect( x - rect.Height * 0.5f, rect.Top, rect.Height, rect.Height );
+			var dist = Math.Max( diff.Length, 1f );
+			var distFade = dist < 128f
+				? Math.Clamp( (dist - 64f) / 64f, 0f, 1f )
+				: 1f / Math.Max( dist / 512f, 1f );
+
+			Graphics.DrawIcon( playerRect.Contain( new Vector2( rect.Height * 0.75f * distFade ) ), "person", Color.White.WithAlpha( alpha * distFade ), 16f );
+		}
+	}
+
+	private (float X, float Alpha) GetMarkerDrawInfo( Rect rect, float angle )
+	{
+		var cameraAngle = Scene.Camera?.WorldRotation.Yaw() ?? 0f;
+		var t = (cameraAngle - angle) / 360f;
+		t -= MathF.Floor( t + 0.5f );
+
+		t *= 360f / FieldOfView;
+		t += 0.5f;
+
+		return (rect.Left + t * rect.Width, t < 0.125f ? Math.Clamp( t / 0.125f, 0f, 1f )
+			: t > 0.875f ? Math.Clamp( (1f - t) / 0.125f, 0f, 1f )
+			: 1f);
 	}
 
 	public override void DrawBackground( ref RenderState state )
 	{
-        var rect = Box.Rect;
-		var angle = Player?.PlayerController.EyeAngles.yaw ?? 0f;
+		var rect = Box.Rect;
 
 		base.DrawBackground( ref state );
 
 		for ( var tickAngle = 0; tickAngle < 360; tickAngle += 5 )
 		{
-			var t = (angle - tickAngle) / 360f;
-			t -= MathF.Floor( t + 0.5f );
-
-			t *= 360f / FieldOfView;
-			t += 0.5f;
-
 			var isMajor = tickAngle % 45 == 0;
 			var tickHeight = isMajor ? 0.667f : 0.333f;
-			var tickRect = new Rect( rect.Left + t * rect.Width - 0.5f, rect.Top + rect.Height * (1f - tickHeight) * 0.5f, 1f, rect.Height * tickHeight );
-			var alpha = t < 0.125f ? Math.Clamp( t / 0.125f, 0f, 1f )
-				: t > 0.875f ? Math.Clamp( (1f - t) / 0.125f, 0f, 1f )
-				: 1f;
+
+			var (x, alpha) = GetMarkerDrawInfo( rect, tickAngle );
+
+			var tickRect = new Rect( x - 0.5f, rect.Top + rect.Height * (1f - tickHeight) * 0.5f, 1f, rect.Height * tickHeight );
 
 			if ( tickAngle % 90 == 0 )
 			{
@@ -56,11 +80,11 @@
 					_ => "?"
 				};
 
-                Graphics.DrawText( tickRect.Grow( 16f, 0f ), label, Color.White.WithAlpha( alpha ), fontSize: rect.Height * 0.75f );
+				Graphics.DrawText( tickRect.Grow( 16f, 0f ), label, Color.White.WithAlpha( alpha ), fontSize: rect.Height * 0.75f );
 				continue;
 			}
 
-            Graphics.DrawRoundedRectangle( tickRect, Color.White.WithAlpha( isMajor ? alpha * 0.5f : alpha * 0.25f ) );
+			Graphics.DrawRoundedRectangle( tickRect, Color.White.WithAlpha( isMajor ? alpha * 0.5f : alpha * 0.25f ) );
 		}
 	}
 }

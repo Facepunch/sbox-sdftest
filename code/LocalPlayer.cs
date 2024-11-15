@@ -2,6 +2,11 @@ using System;
 using Sandbox.Sdf;
 using Sandbox.Worlds;
 
+public interface IWorldOriginEvents : ISceneEvent<IWorldOriginEvents>
+{
+	void OnWorldOriginMoved( Vector3 offset );
+}
+
 public sealed class LocalPlayer : Component
 {
 	[ConCmd( "teleport", Help = "Teleport to the given coordinates." )]
@@ -110,13 +115,13 @@ public sealed class LocalPlayer : Component
 		{
 			_justSpawned = false;
 
-			EditWorld.Enabled = true;
 			PlayerController.Enabled = true;
 			PlayerController.Body.Gravity = true;
 		}
 
 		if ( _cookieKey is not null && PlayerController.IsOnGround )
 		{
+			EditWorld.Enabled = true;
 			Cookie.Set( $"{_cookieKey}.pos", WorldPosition - world!.WorldPosition );
 			Cookie.Set( $"{_cookieKey}.rot", PlayerController.EyeAngles );
 		}
@@ -143,11 +148,13 @@ public sealed class LocalPlayer : Component
 			if ( child.Tags.Has( "absolute" ) ) continue;
 
 			child.WorldPosition -= worldOffset;
-
-			foreach ( var sdfWorld in child.GetComponentsInChildren<Sdf3DWorld>() )
-			{
-				sdfWorld.UpdateTransform();
-			}
 		}
+
+		foreach ( var sdfWorld in Scene.GetAllComponents<Sdf3DWorld>() )
+		{
+			sdfWorld.UpdateTransform();
+		}
+
+		IWorldOriginEvents.Post( x => x.OnWorldOriginMoved( -worldOffset ) );
 	}
 }

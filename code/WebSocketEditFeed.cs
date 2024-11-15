@@ -207,7 +207,7 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 
 	private void UpdatePlayerState( long steamId, PlayerState state, float updatePeriod )
 	{
-		if ( !RemotePlayers.TryGetValue( steamId, out var player ) )
+		if ( !RemotePlayers.TryGetValue( steamId, out var player ) || !player.IsValid() )
 		{
 			player = RemotePlayers[steamId] = RemotePlayerPrefab
 				.Clone( state.Pos )

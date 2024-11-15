@@ -1,6 +1,6 @@
 ﻿using Sandbox.Citizen;
 
-public sealed class RemotePlayer : Component
+public sealed class RemotePlayer : Component, IWorldOriginEvents
 {
 	[Property] public SkinnedModelRenderer Renderer { get; set; }
 	[Property] public NamePlate NamePlate { get; set; }
@@ -9,6 +9,14 @@ public sealed class RemotePlayer : Component
 	private Transform _startTransform;
 	private Transform _endTransform;
 	private TimeUntil _moveTime;
+	private TimeUntil _sitTime;
+	private TimeUntil _despawnTime;
+
+	protected override void OnStart()
+	{
+		_sitTime = 60f;
+		_despawnTime = 600f;
+	}
 
 	public void SetFlags( PlayerStateFlags flags )
 	{
@@ -23,6 +31,8 @@ public sealed class RemotePlayer : Component
 		_endTransform = new Transform( position, rotation );
 
 		_moveTime = duration;
+		_sitTime = duration * 2f + 5f;
+		_despawnTime = duration * 2f + 600f;
 
 		var velocity = (_endTransform.Position - _startTransform.Position) / duration;
 
@@ -36,6 +46,16 @@ public sealed class RemotePlayer : Component
 
 		WorldPosition = Vector3.Lerp( _startTransform.Position, _endTransform.Position, t );
 		Renderer.LocalRotation = Rotation.Slerp( _startTransform.Rotation, _endTransform.Rotation, t );
+
+		if ( _sitTime )
+		{
+			AnimationHelper.Sitting = CitizenAnimationHelper.SittingStyle.Floor;
+		}
+
+		if ( _despawnTime )
+		{
+			DestroyGameObject();
+		}
 	}
 
 	public void SetInfo( long steamId, string name, string clothing )
@@ -50,5 +70,11 @@ public sealed class RemotePlayer : Component
 		clothingContainer.Apply( Renderer );
 
 		NamePlate.LocalPosition = Vector3.Up * (clothingContainer.Height * 64f + 16f);
+	}
+
+	void IWorldOriginEvents.OnWorldOriginMoved( Vector3 offset )
+	{
+		_startTransform.Position += offset;
+		_endTransform.Position += offset;
 	}
 }

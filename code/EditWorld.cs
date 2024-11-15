@@ -1,5 +1,4 @@
 ﻿using System;
-using Sandbox.Sdf;
 
 namespace Sandbox;
 
@@ -19,6 +18,12 @@ public sealed class EditWorld : Component
 	private TimeSince _lastEdit;
 
 	private GameObject? _cursor;
+
+	protected override void OnDisabled()
+	{
+		_cursor?.Destroy();
+		_cursor = null;
+	}
 
 	protected override void OnUpdate()
 	{
