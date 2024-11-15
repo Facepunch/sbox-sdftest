@@ -3,7 +3,7 @@ using Sandbox.Worlds;
 
 public sealed class LocalPlayer : Component
 {
-	[Property] public float SpawnAreaRadius { get; set; } = 8192f * 256f;
+	[Property] public float SpawnAreaRadius { get; set; } = 8192f * 8f;
 
 	[RequireComponent]
 	public PlayerController PlayerController { get; private set; }
