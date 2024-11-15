@@ -34,7 +34,7 @@
 			var dist = Math.Max( diff.Length, 1f );
 			var distFade = dist < 128f
 				? Math.Clamp( (dist - 64f) / 64f, 0f, 1f )
-				: 1f / Math.Max( dist / 512f, 1f );
+				: 1f / Math.Clamp( dist / 8192f, 1f, 8f );
 
 			Graphics.DrawIcon( playerRect.Contain( new Vector2( rect.Height * 0.75f * distFade ) ), "person", Color.White.WithAlpha( alpha * distFade ), 16f );
 		}
