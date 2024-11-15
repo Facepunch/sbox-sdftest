@@ -38,6 +38,8 @@ public sealed class RemotePlayer : Component, IWorldOriginEvents
 
 		AnimationHelper.WithVelocity( velocity );
 		AnimationHelper.WithWishVelocity( velocity );
+
+		AnimationHelper.Sitting = CitizenAnimationHelper.SittingStyle.None;
 	}
 
 	protected override void OnUpdate()
