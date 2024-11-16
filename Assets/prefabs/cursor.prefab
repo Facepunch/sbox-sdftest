@@ -9,19 +9,59 @@
         "__type": "Sandbox.ModelRenderer",
         "__guid": "b778af9c-04da-48f9-b5ec-e1916319a347",
         "BodyGroups": 18446744073709551615,
+        "CreateAttachments": false,
         "MaterialOverride": "materials/cursor.vmat",
         "Model": "models/dev/sphere.vmdl",
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
         "RenderType": "Off",
         "Tint": "1,1,1,0.25"
       }
     ],
-    "Children": [],
-    "__variables": []
+    "Children": [
+      {
+        "__guid": "8544ab54-eb40-46a1-a3cd-c8a9f2d30eb8",
+        "Flags": 0,
+        "Name": "Point Light",
+        "Tags": "light_point,light",
+        "Enabled": true
+      }
+    ],
+    "__variables": [],
+    "__properties": {
+      "FixedUpdateFrequency": 50,
+      "MaxFixedUpdates": 5,
+      "NetworkFrequency": 30,
+      "NetworkInterpolation": true,
+      "PhysicsSubSteps": 1,
+      "ThreadedAnimation": true,
+      "TimeScale": 1,
+      "UseFixedUpdate": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    }
   },
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
+  "DontBreakAsTemplate": false,
   "ResourceVersion": 1,
   "__references": [],
+  "HasUnsavedChanges": false,
   "__version": 1
 }

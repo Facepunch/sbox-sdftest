@@ -113,7 +113,7 @@
       {
         "__type": "Sandbox.EditWorld",
         "__guid": "7050cdf0-087d-465c-8850-01f12d59739e",
-        "Color": "1,1,1,1",
+        "Color": "0.16279,0.59535,1,1",
         "CooldownTime": 0.5,
         "CursorPrefab": {
           "_type": "gameobject",
@@ -128,7 +128,8 @@
       },
       {
         "__type": "LocalPlayer",
-        "__guid": "b4428cb3-f9b6-4582-a62f-dca9a2e62e29"
+        "__guid": "b4428cb3-f9b6-4582-a62f-dca9a2e62e29",
+        "SpawnAreaRadius": 65536
       }
     ],
     "Children": [
@@ -160,6 +161,9 @@
               "AfterUILayer": false
             },
             "RenderType": "On",
+            "Sequence": {
+              "Name": null
+            },
             "Tint": "1,1,1,1",
             "UseAnimGraph": true
           }
@@ -197,5 +201,6 @@
   "DontBreakAsTemplate": false,
   "ResourceVersion": 1,
   "__references": [],
+  "HasUnsavedChanges": false,
   "__version": 1
 }

@@ -121,8 +121,8 @@ PS
 		float4 l_1 = TexTriplanar_Color( g_tTexture_ps_0, g_sSampler0, (i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz) / 39.3701, normalize( i.vNormalWs.xyz ) );
 		float4 l_2 = float4( 0.15623, 0.17898, 0.21084, 1 );
 		float4 l_3 = float4( 0.68372, 0.64556, 0.53108, 1 );
-		float4 l_4 = float4( 0.40859705, 0.5860465, 0.07904813, 1 );
-		float4 l_5 = float4( 0.6418605, 0.57976425, 0.3552623, 1 );
+		float4 l_4 = float4( 0.58729327, 0.71627903, 0.37979445, 1 );
+		float4 l_5 = float4( 0.59534883, 0.38702285, 0.25752297, 1 );
 		float3 l_6 = i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz;
 		float3 l_7 = g_v_SdfWorldOffset;
 		float3 l_8 = l_6 + l_7;
@@ -179,7 +179,7 @@ PS
 		// for some toolvis shit
 		m.WorldTangentU = i.vTangentUWs;
 		m.WorldTangentV = i.vTangentVWs;
-        m.TextureCoords = i.vTextureCoords.xy;
+		m.TextureCoords = i.vTextureCoords.xy;
 
 		// This is changed by hand to fix alpha
 		float4 result = ShadingModelStandard::Shade( i, m );

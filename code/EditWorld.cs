@@ -19,10 +19,20 @@ public sealed class EditWorld : Component
 
 	private GameObject? _cursor;
 
-	protected override void OnDisabled()
+	private void DestroyCursor()
 	{
 		_cursor?.Destroy();
 		_cursor = null;
+	}
+
+	protected override void OnDisabled()
+	{
+		DestroyCursor();
+	}
+
+	protected override void OnDestroy()
+	{
+		DestroyCursor();
 	}
 
 	protected override void OnUpdate()
@@ -51,7 +61,7 @@ public sealed class EditWorld : Component
 
 		_cursor.WorldPosition = _editPos;
 		_cursor.WorldScale = Radius / 32f;
-		_cursor.Components.Get<ModelRenderer>().Tint = color.WithAlpha( color.a * 0.125f );
+		_cursor.Components.Get<ModelRenderer>().Tint = color.WithAlpha( color.a * 0.05f );
 
 		Scene.RenderAttributes.Set( "_SdfCursorPosition", _editPos );
 		Scene.RenderAttributes.Set( "_SdfCursorRadius", Radius );

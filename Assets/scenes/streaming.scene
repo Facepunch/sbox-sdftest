@@ -86,9 +86,9 @@
               "__guid": "08173eed-36bd-4204-ac77-5d5e61b28a6b",
               "FogMode": "Enabled",
               "FogStrength": 1,
-              "LightColor": "2,1.94729,1.68372,1",
+              "LightColor": "1,0.97364,0.84186,1",
               "Shadows": true,
-              "SkyColor": "0.21599,0.23022,0.24186,1"
+              "SkyColor": "0.16528,0.1767,0.18605,1"
             }
           ]
         },
