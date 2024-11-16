@@ -10,7 +10,7 @@
       "DefaultMetalness": 0,
       "DefaultAmbientOcclusion": 1,
       "Identifier": "0",
-      "Position": "1744,272",
+      "Position": "1740,276",
       "Albedo": {
         "Identifier": "40",
         "Output": "Result"
@@ -34,17 +34,17 @@
         "SrgbRead": true
       },
       "Identifier": "1",
-      "Position": "656,-288"
+      "Position": "660,-288"
     },
     {
       "_class": "WorldNormal",
       "Identifier": "2",
-      "Position": "-448,240"
+      "Position": "-444,240"
     },
     {
       "_class": "SplitVector",
       "Identifier": "3",
-      "Position": "-208,224",
+      "Position": "-204,228",
       "Input": {
         "Identifier": "2",
         "Output": "Result"
@@ -81,7 +81,7 @@
       "DefaultA": 0,
       "DefaultB": 1,
       "Identifier": "5",
-      "Position": "960,-16",
+      "Position": "960,-12",
       "A": {
         "Identifier": "1",
         "Output": "Result"
@@ -100,17 +100,17 @@
         "Type": "Color"
       },
       "Identifier": "6",
-      "Position": "-448,-288"
+      "Position": "348,-96"
     },
     {
       "_class": "WorldPosition",
       "Identifier": "7",
-      "Position": "-512,384"
+      "Position": "-516,384"
     },
     {
       "_class": "SplitVector",
       "Identifier": "8",
-      "Position": "-256,384",
+      "Position": "-252,384",
       "Input": {
         "Identifier": "7",
         "Output": "Result"
@@ -125,7 +125,7 @@
       "OutMax": 1,
       "Clamp": true,
       "Identifier": "9",
-      "Position": "64,368",
+      "Position": "60,372",
       "A": {
         "Identifier": "8",
         "Output": "Z"
@@ -133,56 +133,60 @@
     },
     {
       "_class": "Float4",
-      "Value": "0.56568,0.62952,0.2465,1",
+      "Value": "0.4086,0.58605,0.07905,1",
       "Name": "",
       "IsAttribute": false,
       "UI": {
         "Type": "Color"
       },
       "Identifier": "10",
-      "Position": "-576,-64"
+      "Position": "-804,108"
     },
     {
       "_class": "ValueNoise",
       "Identifier": "11",
-      "Position": "-688,-464",
+      "Position": "-564,-408",
       "Coords": {
-        "Identifier": "13",
+        "Identifier": "44",
         "Output": "Result"
       }
     },
     {
       "_class": "WorldPosition",
       "Identifier": "12",
-      "Position": "-1056,-464"
+      "Position": "-1056,-444"
     },
     {
-      "_class": "Divide",
+      "_class": "Add",
       "DefaultA": 0,
-      "DefaultB": 512,
+      "DefaultB": 1,
       "Identifier": "13",
-      "Position": "-832,-464",
+      "Position": "-120,-288",
       "A": {
-        "Identifier": "12",
+        "Identifier": "45",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "48",
         "Output": "Result"
       }
     },
     {
       "_class": "Float4",
-      "Value": "0.68675,0.65055,0.37647,1",
+      "Value": "0.64186,0.57976,0.35526,1",
       "Name": "",
       "IsAttribute": false,
       "UI": {
         "Type": "Color"
       },
       "Identifier": "14",
-      "Position": "-576,96"
+      "Position": "-804,264"
     },
     {
       "_class": "Lerp",
       "Fraction": 0.5,
       "Identifier": "15",
-      "Position": "-224,112",
+      "Position": "-228,108",
       "A": {
         "Identifier": "10",
         "Output": "Result"
@@ -192,7 +196,7 @@
         "Output": "Result"
       },
       "C": {
-        "Identifier": "11",
+        "Identifier": "13",
         "Output": "Result"
       }
     },
@@ -204,7 +208,7 @@
       "Enabled": false,
       "UI": {},
       "Identifier": "16",
-      "Position": "384,368",
+      "Position": "384,372",
       "True": {
         "Identifier": "18",
         "Output": "Result"
@@ -231,7 +235,7 @@
       "IsAttribute": false,
       "UI": {},
       "Identifier": "17",
-      "Position": "160,592"
+      "Position": "156,588"
     },
     {
       "_class": "Float4",
@@ -242,14 +246,14 @@
         "Type": "Color"
       },
       "Identifier": "18",
-      "Position": "32,32"
+      "Position": "36,36"
     },
     {
       "_class": "Subtract",
       "DefaultA": 0,
       "DefaultB": 1,
       "Identifier": "19",
-      "Position": "400,576",
+      "Position": "396,576",
       "A": {
         "Identifier": "17",
         "Output": "Result"
@@ -264,7 +268,7 @@
       "DefaultA": 0,
       "DefaultB": 256,
       "Identifier": "20",
-      "Position": "240,688",
+      "Position": "240,684",
       "A": {
         "Identifier": "21",
         "Output": "Result"
@@ -275,7 +279,7 @@
       "DefaultA": 1,
       "DefaultB": 1,
       "Identifier": "21",
-      "Position": "128,656",
+      "Position": "132,660",
       "B": {
         "Identifier": "3",
         "Output": "Z"
@@ -308,7 +312,7 @@
         }
       },
       "Identifier": "24",
-      "Position": "-464,656"
+      "Position": "-468,660"
     },
     {
       "_class": "Subtract",
@@ -343,7 +347,7 @@
       "OutMax": 0,
       "Clamp": true,
       "Identifier": "27",
-      "Position": "1088,784",
+      "Position": "1092,780",
       "A": {
         "Identifier": "38",
         "Output": "Result"
@@ -358,7 +362,7 @@
       "DefaultA": 0,
       "DefaultB": 128,
       "Identifier": "28",
-      "Position": "64,800",
+      "Position": "60,804",
       "A": {
         "Identifier": "26",
         "Output": "Result"
@@ -371,7 +375,7 @@
     {
       "_class": "Abs",
       "Identifier": "29",
-      "Position": "176,800",
+      "Position": "180,804",
       "Input": {
         "Identifier": "28",
         "Output": "Result"
@@ -386,14 +390,14 @@
       "IsAttribute": true,
       "UI": {},
       "Identifier": "30",
-      "Position": "-208,864"
+      "Position": "-204,864"
     },
     {
       "_class": "Multiply",
       "DefaultA": 0,
       "DefaultB": 1,
       "Identifier": "31",
-      "Position": "832,1056",
+      "Position": "828,1056",
       "A": {
         "Identifier": "32",
         "Output": "Result"
@@ -412,7 +416,7 @@
         "Type": "Color"
       },
       "Identifier": "32",
-      "Position": "592,1008"
+      "Position": "588,1008"
     },
     {
       "_class": "Branch",
@@ -449,14 +453,14 @@
       "IsAttribute": false,
       "UI": {},
       "Identifier": "34",
-      "Position": "-32,1120"
+      "Position": "-36,1116"
     },
     {
       "_class": "Divide",
       "DefaultA": 0,
       "DefaultB": 16,
       "Identifier": "35",
-      "Position": "336,800",
+      "Position": "336,804",
       "A": {
         "Identifier": "29",
         "Output": "Result"
@@ -471,7 +475,7 @@
       "IsAttribute": false,
       "UI": {},
       "Identifier": "36",
-      "Position": "-32,976"
+      "Position": "-36,972"
     },
     {
       "_class": "Float",
@@ -482,14 +486,14 @@
       "IsAttribute": false,
       "UI": {},
       "Identifier": "37",
-      "Position": "-32,1040"
+      "Position": "-36,1044"
     },
     {
       "_class": "Min",
       "DefaultA": 0,
       "DefaultB": 0,
       "Identifier": "38",
-      "Position": "592,832",
+      "Position": "588,828",
       "InputA": {
         "Identifier": "39",
         "Output": "Result"
@@ -504,7 +508,7 @@
       "DefaultA": 1,
       "DefaultB": 0.5,
       "Identifier": "39",
-      "Position": "448,800",
+      "Position": "444,804",
       "A": {
         "Identifier": "35",
         "Output": "Result"
@@ -515,13 +519,107 @@
       "DefaultA": 0,
       "DefaultB": 1,
       "Identifier": "40",
-      "Position": "1408,240",
+      "Position": "1404,240",
       "A": {
         "Identifier": "22",
         "Output": "RGBA"
       },
       "B": {
         "Identifier": "5",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Float3",
+      "Min": "0,0,0",
+      "Max": "1,1,1",
+      "Value": "0,0,0",
+      "Name": "_SdfWorldOffset",
+      "IsAttribute": true,
+      "UI": {},
+      "Identifier": "41",
+      "Position": "-1056,-384"
+    },
+    {
+      "_class": "Add",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "42",
+      "Position": "-828,-408",
+      "A": {
+        "Identifier": "12",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "41",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Float",
+      "Min": 0,
+      "Max": 1,
+      "Value": 0.001953125,
+      "Name": "Noise Scale",
+      "IsAttribute": false,
+      "UI": {},
+      "Identifier": "43",
+      "Position": "-1056,-252"
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "44",
+      "Position": "-684,-408",
+      "A": {
+        "Identifier": "42",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "43",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 0.3333,
+      "Identifier": "45",
+      "Position": "-384,-408",
+      "A": {
+        "Identifier": "11",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "ValueNoise",
+      "Identifier": "46",
+      "Position": "-444,-264",
+      "Coords": {
+        "Identifier": "47",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 0.5,
+      "Identifier": "47",
+      "Position": "-564,-264",
+      "A": {
+        "Identifier": "44",
+        "Output": "Result"
+      }
+    },
+    {
+      "_class": "Multiply",
+      "DefaultA": 0,
+      "DefaultB": 0.6666,
+      "Identifier": "48",
+      "Position": "-264,-264",
+      "A": {
+        "Identifier": "46",
         "Output": "Result"
       }
     }

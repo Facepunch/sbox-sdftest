@@ -130,6 +130,7 @@ public sealed class LocalPlayer : Component
 	public void RecenterWorld()
 	{
 		var editManager = Scene.GetComponentInChildren<EditManager>();
+		var world = Scene.GetComponentInChildren<StreamingWorld>( true );
 
 		var cellSize = editManager.CellSize;
 
@@ -154,6 +155,8 @@ public sealed class LocalPlayer : Component
 		{
 			sdfWorld.UpdateTransform();
 		}
+
+		Scene.RenderAttributes.Set( "_SdfWorldOffset", -world.WorldPosition );
 
 		IWorldOriginEvents.Post( x => x.OnWorldOriginMoved( -worldOffset ) );
 	}
