@@ -28,18 +28,27 @@ internal class FileSystemCellEditFeed : ICellEditFeed
 
 	public Vector2Int CellIndex { get; }
 
-	public IReadOnlyList<CompressedEditData> Edits => _edits;
-
 	public event CellEditedDelegate Edited;
 
 	public void Submit( CompressedEditData data )
 	{
-		_edits.Add( data );
-		_anyUnsaved = true;
+		lock ( _edits )
+		{
+			_edits.Add( data );
+			_anyUnsaved = true;
+		}
 
 		if ( _isLoaded )
 		{
 			Edited?.Invoke( this, data );
+		}
+	}
+
+	public void CopyEditHistory( List<CompressedEditData> edits )
+	{
+		lock ( _edits )
+		{
+			edits.AddRange( _edits );
 		}
 	}
 
@@ -79,10 +88,15 @@ internal class FileSystemCellEditFeed : ICellEditFeed
 
 		await GameTask.MainThread();
 
-		_edits.InsertRange( 0, read );
-		_isLoaded = true;
+		int editCount;
 
-		var editCount = _edits.Count;
+		lock ( _edits )
+		{
+			_edits.InsertRange( 0, read );
+			_isLoaded = true;
+
+			editCount = _edits.Count;
+		}
 
 		for ( var i = 0; i < editCount; i++ )
 		{

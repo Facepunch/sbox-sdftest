@@ -99,11 +99,11 @@ public interface ICellEditFeedFactory
 public interface ICellEditFeed : IDisposable
 {
 	Vector2Int CellIndex { get; }
-	IReadOnlyList<CompressedEditData> Edits { get; }
 
 	event CellEditedDelegate Edited;
 
 	void Submit( CompressedEditData data );
+	void CopyEditHistory( List<CompressedEditData> edits );
 }
 
 public sealed class EditManager : Component
@@ -294,13 +294,21 @@ public sealed class EditFeedSubscription : IDisposable
 		_manager.RemoveSubscription( this );
 	}
 
+	[field: ThreadStatic]
+	private static List<CompressedEditData> EditHistory { get; set; }
+
 	private void DispatchEditHistory( WorldEditedDelegate edited )
 	{
+		EditHistory ??= new List<CompressedEditData>();
+
 		foreach ( var feed in Feeds )
 		{
 			var cellOrigin = _manager.CellToWorld( feed.CellIndex );
 
-			foreach ( var edit in feed.Edits )
+			EditHistory.Clear();
+			feed.CopyEditHistory( EditHistory );
+
+			foreach ( var edit in EditHistory )
 			{
 				var data = edit.Decompress( _manager.CellSize );
 				var worldOrigin = data.Origin + cellOrigin;

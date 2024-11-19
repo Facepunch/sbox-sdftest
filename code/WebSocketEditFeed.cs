@@ -113,16 +113,17 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 
 	private void OnDataReceived( Span<byte> data )
 	{
-		if ( data.Length < 12 ) return;
+		if ( data.Length < 16 ) return;
 
 		var kind = (MessageKind)BitConverter.ToUInt16( data[..2] );
 		var cellX = BitConverter.ToInt32( data[4..8] );
 		var cellY = BitConverter.ToInt32( data[8..12] );
 		var cellIndex = new Vector2Int( cellX, cellY );
+		var length = BitConverter.ToInt32( data[12..16] );
 
 		if ( !_cellFeeds.TryGetValue( cellIndex, out var feed ) ) return;
 
-		feed.OnDataReceived( kind, data[12..] );
+		feed.OnDataReceived( kind, data[16..(16 + length)] );
 	}
 
 	private void Submit( MessageKind messageKind, Vector2Int cellIndex, ReadOnlySpan<byte> payload )
@@ -236,8 +237,6 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 		private WebSocketEditFeed Parent { get; }
 		public Vector2Int CellIndex { get; }
 
-		public IReadOnlyList<CompressedEditData> Edits => _edits;
-
 		public event CellEditedDelegate Edited;
 
 		[field: ThreadStatic]
@@ -245,7 +244,16 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 
 		public void Submit( CompressedEditData data )
 		{
-			_edits.Add( data );
+			lock ( _edits )
+			{
+				if ( !_isLoaded )
+				{
+					Log.Warning( "Not loaded yet!" );
+					return;
+				}
+
+				_edits.Add( data );
+			}
 
 			Span<byte> buffer = SubmitBuffer ??= new byte[8];
 
@@ -254,6 +262,14 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 			Parent.Submit( MessageKind.Edit, CellIndex, buffer );
 
 			Edited?.Invoke( this, data );
+		}
+
+		public void CopyEditHistory( List<CompressedEditData> edits )
+		{
+			lock ( _edits )
+			{
+				edits.AddRange( _edits );
+			}
 		}
 
 		public WebSocketCellEditFeed( EditManager editManager, WebSocketEditFeed parent, Vector2Int cellIndex )
@@ -270,13 +286,29 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 			{
 				case MessageKind.Edit:
 				{
-					if ( data.Length < CompressedEditData.SizeBytes ) return;
+					if ( data.Length < 8 ) return;
 
-					var edit = CompressedEditData.Read( data );
+					var count = BitConverter.ToInt32( data[..4] );
+					var upToDate = BitConverter.ToBoolean( data[4..8] );
 
-					_edits.Add( edit );
+					data = data[8..];
 
-					Edited?.Invoke( this, edit );
+					lock ( _edits )
+					{
+						while ( count-- > 0 && data.Length >= CompressedEditData.SizeBytes )
+						{
+							var edit = CompressedEditData.Read( data );
+
+							data = data[8..];
+
+							_edits.Add( edit );
+
+							Edited?.Invoke( this, edit );
+						}
+
+						_isLoaded = upToDate;
+					}
+
 					break;
 				}
 
