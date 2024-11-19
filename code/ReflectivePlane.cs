@@ -14,8 +14,11 @@ public sealed class ReflectivePlane : Component
 	{
 		_camera ??= new SceneCamera( "Reflection" );
 		_camera.World = Scene.SceneWorld;
+
 		_camera.RenderTags.Add( "world" );
 		_camera.RenderTags.Add( "skybox" );
+		_camera.RenderTags.Add( "light" );
+		_camera.RenderTags.Add( "fog" );
 	}
 
 	protected override void OnDestroy()
@@ -48,13 +51,17 @@ public sealed class ReflectivePlane : Component
 		// TODO: this is assuming camera has no roll, and plane is aligned to ground!
 		_camera.Rotation = Rotation.LookAt( mainCamera.WorldRotation.Forward * new Vector3( 1f, 1f, -1f ) );
 
-		Graphics.RenderToTexture( _camera, _renderTexture );
-
-		Renderer.SceneObject.Attributes.Set( "ReflectionTexture", _renderTexture );
-
 		var clipNormal = plane.Normal * MathF.Sign( cameraToPlane );
+
+		_camera.EnableDirectLighting = true;
+		_camera.EnableIndirectLighting = false;
+		_camera.EnablePostProcessing = true;
 
 		_camera.Attributes.Set( "_ClipNormal", clipNormal );
 		_camera.Attributes.Set( "_ClipDist", Vector3.Dot( WorldPosition, clipNormal ) );
+
+		Graphics.RenderToTexture( _camera, _renderTexture );
+
+		Renderer.SceneObject.Attributes.Set( "ReflectionTexture", _renderTexture );
 	}
 }

@@ -49,7 +49,7 @@ PS
 		float behindDepth = abs( surfaceWorldPos.z - behindWorldPos.z );
 
 		float2 behindUv = i.vPositionSs.xy * g_vFrameBufferCopyInvSizeAndUvScale.xy;
-		float2 reflectionUv = float2( behindUv.x, 1.0 - behindUv.y * 1.05 );
+		float2 reflectionUv = float2( behindUv.x, 1.0 - behindUv.y * 1.035 );
 
 		float3 behindColor = Tex2D( g_tFrameBufferCopyTexture, behindUv ).xyz;
 		float3 reflectionColor = Tex2D( g_tReflectionTexture, reflectionUv ).xyz;
