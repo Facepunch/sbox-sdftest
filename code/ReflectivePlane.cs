@@ -14,12 +14,6 @@ public sealed class ReflectivePlane : Component
 	{
 		_camera ??= new SceneCamera( "Reflection" );
 		_camera.World = Scene.SceneWorld;
-
-		_camera.ExcludeTags.Add( "water"  );
-
-		_camera.EnableDirectLighting = true;
-		_camera.EnableIndirectLighting = false;
-		_camera.EnablePostProcessing = true;
 	}
 
 	protected override void OnDestroy()
@@ -43,9 +37,9 @@ public sealed class ReflectivePlane : Component
 		var plane = new Plane( WorldPosition, WorldRotation.Up );
 		var cameraToPlane = plane.GetDistance( mainCamera.WorldPosition );
 
-		_camera!.ZNear = mainCamera.ZNear;
-		_camera.ZFar = mainCamera.ZFar;
-		_camera.FieldOfView = mainCamera.FieldOfView;
+		mainCamera.UpdateSceneCamera( _camera );
+
+		_camera!.ExcludeTags.Add( "water" );
 
 		_camera.Position = mainCamera.WorldPosition - cameraToPlane * 2f * plane.Normal;
 
