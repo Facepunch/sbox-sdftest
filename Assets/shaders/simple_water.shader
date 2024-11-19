@@ -46,7 +46,7 @@ PS
 		float3 behindWorldPos = Depth::GetWorldPosition( i.vPositionSs.xy ).xyz;
 
 		float behindDist = distance( behindWorldPos, surfaceWorldPos );
-		float behindDepth = surfaceWorldPos.z - behindWorldPos.z;
+		float behindDepth = abs( surfaceWorldPos.z - behindWorldPos.z );
 
 		float2 behindUv = i.vPositionSs.xy * g_vFrameBufferCopyInvSizeAndUvScale.xy;
 		float2 reflectionUv = float2( behindUv.x, 1.0 - behindUv.y );

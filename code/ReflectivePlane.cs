@@ -52,7 +52,9 @@ public sealed class ReflectivePlane : Component
 
 		Renderer.SceneObject.Attributes.Set( "ReflectionTexture", _renderTexture );
 
-		_camera.Attributes.Set( "_ClipNormal", plane.Normal * MathF.Sign( cameraToPlane ) );
-		_camera.Attributes.Set( "_ClipDist", Vector3.Dot( WorldPosition, plane.Normal ) );
+		var clipNormal = plane.Normal * MathF.Sign( cameraToPlane );
+
+		_camera.Attributes.Set( "_ClipNormal", clipNormal );
+		_camera.Attributes.Set( "_ClipDist", Vector3.Dot( WorldPosition, clipNormal ) );
 	}
 }
