@@ -5,6 +5,7 @@
       "__guid": "5cc1974b-a9be-4616-b085-8b4b3bd9fd81",
       "Flags": 0,
       "Name": "World",
+      "Tags": "world",
       "Components": [
         {
           "__type": "Sandbox.Worlds.StreamingWorld",
@@ -160,6 +161,7 @@
           "__guid": "c35413c2-57c5-4180-a6f4-3abfd3218af1",
           "Flags": 0,
           "Name": "Fog",
+          "Tags": "fog",
           "Enabled": true,
           "Components": [
             {
@@ -201,7 +203,7 @@
               "__guid": "6dc413b2-6635-44d6-8f7f-438a264c1d3a",
               "BodyGroups": 18446744073709551615,
               "CreateAttachments": false,
-              "MaterialOverride": "materials/water/water_temp.vmat",
+              "MaterialOverride": "materials/water.vmat",
               "Model": "models/dev/plane.vmdl",
               "RenderOptions": {
                 "GameLayer": true,
@@ -209,8 +211,8 @@
                 "BloomLayer": false,
                 "AfterUILayer": false
               },
-              "RenderType": "On",
-              "Tint": "0.61395,0.85845,1,1"
+              "RenderType": "Off",
+              "Tint": "1,1,1,1"
             },
             {
               "__type": "Sandbox.BoxCollider",
@@ -220,6 +222,10 @@
               "Scale": "65536,65536,8192",
               "Static": false,
               "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "SdfWorld.ReflectivePlane",
+              "__guid": "6948385e-d0ea-47a2-983b-504900850ff1"
             }
           ]
         },

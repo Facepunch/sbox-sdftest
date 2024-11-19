@@ -81,6 +81,9 @@ PS
 	float3 g_v_SdfCursorPosition < Attribute( "_SdfCursorPosition" ); Default3( 0,0,0 ); >;
 	float g_fl_SdfCursorRadius < Attribute( "_SdfCursorRadius" ); Default1( 128 ); >;
 	float4 g_v_SdfCursorColor < Attribute( "_SdfCursorColor" ); Default4( 1.00, 1.00, 1.00, 1.00 ); >;
+	
+	float3 g_v_ClipNormal < Attribute( "_ClipNormal" ); Default3( 0.00, 0.00, 1.00 ); >;
+	float g_v_ClipDist < Attribute( "_ClipDist" ); Default1( 0.00 ); >;
 		
 	float4 TexTriplanar_Color( in Texture2D tTex, in SamplerState sSampler, float3 vPosition, float3 vNormal )
 	{
@@ -116,6 +119,8 @@ PS
 		m.Opacity = 1;
 		m.Emission = float3( 0, 0, 0 );
 		m.Transmission = 0;
+
+		clip( dot( i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz, g_v_ClipNormal ) - g_v_ClipDist );
 		
 		float4 l_0 = i.vTintColor;
 		float4 l_1 = TexTriplanar_Color( g_tTexture_ps_0, g_sSampler0, (i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz) / 39.3701, normalize( i.vNormalWs.xyz ) );
