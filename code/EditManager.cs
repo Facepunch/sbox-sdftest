@@ -112,13 +112,12 @@ public sealed class EditManager : Component
 
 	private Dictionary<Vector2Int, Cell> Cells { get; } = new();
 
-	[Property]
-	public Sdf3DVolume Material { get; set; }
+	[Property] public Sdf3DVolume Material { get; set; } = null!;
 
 	[Property]
 	public float CellSize { get; set; } = 8192f;
 
-	private StreamingWorld _world;
+	private StreamingWorld? _world;
 	public StreamingWorld World => _world ??= Scene.GetComponentInChildren<StreamingWorld>( true );
 
 	public Vector2Int BaseCellIndex => (Vector2Int)(-World.WorldPosition / CellSize);
@@ -251,7 +250,7 @@ public sealed class EditFeedSubscription : IDisposable
 	public Vector3 LocalMin { get; }
 	public Vector3 LocalMax { get; }
 
-	private WorldEditedDelegate _edited;
+	private WorldEditedDelegate? _edited;
 
 
 	public event WorldEditedDelegate Edited
@@ -295,7 +294,7 @@ public sealed class EditFeedSubscription : IDisposable
 	}
 
 	[field: ThreadStatic]
-	private static List<CompressedEditData> EditHistory { get; set; }
+	private static List<CompressedEditData>? EditHistory { get; set; }
 
 	private void DispatchEditHistory( WorldEditedDelegate edited )
 	{

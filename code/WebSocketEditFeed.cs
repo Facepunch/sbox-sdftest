@@ -8,13 +8,13 @@ namespace Sandbox;
 
 public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 {
-	[Property] public string Uri { get; set; }
+	[Property] public string? Uri { get; set; }
 	[Property] public string ServiceName { get; set; } = "SdfWorldServer";
 
-	[Property] public GameObject RemotePlayerPrefab { get; set; }
+	[Property] public GameObject RemotePlayerPrefab { get; set; } = null!;
 
 	private bool _receivedWorldParams;
-	private WebSocket _socket;
+	private WebSocket? _socket;
 	private readonly Dictionary<Vector2Int, WebSocketCellEditFeed> _cellFeeds = new();
 
 	private RealTimeSince _lastMoveMessage;
@@ -80,7 +80,7 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 
 					var player = Scene.GetComponentInChildren<LocalPlayer>();
 
-					player.Spawn( Uri, worldParameterMessage.Seed ?? "" );
+					player.Spawn( Uri!, worldParameterMessage.Seed ?? "" );
 
 					_receivedWorldParams = true;
 
@@ -156,7 +156,7 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 			{ "Authorization", token }
 		};
 
-		await _socket.Connect( Uri, headers );
+		await _socket!.Connect( Uri, headers );
 
 		var playerInfo = new PlayerInfoMessage( Game.SteamId, Utility.Steam.PersonaName, ClothingContainer.CreateFromLocalUser().Serialize() );
 
@@ -170,7 +170,7 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 	}
 
 	[field: ThreadStatic]
-	private static byte[] MoveUpdateBuffer { get; set; }
+	private static byte[]? MoveUpdateBuffer { get; set; }
 
 	protected override void OnFixedUpdate()
 	{
@@ -237,10 +237,10 @@ public sealed class WebSocketEditFeed : Component, ICellEditFeedFactory
 		private WebSocketEditFeed Parent { get; }
 		public Vector2Int CellIndex { get; }
 
-		public event CellEditedDelegate Edited;
+		public event CellEditedDelegate? Edited;
 
 		[field: ThreadStatic]
-		private static byte[] SubmitBuffer { get; set; }
+		private static byte[]? SubmitBuffer { get; set; }
 
 		public void Submit( CompressedEditData data )
 		{

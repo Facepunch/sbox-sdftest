@@ -2,9 +2,9 @@
 
 public sealed class RemotePlayer : Component, IWorldOriginEvents
 {
-	[Property] public SkinnedModelRenderer Renderer { get; set; }
-	[Property] public NamePlate NamePlate { get; set; }
-	[RequireComponent] public CitizenAnimationHelper AnimationHelper { get; private set; }
+	[Property] public SkinnedModelRenderer Renderer { get; set; } = null!;
+	[Property] public NamePlate NamePlate { get; set; } = null!;
+	[RequireComponent] public CitizenAnimationHelper AnimationHelper { get; private set; } = null!;
 
 	private Transform _startTransform;
 	private Transform _endTransform;

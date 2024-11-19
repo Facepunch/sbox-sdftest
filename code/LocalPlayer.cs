@@ -12,11 +12,9 @@ public sealed class LocalPlayer : Component
 	[ConCmd( "teleport", Help = "Teleport to the given coordinates." )]
 	public static void TeleportCommand( float x, float y )
 	{
-		var player = Game.ActiveScene?.GetComponentInChildren<LocalPlayer>();
-		if ( player is null ) return;
-
-		var editManager = Game.ActiveScene.GetComponentInChildren<EditManager>();
-		if ( editManager is null ) return;
+		if ( Game.ActiveScene is not { } scene ) return;
+		if ( scene.GetComponentInChildren<LocalPlayer>() is not { } player ) return;
+		if ( scene.GetComponentInChildren<EditManager>() is not { } editManager ) return;
 
 		player.PreSpawn();
 		player.GlobalPosition = new Vector3( x * editManager.CellSize, y * editManager.CellSize, 8192f );
@@ -25,11 +23,8 @@ public sealed class LocalPlayer : Component
 
 	[Property] public float SpawnAreaRadius { get; set; } = 8192f * 8f;
 
-	[RequireComponent]
-	public PlayerController PlayerController { get; private set; }
-
-	[RequireComponent]
-	public EditWorld EditWorld { get; private set; }
+	[RequireComponent] public PlayerController PlayerController { get; private set; } = null!;
+	[RequireComponent] public EditWorld EditWorld { get; private set; } = null!;
 
 	public Vector3 GlobalPosition
 	{
@@ -42,7 +37,7 @@ public sealed class LocalPlayer : Component
 	}
 
 	private bool _justSpawned;
-	private string _cookieKey;
+	private string? _cookieKey;
 
 	protected override void OnStart()
 	{
@@ -93,14 +88,14 @@ public sealed class LocalPlayer : Component
 		PostSpawn();
 	}
 
-	private bool IsWorldReady( StreamingWorld world )
+	private bool IsWorldReady( StreamingWorld? world )
 	{
 		if ( world is null ) return false;
 
 		var cellIndex = world.GetCellIndex( WorldPosition, 0 );
 		if ( !world.TryGetCell( cellIndex, out var cell ) ) return false;
 
-		return cell.State == CellState.Ready && cell.Opacity >= 1f;
+		return cell is { State: CellState.Ready, Opacity: >= 1f };
 	}
 
 	protected override void OnUpdate()

@@ -28,7 +28,7 @@ internal class FileSystemCellEditFeed : ICellEditFeed
 
 	public Vector2Int CellIndex { get; }
 
-	public event CellEditedDelegate Edited;
+	public event CellEditedDelegate? Edited;
 
 	public void Submit( CompressedEditData data )
 	{

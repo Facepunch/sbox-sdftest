@@ -7,8 +7,7 @@ namespace Sandbox;
 [GameResource( "World Parameters", "world", "Parameters for procedurally generating worlds.", Icon = "public" )]
 public sealed class WorldParameters : GameResource
 {
-	[Property]
-	public Sdf3DVolume Ground { get; set; }
+	[Property] public Sdf3DVolume Ground { get; set; } = null!;
 
 	[Property]
 	public float IslandNoiseScale { get; set; } = 65536f;

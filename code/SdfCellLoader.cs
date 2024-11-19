@@ -8,11 +8,8 @@ namespace Sandbox;
 
 public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInEditor
 {
-	[Property]
-	public WorldParameters Parameters { get; set; }
-
-	[Property]
-	public string Seed { get; set; }
+	[Property] public WorldParameters Parameters { get; set; } = null!;
+	[Property] public string Seed { get; set; } = "";
 
 	[Property]
 	public float MaxHeight { get; set; } = 8192f;
@@ -38,6 +35,8 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 
 	void ICellLoader.LoadCell( WorldCell cell )
 	{
+		cell.Tags.Add( "world" );
+
 		var level = cell.Index.Level;
 		var sdfObj = new GameObject( false )
 		{
@@ -110,20 +109,23 @@ public sealed class SdfCellLoader : Component, ICellLoader, Component.ExecuteInE
 
 public sealed class EditRelay : Component
 {
-	private EditManager _manager;
-	private EditFeedSubscription _subscription;
+	private EditManager? _manager;
+	private EditFeedSubscription? _subscription;
 
-	[RequireComponent]
-	public Sdf3DWorld SdfWorld { get; private set; }
+	[RequireComponent] public Sdf3DWorld SdfWorld { get; private set; } = null!;
 
 	protected override void OnStart()
 	{
 		var min = WorldPosition;
 		var max = min + SdfWorld.Size * SdfWorld.WorldScale.x;
 
-		_manager = Scene.GetAllComponents<EditManager>().FirstOrDefault();
+		if ( Scene.GetAllComponents<EditManager>().FirstOrDefault() is not { } manager )
+		{
+			Enabled = false;
+			return;
+		}
 
-		if ( _manager is null ) return;
+		_manager = manager;
 
 		_subscription = _manager.Subscribe( min, max );
 		_subscription.Edited += OnEdited;
@@ -136,7 +138,7 @@ public sealed class EditRelay : Component
 
 		_ = data.Kind switch
 		{
-			EditKind.Add => SdfWorld.AddAsync( new SphereSdf3D( origin, localRadius ), _manager.Material ),
+			EditKind.Add => SdfWorld.AddAsync( new SphereSdf3D( origin, localRadius ), _manager!.Material ),
 			EditKind.Subtract => SdfWorld.SubtractAsync( new SphereSdf3D( origin, localRadius ) ),
 			_ => Task.CompletedTask
 		};

@@ -9,7 +9,7 @@ namespace Sandbox;
 public sealed class PolygonDebug : Component
 {
 	[Property, TextArea, Group( "Debug Dump" )]
-	public string Source { get; set; }
+	public string? Source { get; set; }
 
 	[Button( "Apply" ), Group( "Debug Dump" )]
 	public void Reduce()

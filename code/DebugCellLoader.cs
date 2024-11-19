@@ -4,10 +4,10 @@ using Sandbox.Worlds;
 public sealed class DebugCellLoader : Component, ICellLoader
 {
 	[Property]
-	public Model PlaneModel { get; set; }
+	public Model PlaneModel { get; set; } = null!;
 
 	[Property]
-	public Material Material { get; set; }
+	public Material Material { get; set; } = null!;
 
 	public void LoadCell( WorldCell cell )
 	{
@@ -16,11 +16,8 @@ public sealed class DebugCellLoader : Component, ICellLoader
 		var obj = new GameObject( true )
 		{
 			Parent = cell.GameObject,
-			Transform =
-			{
-				LocalPosition = size * 0.5f - Vector3.Up * size.x / 256f,
-				LocalScale = size / 100f
-			}
+			LocalPosition = size * 0.5f - Vector3.Up * size.x / 256f,
+			LocalScale = size / 100f
 		};
 
 		var renderer = obj.Components.Create<ModelRenderer>();
