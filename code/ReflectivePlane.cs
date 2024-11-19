@@ -15,10 +15,11 @@ public sealed class ReflectivePlane : Component
 		_camera ??= new SceneCamera( "Reflection" );
 		_camera.World = Scene.SceneWorld;
 
-		_camera.RenderTags.Add( "world" );
-		_camera.RenderTags.Add( "skybox" );
-		_camera.RenderTags.Add( "light" );
-		_camera.RenderTags.Add( "fog" );
+		_camera.ExcludeTags.Add( "water"  );
+
+		_camera.EnableDirectLighting = true;
+		_camera.EnableIndirectLighting = false;
+		_camera.EnablePostProcessing = true;
 	}
 
 	protected override void OnDestroy()
@@ -52,10 +53,6 @@ public sealed class ReflectivePlane : Component
 		_camera.Rotation = Rotation.LookAt( mainCamera.WorldRotation.Forward * new Vector3( 1f, 1f, -1f ) );
 
 		var clipNormal = plane.Normal * MathF.Sign( cameraToPlane );
-
-		_camera.EnableDirectLighting = true;
-		_camera.EnableIndirectLighting = false;
-		_camera.EnablePostProcessing = true;
 
 		_camera.Attributes.Set( "_ClipNormal", clipNormal );
 		_camera.Attributes.Set( "_ClipDist", Vector3.Dot( WorldPosition, clipNormal ) );

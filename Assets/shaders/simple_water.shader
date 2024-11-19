@@ -46,7 +46,9 @@ PS
 		float3 behindWorldPos = Depth::GetWorldPosition( i.vPositionSs.xy ).xyz;
 
 		float behindDist = distance( behindWorldPos, surfaceWorldPos );
-		float behindDepth = abs( surfaceWorldPos.z - behindWorldPos.z );
+		float behindDepth = i.vPositionWithOffsetWs.z > 0
+			? i.vPositionWithOffsetWs.z
+			: abs( surfaceWorldPos.z - behindWorldPos.z );
 
 		float2 behindUv = i.vPositionSs.xy * g_vFrameBufferCopyInvSizeAndUvScale.xy;
 		float2 reflectionUv = float2( behindUv.x, 1.0 - behindUv.y * 1.035 );
@@ -56,7 +58,7 @@ PS
 
 		behindColor *= pow( float3( 0.5, 0.55, 0.65 ), behindDepth / 64.0 );
 
-		float flFresnel = pow( 1.0 - saturate( dot( normalize( -i.vPositionWithOffsetWs.xyz ), i.vNormalWs ) ), 5.0f ); 
+		float flFresnel = pow( 1.0 - saturate( abs( dot( normalize( -i.vPositionWithOffsetWs.xyz ), i.vNormalWs ) ) ), 5.0f ); 
 
 		float3 finalColor = lerp( behindColor, reflectionColor, flFresnel );
 
