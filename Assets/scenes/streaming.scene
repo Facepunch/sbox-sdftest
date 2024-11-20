@@ -194,7 +194,6 @@
           "Flags": 0,
           "Name": "Ocean",
           "Position": "0,0,640",
-          "Scale": "32768,32768,1",
           "Tags": "water",
           "Enabled": true,
           "Components": [
@@ -204,7 +203,7 @@
               "BodyGroups": 18446744073709551615,
               "CreateAttachments": false,
               "MaterialOverride": "materials/water.vmat",
-              "Model": "models/dev/plane.vmdl",
+              "Model": "models/waterplane.vmdl",
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
