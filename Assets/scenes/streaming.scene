@@ -40,6 +40,10 @@
           "Viewport": "0,0,1,1",
           "ZFar": 50000,
           "ZNear": 10
+        },
+        {
+          "__type": "SdfWorld.UnderwaterPostProcessing",
+          "__guid": "db58a554-4498-4b84-b5da-4c1d833c40db"
         }
       ]
     },
