@@ -40,6 +40,15 @@ public sealed class ReflectivePlane : Component
 		_renderTexture = null;
 	}
 
+	protected override void OnUpdate()
+	{
+		if ( _reflectionCamera is { Active: true } )
+		{
+			// For some reason I can't set this during / before the first OnPreRender
+			_reflectionCamera.Priority = -100;
+		}
+	}
+
 	protected override void OnPreRender()
 	{
 		if ( Scene.Camera is not { } mainCamera ) return;
@@ -94,7 +103,7 @@ public sealed class ReflectivePlane : Component
 		WorldPosition = mainCamera.WorldPosition.SnapToGrid( 256f ).WithZ( WorldPosition.z );
 	}
 
-	private static Matrix ReflectMatrix( System.Numerics.Matrix4x4 m, Plane plane )
+	private static Matrix ReflectMatrix( Matrix4x4 m, Plane plane )
 	{
 		m.M11 = (1.0f - 2.0f * plane.Normal.x * plane.Normal.x);
 		m.M21 = (-2.0f * plane.Normal.x * plane.Normal.y);
