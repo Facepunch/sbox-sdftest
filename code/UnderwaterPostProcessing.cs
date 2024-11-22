@@ -31,7 +31,6 @@ public sealed class UnderwaterPostProcessing : PostProcess, Component.ExecuteInE
 
 		// Pass the FrameBuffer to the shader
 		Graphics.GrabFrameTexture( "ColorBuffer", _attributes );
-		Graphics.GrabDepthTexture( "DepthBuffer", _attributes );
 
 		// Blit a quad across the entire screen with our custom shader
 		Graphics.Blit( Material.FromShader( "shaders/underwater.shader" ), _attributes );

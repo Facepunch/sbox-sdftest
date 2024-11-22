@@ -9,6 +9,7 @@ public sealed class ReflectivePlane : Component
 	[RequireComponent] public ModelRenderer Renderer { get; private set; } = null!;
 
 	private CameraComponent? _reflectionCamera;
+	private UnderwaterPostProcessing? _reflectionPostProcessing;
 	private Texture? _renderTexture;
 
 	protected override void OnEnabled()
@@ -17,9 +18,11 @@ public sealed class ReflectivePlane : Component
 
 		var cameraObj = new GameObject( false, "Reflection Camera" );
 
-		_reflectionCamera = cameraObj.AddComponent<CameraComponent>( true );
+		_reflectionCamera = cameraObj.AddComponent<CameraComponent>();
 		_reflectionCamera.RenderExcludeTags.Add( "water" );
 		_reflectionCamera.IsMainCamera = false;
+
+		_reflectionPostProcessing = cameraObj.AddComponent<UnderwaterPostProcessing>();
 	}
 
 	protected override void OnDisabled()
@@ -86,6 +89,8 @@ public sealed class ReflectivePlane : Component
 		_reflectionCamera.ZNear = mainCamera.ZNear;
 		_reflectionCamera.ZFar = mainCamera.ZFar;
 		_reflectionCamera.FieldOfView = mainCamera.FieldOfView;
+
+		_reflectionPostProcessing!.Enabled = mainCamera.WorldPosition.z <= WorldPosition.z;
 
 		var projectionMatrix = CreateProjection( _reflectionCamera );
 		var cameraSpaceClipNormal = _reflectionCamera.WorldRotation.Inverse * WorldRotation.Up;

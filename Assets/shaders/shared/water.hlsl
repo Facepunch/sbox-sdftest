@@ -28,7 +28,7 @@ float GetUnderwaterDistance( float3 startPos, float3 endPos, float4 waterPlane )
 
     float startDepth = dot( float4( startPos.xyz, -1.0 ), waterPlane );
 
-    if ( startDepth > 0.0 )
+    if ( startDepth >= 0.0 )
     {
         return 0.0;
     }

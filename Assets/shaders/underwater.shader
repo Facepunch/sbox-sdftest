@@ -61,14 +61,14 @@ PS
 
 		float4 vWorldPos = mul( g_matProjectionToWorld, float4( vRay, 1.0f ) );
 		vWorldPos.xyz /= vWorldPos.w;
-		
+        
 		return vWorldPos.xyz + g_vHighPrecisionLightingOffsetWs;
     }
 
     float4 MainPs( PixelInput i ) : SV_Target0
     {
         float2 vScreenUv = i.vPositionSs.xy / g_vRenderTargetSize;
-        float3 startPos = GetWorldPositionForDepth( i.vPositionSs.xy, 1.0 ).xyz;
+        float3 startPos = GetWorldPositionForDepth( i.vPositionSs.xy, 0.999 ).xyz;
         float3 endPos = Depth::GetWorldPosition( i.vPositionSs.xy ).xyz;
         float4 color = Tex2D( g_tColorBuffer, vScreenUv );
 
