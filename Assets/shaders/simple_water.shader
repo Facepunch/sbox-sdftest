@@ -52,10 +52,15 @@ PS
 {
 	#include "common/pixel.hlsl"
 
+	RenderState( CullMode, NONE );
+	RenderState( DepthWriteEnable, true );
+	RenderState( DepthEnable, true );
+	RenderState( DepthFunc, GREATER_EQUAL );
+
 	BoolAttribute( bWantsFBCopyTexture, true );
 	BoolAttribute( translucent, true );
 	
-	CreateTexture2D( g_tReflectionTexture ) < Attribute( "ReflectionTexture" ); SrgbRead( false ); Filter(MIN_MAG_MIP_LINEAR);    AddressU( MIRROR );     AddressV( MIRROR ); >;
+	CreateTexture2D( g_tReflectionTexture ) < Attribute( "ReflectionTexture" ); SrgbRead( true ); Filter(MIN_MAG_MIP_LINEAR);    AddressU( MIRROR );     AddressV( MIRROR ); >;
 	CreateTexture2D( g_tFrameBufferCopyTexture ) < Attribute("FrameBufferCopyTexture");   SrgbRead( false ); Filter(MIN_MAG_MIP_LINEAR);    AddressU( MIRROR );     AddressV( MIRROR ); > ;    
 
 	float3 SampleSurfaceNormal( float2 pos )
@@ -70,7 +75,7 @@ PS
 
 	float4 MainPs( PixelInput i ) : SV_Target0
 	{
-		float3 surfaceDist = length( i.vPositionWithOffsetWs );
+		float surfaceDist = length( i.vPositionWithOffsetWs );
 		float3 surfaceWorldPos = i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz;
 		float3 surfaceNormal = SampleSurfaceNormal( surfaceWorldPos.xy );
 
@@ -92,13 +97,10 @@ PS
 		float3 reflectionColor = Tex2D( g_tReflectionTexture, reflectionUv ).xyz;
 
 		behindColor *= pow( float3( 0.5, 0.55, 0.65 ), behindDepth / 128.0 );
+		behindColor = DoAtmospherics( surfaceWorldPos, i.vPositionSs.xy, float4( behindColor, 1.0 ) ).xyz;
 
 		float fresnel = pow( 1.0 - saturate( abs( dot( normalize( -i.vPositionWithOffsetWs.xyz ), normalize(i.vNormalWs + surfaceNormal) ) ) ), 5.0f ); 
 
-		float4 finalColor = float4( lerp( behindColor, reflectionColor, fresnel ), 1.0 );
-
-		finalColor = DoAtmospherics( surfaceWorldPos, i.vPositionSs, finalColor );
-
-		return finalColor;
+		return float4( lerp( behindColor, reflectionColor, fresnel ), 1.0 );
 	}
 }

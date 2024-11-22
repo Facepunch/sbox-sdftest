@@ -27,7 +27,7 @@
         {
           "__type": "Sandbox.CameraComponent",
           "__guid": "df259f14-514f-408a-9496-66f1b95c65f9",
-          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "BackgroundColor": "0.47843,0.48235,0.4902,1",
           "ClearFlags": "All",
           "FieldOfView": 60,
           "IsMainCamera": true,
@@ -281,6 +281,5 @@
   "Title": "streaming",
   "Description": null,
   "__references": [],
-  "HasUnsavedChanges": false,
   "__version": 2
 }

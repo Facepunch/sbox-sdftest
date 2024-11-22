@@ -19,6 +19,7 @@ public sealed class ReflectivePlane : Component
 
 		_reflectionCamera = cameraObj.AddComponent<CameraComponent>( true );
 		_reflectionCamera.RenderExcludeTags.Add( "water" );
+		_reflectionCamera.IsMainCamera = false;
 	}
 
 	protected override void OnDisabled()
@@ -62,7 +63,7 @@ public sealed class ReflectivePlane : Component
 				.WithScreenFormat()
 				.WithSize( mainCamera.ScreenRect.Size )
 				.Create( "Reflection" );
-
+			
 			_reflectionCamera!.RenderTarget = _renderTexture;
 			_reflectionCamera.GameObject.Enabled = true;
 
@@ -190,5 +191,4 @@ public sealed class ReflectivePlane : Component
 	{
 		return Rotation.LookAt( Vector3.Reflect( source * Vector3.Forward, normal ), Vector3.Reflect( source * Vector3.Up, normal ) );
 	}
-
 }
