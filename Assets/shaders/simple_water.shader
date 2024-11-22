@@ -72,9 +72,10 @@ PS
 	{
 		float3 surfaceDist = length( i.vPositionWithOffsetWs );
 		float3 surfaceWorldPos = i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz;
-		float3 behindWorldPos = Depth::GetWorldPosition( i.vPositionSs.xy ).xyz;
-
 		float3 surfaceNormal = SampleSurfaceNormal( surfaceWorldPos.xy );
+
+		float2 behindRefraction = surfaceNormal.xy / 16.0;
+		float3 behindWorldPos = Depth::GetWorldPosition( i.vPositionSs.xy + behindRefraction / g_vFrameBufferCopyInvSizeAndUvScale.xy ).xyz;
 
 		float behindDist = distance( behindWorldPos, surfaceWorldPos );
 		float behindDepth = i.vPositionWithOffsetWs.z > 0
@@ -84,7 +85,7 @@ PS
 		float2 behindUv = i.vPositionSs.xy * g_vFrameBufferCopyInvSizeAndUvScale.xy;
 		float2 reflectionUv = float2( 1.0 - behindUv.x, behindUv.y * 1.035 );
 
-		behindUv += behindDist * surfaceNormal.xy / 1024.0;
+		behindUv += behindRefraction;
 		reflectionUv += surfaceNormal.xy / 16.0;
 
 		float3 behindColor = Tex2D( g_tFrameBufferCopyTexture, behindUv ).xyz;
