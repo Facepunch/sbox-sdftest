@@ -92,19 +92,8 @@ public sealed class ReflectivePlane : Component
 
 		_reflectionPostProcessing!.Enabled = mainCamera.WorldPosition.z <= WorldPosition.z;
 
-		var projectionMatrix = CreateProjection( _reflectionCamera );
-		var cameraSpaceClipNormal = _reflectionCamera.WorldRotation.Inverse * WorldRotation.Up;
-
-		// Swizzle so +x is right, +z is forward etc
-		cameraSpaceClipNormal = new Vector3(
-			cameraSpaceClipNormal.y,
-			-cameraSpaceClipNormal.z,
-			cameraSpaceClipNormal.x ).Normal;
-
-		projectionMatrix = ModifyProjectionMatrix( projectionMatrix,
-			new Vector4( cameraSpaceClipNormal, Vector3.Dot( reflectionPosition - WorldPosition, WorldRotation.Up ) ) );
-
-		_reflectionCamera.CustomProjectionMatrix = projectionMatrix;
+		_reflectionCamera.CustomSize = Screen.Size;
+		_reflectionCamera.CustomProjectionMatrix = _reflectionCamera.CalculateObliqueMatrix( plane );
 
 		WorldPosition = mainCamera.WorldPosition.SnapToGrid( 256f ).WithZ( WorldPosition.z );
 	}
@@ -130,64 +119,6 @@ public sealed class ReflectivePlane : Component
 		m.M24 = 0.0f;
 		m.M34 = 0.0f;
 		m.M44 = 1.0f;
-
-		return m;
-	}
-
-	private static Matrix CreateProjection( CameraComponent camera )
-	{
-		var tanAngleHorz = MathF.Tan( camera.FieldOfView * 0.5f * MathF.PI / 180f );
-		var tanAngleVert = tanAngleHorz * camera.ScreenRect.Height / camera.ScreenRect.Width;
-
-		return CreateProjection( tanAngleHorz, tanAngleVert, camera.ZNear, camera.ZFar );
-	}
-	private static float Dot( Vector4 a, Vector4 b )
-	{
-		return System.Numerics.Vector4.Dot( a, b );
-	}
-
-	private static Matrix CreateProjection( float tanAngleHorz, float tanAngleVert, float nearZ, float farZ )
-	{
-		var invReverseDepth = 1f / (nearZ - farZ);
-
-		var result = new Matrix4x4(
-			1f / tanAngleHorz, 0f, 0f, 0f,
-			0f, 1f / tanAngleVert, 0f, 0f,
-			0f, 0f, farZ * invReverseDepth, farZ * nearZ * invReverseDepth,
-			0f, 0f, -1f, 0f
-		);
-
-		return result;
-	}
-
-	/// <summary>
-	/// Pinched from <see href="https://terathon.com/blog/oblique-clipping.html">here</see>
-	/// and <see href="https://forum.beyond3d.com/threads/oblique-near-plane-clipping-reversed-depth-buffer.52827/">here</see>.
-	/// </summary>
-	private static Matrix ModifyProjectionMatrix( Matrix matrix, Vector4 clipPlane )
-	{
-		Matrix4x4 m = matrix;
-
-		// Calculate the clip-space corner point opposite the clipping plane
-		// as (sgn(clipPlane.x), sgn(clipPlane.y), 1, 1) and
-		// transform it into camera space by multiplying it
-		// by the inverse of the projection matrix
-
-		Vector4 q = default;
-
-		q.x = (MathF.Sign( clipPlane.x ) - m.M13) / m.M11;
-		q.y = (MathF.Sign( clipPlane.y ) - m.M23) / m.M22;
-		q.z = 1f;
-		q.w = (1f - m.M33) / m.M34;
-
-		// Calculate the scaled plane vector
-		var c = clipPlane * (1f / Dot( clipPlane, q ));
-
-		// Replace the third row of the projection matrix
-		m.M31 = -c.x;
-		m.M32 = -c.y;
-		m.M33 = -c.z;
-		m.M34 = c.w;
 
 		return m;
 	}
