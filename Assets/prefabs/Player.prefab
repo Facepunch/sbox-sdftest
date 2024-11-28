@@ -58,6 +58,9 @@
         "Gravity": true,
         "LinearDamping": 0.1,
         "Locking": {
+          "X": false,
+          "Y": false,
+          "Z": false,
           "Pitch": true,
           "Yaw": true,
           "Roll": true
@@ -103,12 +106,6 @@
         "__guid": "c606632c-9e14-4129-a34c-7075be28dcce",
         "Priority": 10,
         "SwimLevel": 0.7
-      },
-      {
-        "__type": "Sandbox.Movement.MoveModeLadder",
-        "__guid": "b2d71da5-a214-4d3f-8c46-60a02462d2dd",
-        "ClimbableTags": "ladder",
-        "Priority": 5
       },
       {
         "__type": "Sandbox.EditWorld",
@@ -201,6 +198,6 @@
   "DontBreakAsTemplate": false,
   "ResourceVersion": 1,
   "__references": [],
-  "HasUnsavedChanges": false,
+  "IsValid": true,
   "__version": 1
 }

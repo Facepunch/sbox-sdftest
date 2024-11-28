@@ -23,6 +23,10 @@ public sealed class EditWorld : Component
 	{
 		_cursor?.Destroy();
 		_cursor = null;
+
+		Scene.RenderAttributes.Set( "_SdfCursorPosition", Vector3.Zero );
+		Scene.RenderAttributes.Set( "_SdfCursorRadius", 0f );
+		Scene.RenderAttributes.Set( "_SdfCursorColor", Color.Transparent );
 	}
 
 	protected override void OnDisabled()

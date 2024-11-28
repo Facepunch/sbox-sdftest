@@ -228,7 +228,8 @@
             },
             {
               "__type": "SdfWorld.ReflectivePlane",
-              "__guid": "6948385e-d0ea-47a2-983b-504900850ff1"
+              "__guid": "6948385e-d0ea-47a2-983b-504900850ff1",
+              "ResolutionScale": 0.5
             }
           ]
         },
@@ -285,5 +286,6 @@
   "Title": "streaming",
   "Description": null,
   "__references": [],
+  "IsValid": true,
   "__version": 2
 }
