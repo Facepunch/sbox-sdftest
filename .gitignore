@@ -3,14 +3,14 @@
 # https://git-scm.com/docs/gitignore
 
 # Auto-generated code editor files
-.vs/*
-.vscode/*
+.vs/
+.vscode/
 *.csproj
-obj/*
-Properties/*
-code/obj/*
-code/Properties/*
+obj/
+Properties/
+code/Properties/
 *.sln
+*.user
 
 # Editor Projects
 code/Editor/obj/*
@@ -24,5 +24,4 @@ code/Editor/.vscode/*
 *.*_c
 *.los
 *.vpk
-obj/
 .sbox/
