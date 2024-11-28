@@ -48,8 +48,8 @@ PS
 	BoolAttribute( bWantsFBCopyTexture, true );
 	BoolAttribute( translucent, true );
 	
-	CreateTexture2D( g_tReflectionTexture ) < Attribute( "ReflectionTexture" ); SrgbRead( true ); Filter(MIN_MAG_MIP_LINEAR);    AddressU( MIRROR );     AddressV( MIRROR ); >;
-	CreateTexture2D( g_tFrameBufferCopyTexture ) < Attribute("FrameBufferCopyTexture");   SrgbRead( false ); Filter(MIN_MAG_MIP_LINEAR);    AddressU( MIRROR );     AddressV( MIRROR ); > ;
+	CreateTexture2D( g_tReflectionTexture ) < Attribute( "ReflectionTexture" ); SrgbRead( true ); Filter( Bilinear );    AddressU( MIRROR );     AddressV( MIRROR ); >;
+	CreateTexture2D( g_tFrameBufferCopyTexture ) < Attribute("FrameBufferCopyTexture");   SrgbRead( false ); Filter( Bilinear );    AddressU( MIRROR );     AddressV( MIRROR ); > ;
 
 	float4 MainPs( PixelInput i ) : SV_Target0
 	{
@@ -75,10 +75,11 @@ PS
 		float3 reflectionColor = Tex2D( g_tReflectionTexture, reflectionUv ).xyz;
 
 		behindColor = ApplyWaterFog( behindColor, behindDepth );
-		behindColor = DoAtmospherics( surfaceWorldPos, i.vPositionSs.xy, float4( behindColor, 1.0 ) ).xyz;
 
 		float fresnel = pow( 1.0 - saturate( abs( dot( normalize( -i.vPositionWithOffsetWs.xyz ), normalize(i.vNormalWs + surfaceNormal) ) ) ), 5.0f ); 
 
-		return float4( lerp( behindColor, reflectionColor, fresnel ), 1.0 );
+		float4 combined = float4( lerp( behindColor, reflectionColor, fresnel ), 1.0 );
+
+		return DoAtmospherics( surfaceWorldPos, i.vPositionSs.xy, combined );
 	}
 }

@@ -12,6 +12,9 @@ public sealed class ReflectivePlane : Component
 	private UnderwaterPostProcessing? _reflectionPostProcessing;
 	private Texture? _renderTexture;
 
+	[Property]
+	public float ResolutionScale { get; set; } = 0.5f;
+
 	protected override void OnEnabled()
 	{
 		if ( _reflectionCamera.IsValid() ) return;
@@ -57,14 +60,14 @@ public sealed class ReflectivePlane : Component
 	{
 		if ( Scene.Camera is not { } mainCamera ) return;
 
-		var targetSize = mainCamera.ScreenRect.Size;
+		var targetSize = mainCamera.ScreenRect.Size * ResolutionScale;
 
 		if ( _renderTexture is null || !_renderTexture.Size.AlmostEqual( targetSize ) )
 		{
 			_renderTexture?.Dispose();
 			_renderTexture = Texture.CreateRenderTarget()
 				.WithScreenFormat()
-				.WithSize( mainCamera.ScreenRect.Size )
+				.WithSize( targetSize )
 				.Create( "Reflection" );
 			
 			_reflectionCamera!.RenderTarget = _renderTexture;
