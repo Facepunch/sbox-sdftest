@@ -102,6 +102,16 @@
         "SurfaceVelocity": "0,0,0"
       },
       {
+        "__type": "SdfWorld.MoveModeClimb",
+        "__guid": "fa1b579c-51e5-4935-8145-fb20859886e6",
+        "ClimbableTags": "world",
+        "FootAngles": "30,45,90",
+        "FootOffset": "16,12,16",
+        "HandAngles": "-45,90,90",
+        "HandOffset": "16,12,60",
+        "Priority": 5
+      },
+      {
         "__type": "Sandbox.Movement.MoveModeSwim",
         "__guid": "c606632c-9e14-4129-a34c-7075be28dcce",
         "Priority": 10,
