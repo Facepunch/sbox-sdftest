@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using Sandbox.Diagnostics;
 using Sandbox.Movement;
 using Sandbox.Utility;
@@ -7,7 +6,7 @@ using Sandbox.Utility;
 namespace SdfWorld;
 
 [Title( "MoveMode - Climb" ), Group( "Movement" ), Icon( "hiking" )]
-public sealed class MoveModeClimb : MoveMode, IClimbingMode, Component.ICollisionListener, IWorldOriginEvents
+public sealed class MoveModeClimb : MoveMode, IWorldOriginEvents
 {
 	[Property]
 	public int Priority { get; set; } = 5;
@@ -60,11 +59,16 @@ public sealed class MoveModeClimb : MoveMode, IClimbingMode, Component.ICollisio
 			{
 				var eased = Transform.Lerp( _from, _to, Easing.SineEaseInOut( _moveTime.Fraction ), true );
 
-				eased.Position += MoveMode.ClimbingRotation.Backward * 12f * MathF.Sin( _moveTime.Fraction * MathF.PI );
+				eased.Position += (MoveMode.ClimbingRotation.Backward + MoveMode.ClimbingRotation.Up) * 8f * MoveCurve;
 
 				return eased;
 			}
 		}
+
+		/// <summary>
+		/// Peaks at 1 half way through a move.
+		/// </summary>
+		public float MoveCurve => MathF.Sin( _moveTime.Fraction * MathF.PI );
 
 		public float MoveScore => Math.Clamp( _moveTime.Passed, 0f, 1f ) + (_to.Position - IdealTransform.Position).Length.Remap( 0f, 64f ) * 2f;
 
@@ -168,35 +172,18 @@ public sealed class MoveModeClimb : MoveMode, IClimbingMode, Component.ICollisio
 		return ClimbingObject.IsValid() ? Priority : -100;
 	}
 
-	public override void PostPhysicsStep()
-	{
-
-	}
-
-	void ICollisionListener.OnCollisionStart( Collision collision )
-	{
-		if ( ClimbingObject.IsValid() ) return;
-
-		var forward = Controller.EyeAngles.Forward.WithZ( 0f ).Normal;
-
-		if ( collision.Contact.Normal.Dot( forward ) < 0.707f ) return;
-		if ( !collision.Other.GameObject.Tags.HasAny( ClimbableTags ) ) return;
-
-		TryStartClimbing( collision.Other.GameObject, collision.Contact.Point, collision.Contact.Normal );
-	}
-
 	private SceneTrace Trace( Vector3 from, Vector3 dir, float maxDist )
 	{
 		return Scene.Trace
 			.FromTo( from, from + dir * maxDist )
-			.Radius( 2f )
+			.Radius( 1f )
 			.WithAnyTags( Tags )
 			.IgnoreGameObjectHierarchy( Controller.GameObject );
 	}
 
 	private Vector3? Trace( Vector3 origin, Vector2 offset )
 	{
-		var from = Controller.WorldPosition + ClimbingRotation * new Vector3( -16f, offset.x, offset.y );
+		var from = origin + ClimbingRotation * new Vector3( -16f, offset.x, offset.y );
 		var dir = ClimbingRotation.Forward;
 
 		var result = Trace( from, dir, 64f ).Run();
@@ -204,6 +191,29 @@ public sealed class MoveModeClimb : MoveMode, IClimbingMode, Component.ICollisio
 		// DebugOverlay.Line( from, from + dir * 32f, result.Hit ? Color.Green : Color.Red, 1f );
 
 		return result is { Hit: true, HitPosition: var pos } ? pos : null;
+	}
+
+	protected override void OnFixedUpdate()
+	{
+		if ( ClimbingObject.IsValid() ) return;
+
+		var forward = Controller.WishVelocity.WithZ( 0f );
+
+		forward *= forward.Dot( Controller.EyeAngles.Forward );
+
+		if ( forward.Length < 32f ) return;
+
+		// Initial trace to see if we're moving towards a wall
+
+		var origin = Controller.WorldPosition + Vector3.Up * 32f;
+		var result = Trace( origin, forward.Normal, 48f ).Run();
+
+		if ( result.Hit )
+		{
+			// Try to grab on
+
+			TryStartClimbing( result.GameObject, origin, forward.Normal );
+		}
 	}
 
 	private bool TryUpdateClimbingRotation( Vector3 origin )
@@ -260,6 +270,26 @@ public sealed class MoveModeClimb : MoveMode, IClimbingMode, Component.ICollisio
 	private void StopClimbing()
 	{
 		ClimbingObject = null;
+	}
+
+	public override void OnModeBegin()
+	{
+		Controller.IsClimbing = true;
+
+		if ( Controller.GetComponent<EditWorld>( true ) is { } editWorld )
+		{
+			editWorld.Enabled = false;
+		}
+	}
+
+	public override void OnModeEnd( MoveMode next )
+	{
+		Controller.IsClimbing = false;
+
+		if ( Controller.GetComponent<EditWorld>( true ) is { } editWorld )
+		{
+			editWorld.Enabled = true;
+		}
 
 		Controller.Renderer.Set( "special_movement_states", 0 );
 
@@ -269,15 +299,27 @@ public sealed class MoveModeClimb : MoveMode, IClimbingMode, Component.ICollisio
 		}
 	}
 
-	protected override void OnUpdate()
+	protected override void OnUpdateAnimatorVelocity( SkinnedModelRenderer renderer )
 	{
+		base.OnUpdateAnimatorVelocity( renderer );
+
+		renderer.Set( "skid_x", 0f );
+		renderer.Set( "skid_y", 0f );
+
+		renderer.Set( "skid", 0f );
+	}
+
+	protected override void OnUpdateAnimatorState( SkinnedModelRenderer renderer )
+	{
+		base.OnUpdateAnimatorState( renderer );
+
 		if ( !ClimbingObject.IsValid() ) return;
 
-		Controller.Renderer.Set( "special_movement_states", 1 );
+		renderer.Set( "special_movement_states", 1 );
 
 		foreach ( var limb in _limbs )
 		{
-			limb.UpdateRenderer( Controller.Renderer );
+			limb.UpdateRenderer( renderer );
 		}
 	}
 
@@ -309,8 +351,6 @@ public sealed class MoveModeClimb : MoveMode, IClimbingMode, Component.ICollisio
 
 	public override Vector3 UpdateMove( Rotation eyes, Vector3 input )
 	{
-		// wishVelocity *= 340.0f;
-
 		if ( Input.Down( "jump" ) )
 		{
 			// Jump away from ladder
@@ -321,24 +361,29 @@ public sealed class MoveModeClimb : MoveMode, IClimbingMode, Component.ICollisio
 
 		input = input.ClampLength( 1f );
 
-		var wishVelocity = ClimbingRotation * new Vector3( 0, input.y * 32f, input.x * 24f );
+		var wishVelocity = ClimbingRotation * new Vector3( 0, input.y * 24f, input.x * 16f );
 
 		if ( wishVelocity.Length < 8f ) return default;
 
 		foreach ( var limb in _limbs )
 		{
-			if ( limb.Moving ) return wishVelocity;
+			if ( limb.Moving ) return wishVelocity * limb.MoveCurve;
 		}
 
 		var toMove = _limbs.MaxBy( x => x.MoveScore )!;
 		var circle = Random.Shared.VectorInCircle( 4f );
 
-		if ( toMove.TryFindHold( WorldPosition + wishVelocity + ClimbingRotation * new Vector3( 0f, circle.x, circle.y ), ClimbingRotation, 0.5f ) )
+		if ( toMove.TryFindHold( WorldPosition + wishVelocity + ClimbingRotation * new Vector3( 0f, circle.x, circle.y ), ClimbingRotation, Random.Shared.Float( 0.4f, 0.7f ) ) )
 		{
 			TryUpdateClimbingRotation( Controller.WorldPosition );
 		}
 
-		return wishVelocity;
+		return wishVelocity * toMove.MoveCurve;
+	}
+
+	protected override void OnRotateRenderBody( SkinnedModelRenderer renderer )
+	{
+		renderer.WorldRotation = Rotation.Lerp( renderer.WorldRotation, ClimbingRotation, Time.Delta * 5.0f );
 	}
 
 	void IWorldOriginEvents.OnWorldOriginMoved( Vector3 offset )
@@ -347,23 +392,5 @@ public sealed class MoveModeClimb : MoveMode, IClimbingMode, Component.ICollisio
 		{
 			limb.WorldOriginMoved( offset );
 		}
-	}
-
-	public override void OnModeBegin()
-	{
-		if ( Controller.GetComponent<EditWorld>( true ) is { } editWorld )
-		{
-			editWorld.Enabled = false;
-		}
-	}
-
-	public override void OnModeEnd( MoveMode next )
-	{
-		if ( Controller.GetComponent<EditWorld>( true ) is { } editWorld )
-		{
-			editWorld.Enabled = true;
-		}
-
-		base.OnModeEnd( next );
 	}
 }

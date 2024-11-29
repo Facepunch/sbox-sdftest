@@ -8,6 +8,9 @@
       {
         "__type": "Sandbox.PlayerController",
         "__guid": "07833fd8-a6fa-4b63-8005-528bfafab3cf",
+        "AimStrengthBody": 1,
+        "AimStrengthEyes": 1,
+        "AimStrengthHead": 1,
         "Body": {
           "_type": "component",
           "component_id": "57d45b7b-cafe-4f67-8a6e-80ee39a2fa0d",
@@ -18,6 +21,10 @@
         "BodyMass": 500,
         "BodyRadius": 16,
         "CameraOffset": "256,0,12",
+        "ColliderObject": {
+          "_type": "gameobject",
+          "go": "c673dd41-fc64-4f29-9b5f-d6490d656a4e"
+        },
         "DuckedHeight": 36,
         "DuckedSpeed": 70,
         "EnableFootstepSounds": true,
@@ -81,34 +88,13 @@
         "StepUpHeight": 18
       },
       {
-        "__type": "Sandbox.CapsuleCollider",
-        "__guid": "305b8630-12af-4f55-8c36-67a71a81e996",
-        "End": "0,0,45.05097",
-        "Friction": 0,
-        "IsTrigger": false,
-        "Radius": 11.313708,
-        "Start": "0,0,60.68629",
-        "Static": false,
-        "SurfaceVelocity": "0,0,0"
-      },
-      {
-        "__type": "Sandbox.BoxCollider",
-        "__guid": "f8c522d3-c4b2-4494-85b1-d48e46ebe636",
-        "Center": "0,0,18",
-        "Friction": 0,
-        "IsTrigger": false,
-        "Scale": "16,16,36",
-        "Static": false,
-        "SurfaceVelocity": "0,0,0"
-      },
-      {
         "__type": "SdfWorld.MoveModeClimb",
         "__guid": "fa1b579c-51e5-4935-8145-fb20859886e6",
         "ClimbableTags": "world",
         "FootAngles": "30,45,90",
-        "FootOffset": "16,12,16",
+        "FootOffset": "16,8,16",
         "HandAngles": "-45,90,90",
-        "HandOffset": "16,12,60",
+        "HandOffset": "8,12,56",
         "Priority": 5
       },
       {
@@ -175,6 +161,35 @@
             "UseAnimGraph": true
           }
         ]
+      },
+      {
+        "__guid": "c673dd41-fc64-4f29-9b5f-d6490d656a4e",
+        "Flags": 1,
+        "Name": "Colliders",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.CapsuleCollider",
+            "__guid": "e0ed032e-5e0f-4457-b002-28c79293ce6d",
+            "End": "0,0,45.05097",
+            "Friction": 0,
+            "IsTrigger": false,
+            "Radius": 11.313708,
+            "Start": "0,0,60.68629",
+            "Static": false,
+            "SurfaceVelocity": "0,0,0"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "b3b71153-d148-45f3-9014-db6f190e9579",
+            "Center": "0,0,18",
+            "Friction": 0,
+            "IsTrigger": false,
+            "Scale": "16,16,36",
+            "Static": false,
+            "SurfaceVelocity": "0,0,0"
+          }
+        ]
       }
     ],
     "__variables": [],
@@ -208,6 +223,5 @@
   "DontBreakAsTemplate": false,
   "ResourceVersion": 1,
   "__references": [],
-  "IsValid": true,
   "__version": 1
 }
